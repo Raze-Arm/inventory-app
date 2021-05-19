@@ -2,16 +2,8 @@ language: java
 sudo: required
 services:
   - docker
-  - mysql
 before_install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
-before_script:
-  - mysql -e "DROP DATABASE IF EXISTS inventory;"
-  - mysql -u root -e "CREATE DATABASE inventory;"
-  - mysql -u root -e "CREATE USER 'razar'@'localhost' IDENTIFIED BY '12345678';"
-  - mysql -u root -e "GRANT ALL ON inventory.* TO 'razar'@'localhost';"
-  - mysql -u root --default-character-set=utf8 inventory < backend/inventory-backend/inventory.sql
 script:
-#  - docker run -e CI=true razear/inventory-app mvn test
-  - cd backend && cd inventory-backend && mvn test -X
+  - docker run -e CI=true razear/inventory-app mvn test
