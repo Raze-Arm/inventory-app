@@ -7,8 +7,8 @@ before_install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
 before_script:
-  - mysql -u root -e "CREATE DATABASE inventory-app ;"
-  - mysql -u root -e "CREATE USER 'razar'@'localhost' IDENTIFIED BY 'razar';"
-  - mysql -u root -e "GRANT ALL ON inventory-app.* TO 'razar'@'localhost IDENTIFIED BY '12345678';"
+  - mysql -u root -e "CREATE DATABASE inventory;"
+  - mysql -u root -e "CREATE USER 'razar'@'localhost' IDENTIFIED BY '12345678';"
+  - mysql -u root -e "GRANT ALL ON inventory.* TO 'razar'@'localhost;"
 script:
   - docker run -e CI=true razear/inventory-app mvn test
