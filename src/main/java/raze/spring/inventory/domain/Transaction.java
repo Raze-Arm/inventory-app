@@ -5,9 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer {
+public class Transaction {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
@@ -24,13 +24,24 @@ public class Customer {
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    private String firstName;
-    private String lastName;
+    private String description;
 
-    private String address;
+    private Long quantity;
 
-    @OneToMany(mappedBy = "customer" , fetch = FetchType.LAZY )
-    private Set<Invoice> invoiceSet;
+    private BigDecimal price;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private Product product;
+
+
+    @ManyToOne
+    private Invoice invoice;
+
+
+
+
 
     private Timestamp createdDate;
 

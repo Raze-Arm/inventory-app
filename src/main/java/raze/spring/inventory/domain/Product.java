@@ -1,14 +1,17 @@
 package raze.spring.inventory.domain;
 
+
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
+
 
 @Entity
 @Setter
@@ -16,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer {
+public class Product {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
@@ -24,13 +27,20 @@ public class Customer {
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    private String firstName;
-    private String lastName;
+    private String name;
 
-    private String address;
+    private BigDecimal price;
+    private BigDecimal salePrice;
 
-    @OneToMany(mappedBy = "customer" , fetch = FetchType.LAZY )
-    private Set<Invoice> invoiceSet;
+
+
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Set<Transaction> transactions;
+
+
+
+
 
     private Timestamp createdDate;
 
