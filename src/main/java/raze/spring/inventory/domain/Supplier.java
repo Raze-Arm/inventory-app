@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,8 +31,14 @@ public class Supplier {
 
     private String address;
 
-    @OneToMany(mappedBy = "supplier" , fetch = FetchType.LAZY)
-    private Set<Invoice> invoiceSet;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "supplier", cascade = CascadeType.ALL)
+    private Set<PurchaseInvoice> invoices = new HashSet<>();
+
+
+    public Set<PurchaseInvoice> getInvoices() {
+        if(this.invoices == null) return new HashSet<>();
+        return  this.invoices;
+    }
 
 
 

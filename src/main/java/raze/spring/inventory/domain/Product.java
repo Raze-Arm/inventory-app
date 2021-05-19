@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,8 +37,12 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<Transaction> transactions;
+    private Set<PurchaseTransaction> purchaseTransactions= new HashSet<>();
 
+
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Set<SaleTransaction> saleTransactions= new HashSet<>();
 
 
 

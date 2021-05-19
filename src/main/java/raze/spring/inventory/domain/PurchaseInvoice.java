@@ -5,18 +5,20 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-@Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Transaction {
+@Entity
+public class PurchaseInvoice {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
@@ -24,22 +26,24 @@ public class Transaction {
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    private String description;
-
-    private Long quantity;
-
-    private BigDecimal price;
 
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private Product product;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    private Supplier supplier;
 
 
-    @ManyToOne
-    private Invoice invoice;
 
 
+
+    @OneToMany(mappedBy = "invoice", fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+    private Set<PurchaseTransaction> transactions = new HashSet<>();
+
+    public Set<PurchaseTransaction> getTransactions() {
+        if(this.transactions == null) return new HashSet<>();
+        return this.transactions;
+    }
 
 
 
@@ -58,4 +62,6 @@ public class Transaction {
     public void beforeUpdate() {
         modifiedDate =  Timestamp.from(Instant.now());
     }
+
+
 }

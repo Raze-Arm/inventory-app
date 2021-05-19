@@ -5,10 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer {
+public class SaleTransaction {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
@@ -25,18 +24,24 @@ public class Customer {
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    private String firstName;
-    private String lastName;
+    private String description;
 
-    private String address;
+    private Long quantity;
 
-    @OneToMany(mappedBy = "customer" , cascade = CascadeType.ALL)
-    private Set<SaleInvoice> invoices = new HashSet<>();
+    private BigDecimal price;
 
-    public Set<SaleInvoice> getInvoices() {
-        if(this.invoices == null) return new HashSet<>();
-        return  this.invoices;
-    }
+
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private Product product;
+
+
+    @ManyToOne
+    private SaleInvoice invoice;
+
+
+
+
 
     private Timestamp createdDate;
 

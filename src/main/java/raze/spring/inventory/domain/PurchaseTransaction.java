@@ -3,12 +3,11 @@ package raze.spring.inventory.domain;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import raze.spring.inventory.domain.enums.InvoiceType;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,8 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Invoice {
-
+public class PurchaseTransaction {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
@@ -26,20 +24,22 @@ public class Invoice {
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
+    private String description;
+
+    private Long quantity;
+
+    private BigDecimal price;
 
 
-    @Enumerated(EnumType.STRING)
-    private InvoiceType invoiceType;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private Product product;
 
 
     @ManyToOne
-    private Supplier supplier;
-    @ManyToOne
-    private Customer customer;
+    private PurchaseInvoice invoice;
 
-    @OneToMany(mappedBy = "invoice", fetch = FetchType.EAGER)
-    private Set<Transaction> transactions;
+
 
 
 

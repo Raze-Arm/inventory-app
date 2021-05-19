@@ -2,8 +2,10 @@ package raze.spring.inventory.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import raze.spring.inventory.domain.Invoice;
+import raze.spring.inventory.domain.SaleTransaction;
+
+import java.util.UUID;
 
 @Repository
-public interface InvoiceRepository extends JpaRepository<String, Invoice> {
+public interface SaleTransactionRepository extends JpaRepository<SaleTransaction, UUID> {
 }

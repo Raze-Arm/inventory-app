@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer {
+public class SaleInvoice {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
@@ -25,18 +25,21 @@ public class Customer {
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    private String firstName;
-    private String lastName;
 
-    private String address;
 
-    @OneToMany(mappedBy = "customer" , cascade = CascadeType.ALL)
-    private Set<SaleInvoice> invoices = new HashSet<>();
 
-    public Set<SaleInvoice> getInvoices() {
-        if(this.invoices == null) return new HashSet<>();
-        return  this.invoices;
-    }
+
+    @ManyToOne()
+    private Customer customer;
+
+
+
+
+
+    @OneToMany(mappedBy = "invoice", fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+    private Set<SaleTransaction> transactions = new HashSet<>();
+
+
 
     private Timestamp createdDate;
 
@@ -53,4 +56,6 @@ public class Customer {
     public void beforeUpdate() {
         modifiedDate =  Timestamp.from(Instant.now());
     }
+
+
 }
