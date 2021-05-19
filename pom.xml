@@ -73,8 +73,8 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}</outputDirectory>
-<!--                            <outputDirectory>${project.basedir}/target/</outputDirectory>-->
+<!--                            <outputDirectory>${project.basedir}</outputDirectory>-->
+                            <outputDirectory>${project.basedir}/target/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
