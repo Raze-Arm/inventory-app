@@ -7,7 +7,10 @@ drop table if exists sale_transaction;
 drop table if exists supplier;
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> refactoring project to use sql file to generate tables and views
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
 create table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
@@ -27,11 +30,18 @@ alter table sale_transaction add constraint FKwbltmowgsigtquwnn824c20a foreign k
 CREATE OR REPLACE VIEW product_view AS
     (SELECT
         p.id AS id,
+<<<<<<< HEAD
         p.name AS name,
         p.description AS description,
         p.price AS price,
         p.sale_price AS SALE_PRICE,
         p.created_date AS CREATED_DATE,
+=======
+        p.name AS 'name',
+        p.description AS description,
+        p.price AS price,
+        p.sale_price AS salePrice,
+>>>>>>> refactoring project to use sql file to generate tables and views
         it.quantity - (CASE
             WHEN s.quantity IS NOT NULL THEN s.quantity
             ELSE 0
