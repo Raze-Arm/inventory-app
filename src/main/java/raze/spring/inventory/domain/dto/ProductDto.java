@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -12,7 +13,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Builder
 public class ProductDto {
-    private String id;
+    private UUID id;
     private String name;
     private Long quantity;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
