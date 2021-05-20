@@ -36,6 +36,9 @@ public class PurchaseTransaction {
     private Product product;
 
 
+    public UUID getProductId() {return  this.product != null ? product.getId() : null ;}
+
+
     @ManyToOne
     private PurchaseInvoice invoice;
 

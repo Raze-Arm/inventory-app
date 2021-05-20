@@ -35,6 +35,9 @@ public class Product {
 
 
 
+    private String description;
+
+
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<PurchaseTransaction> purchaseTransactions= new HashSet<>();

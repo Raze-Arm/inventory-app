@@ -67,7 +67,9 @@ public class AppInitializer implements CommandLineRunner {
         Product backLight32Lb = Product.builder().name("32Lb LG").price(new BigDecimal("3500000")) .salePrice(new BigDecimal("4000000")).build();
         Product backLight40F5000 = Product.builder().name("40F 5000").price(new BigDecimal("6000000")) .salePrice(new BigDecimal("6500000")).build();
         Product backLight46F5000 = Product.builder().name("46F 5000").price(new BigDecimal("7200000")) .salePrice(new BigDecimal("8000000")).build();
-        Product backLight32LN = Product.builder().name("32LN").price(new BigDecimal("2800000")) .salePrice(new BigDecimal("35000000")).build();
+
+        Product backLight32LN = Product.builder().name("32LN").price(new BigDecimal("2800000")) .salePrice(new BigDecimal("3500000")).build();
+
 
         productRepository.saveAll(Set.of(backLight32Lb,backLight32LN, backLight40F5000, backLight46F5000));
 
@@ -99,7 +101,10 @@ public class AppInitializer implements CommandLineRunner {
         Set<PurchaseTransaction> supplyList1 = Set.of(transaction1,  transaction3);
         Set<PurchaseTransaction> supplyList2 = Set.of(transaction2,  transaction4);
         Set<PurchaseTransaction> supplyList3 = Set.of(transaction4,  transaction5);
-        Set<PurchaseTransaction> supplyList4 = Set.of(transaction6,  transaction7);
+
+        Set<PurchaseTransaction> supplyList4 = Set.of(transaction6,  transaction7, transaction8);
+
+
 
 
         Set<SaleTransaction> saleList1 = Set.of(transaction9 , transaction10 ,transaction11);
