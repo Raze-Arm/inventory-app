@@ -26,7 +26,7 @@ alter table sale_transaction add constraint FKwbltmowgsigtquwnn824c20a foreign k
 CREATE OR REPLACE VIEW product_view AS
     (SELECT
         p.id AS id,
-        p.name AS 'name',
+        p.name AS "name",
         p.description AS description,
         p.price AS price,
         p.sale_price AS salePrice,
