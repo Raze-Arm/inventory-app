@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.UUID;
 @Setter
 @Getter
@@ -21,4 +22,5 @@ public class ProductView {
       private BigDecimal price;
       private BigDecimal salePrice;
       private Long quantity;
+      private Timestamp createdDate;
 }
