@@ -20,6 +20,7 @@ public class ProductDto {
     private BigDecimal price;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal salePrice;
+    private String description;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ" , shape = JsonFormat.Shape.STRING)
     private OffsetDateTime createdDate;
 }

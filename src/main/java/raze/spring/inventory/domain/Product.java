@@ -34,6 +34,7 @@ public class Product {
     private BigDecimal salePrice;
 
 
+    private String description;
 
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
