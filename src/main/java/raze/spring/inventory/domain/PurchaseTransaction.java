@@ -35,6 +35,8 @@ public class PurchaseTransaction {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Product product;
 
+    public UUID getProductId() {return  this.product != null ? product.getId() : null ;}
+
 
     @ManyToOne
     private PurchaseInvoice invoice;
