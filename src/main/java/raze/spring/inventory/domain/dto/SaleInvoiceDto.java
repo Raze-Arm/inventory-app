@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 public class SaleInvoiceDto {
     private UUID id;
-    private CustomerDto customerDto;
+    private CustomerDto customer;
     private Set<SaleTransactionDto> transactions;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)

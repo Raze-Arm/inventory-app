@@ -1,6 +1,7 @@
 package raze.spring.inventory.domain.view;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,7 +17,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "product_view")
 public class ProductView {
-      @Id private UUID id;
+      @Id
+      @Type(type="uuid-char")
+      private UUID id;
       private String name;
       private String description;
       private BigDecimal price;
