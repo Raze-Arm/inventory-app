@@ -28,7 +28,7 @@ public class SaleInvoiceToSaleInvoiceDto implements Converter<SaleInvoice, SaleI
         return SaleInvoiceDto.builder()
             .id(saleInvoice.getId())
             .createdDate(dateMapper.asOffsetDateTime(saleInvoice.getCreatedDate()))
-            .customerDto(this.customerToCustomerDto.convert(saleInvoice.getCustomer()))
+            .customer(this.customerToCustomerDto.convert(saleInvoice.getCustomer()))
             .transactions(
                 saleInvoice.getTransactions().stream()
                     .map(this.saleTransactionToSaleTransactionDto::convert)

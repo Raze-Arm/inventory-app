@@ -26,8 +26,8 @@ public class SaleInvoiceDtoToSaleInvoice implements Converter<SaleInvoiceDto , S
     @Override
     public SaleInvoice convert(SaleInvoiceDto saleInvoiceDto) {
         Customer customer = null;
-        if(saleInvoiceDto.getCustomerDto() != null)
-            customer = this.customerRepository.findById(saleInvoiceDto.getCustomerDto().getId()).orElse(this.customerDtoToCustomer.convert(saleInvoiceDto.getCustomerDto()));
+        if(saleInvoiceDto.getCustomer() != null)
+            customer = this.customerRepository.findById(saleInvoiceDto.getCustomer().getId()).orElse(this.customerDtoToCustomer.convert(saleInvoiceDto.getCustomer()));
         return SaleInvoice.builder()
             .customer(customer)
             .transactions(
