@@ -50,11 +50,13 @@ public class SaleInvoice {
         if(createdDate == null) {
             createdDate =  Timestamp.from(Instant.now());
         }
+        if(transactions != null) transactions.forEach(t -> t.setInvoice(this));
     }
 
     @PreUpdate
     public void beforeUpdate() {
         modifiedDate =  Timestamp.from(Instant.now());
+        if(transactions != null) transactions.forEach(t -> t.setInvoice(this));
     }
 
 
