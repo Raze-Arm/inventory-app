@@ -10,10 +10,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-<<<<<<< HEAD
 
-=======
->>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
 @Setter
 @Getter
 @NoArgsConstructor

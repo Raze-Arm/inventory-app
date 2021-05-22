@@ -35,12 +35,10 @@ public class Product {
 
 
 
-<<<<<<< HEAD
+
     private String description;
 
 
-=======
->>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<PurchaseTransaction> purchaseTransactions= new HashSet<>();

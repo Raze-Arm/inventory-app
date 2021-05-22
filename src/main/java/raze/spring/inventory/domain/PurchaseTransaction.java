@@ -36,12 +36,11 @@ public class PurchaseTransaction {
     private Product product;
 
 
-<<<<<<< HEAD
+
     public UUID getProductId() {return  this.product != null ? product.getId() : null ;}
 
 
-=======
->>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
+
     @ManyToOne
     private PurchaseInvoice invoice;
 

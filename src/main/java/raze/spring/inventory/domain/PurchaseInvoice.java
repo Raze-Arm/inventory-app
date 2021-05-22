@@ -56,19 +56,17 @@ public class PurchaseInvoice {
         if(createdDate == null) {
             createdDate =  Timestamp.from(Instant.now());
         }
-<<<<<<< HEAD
+
         if(transactions != null) transactions.forEach(t -> t.setInvoice(this));
-=======
->>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
+
     }
 
     @PreUpdate
     public void beforeUpdate() {
         modifiedDate =  Timestamp.from(Instant.now());
-<<<<<<< HEAD
+
         if(transactions != null) transactions.forEach(t -> t.setInvoice(this));
-=======
->>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
+
     }
 
 
