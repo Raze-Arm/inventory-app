@@ -1,9 +1,9 @@
-package raze.spring.inventory.converter.service.impl;
+package raze.spring.inventory.service.impl;
 
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.CustomerDtoToCustomer;
 import raze.spring.inventory.converter.CustomerToCustomerDto;
-import raze.spring.inventory.converter.service.CustomerService;
+import raze.spring.inventory.service.CustomerService;
 import raze.spring.inventory.domain.Customer;
 import raze.spring.inventory.domain.dto.CustomerDto;
 import raze.spring.inventory.repository.CustomerRepository;
