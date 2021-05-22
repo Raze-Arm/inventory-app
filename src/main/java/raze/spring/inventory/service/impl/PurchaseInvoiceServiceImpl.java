@@ -1,9 +1,9 @@
-package raze.spring.inventory.converter.service.impl;
+package raze.spring.inventory.service.impl;
 
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.PurchaseInvoiceDtoToPurchaseInvoice;
 import raze.spring.inventory.converter.PurchaseInvoiceToPurchaseInvoiceDto;
-import raze.spring.inventory.converter.service.PurchaseInvoiceService;
+import raze.spring.inventory.service.PurchaseInvoiceService;
 import raze.spring.inventory.domain.PurchaseInvoice;
 import raze.spring.inventory.domain.dto.PurchaseInvoiceDto;
 import raze.spring.inventory.repository.PurchaseInvoiceRepository;

@@ -1,4 +1,4 @@
-package raze.spring.inventory.converter.service.impl;
+package raze.spring.inventory.service.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
-import raze.spring.inventory.converter.service.SupplierService;
+import raze.spring.inventory.service.SupplierService;
 import raze.spring.inventory.domain.Supplier;
 import raze.spring.inventory.domain.dto.SupplierDto;
 import raze.spring.inventory.repository.SupplierRepository;

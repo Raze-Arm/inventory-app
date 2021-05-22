@@ -1,4 +1,4 @@
-package raze.spring.inventory.converter.service;
+package raze.spring.inventory.service;
 
 import raze.spring.inventory.domain.dto.SupplierDto;
 
