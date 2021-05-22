@@ -7,13 +7,19 @@ before_install:
   - docker build -t razear/inventory-app -f Dockerfile.dev .
 script:
 <<<<<<< HEAD
+<<<<<<< HEAD
 #  - docker run -e CI=true razear/inventory-app mvn test -Bgit
 =======
 <<<<<<< HEAD
-#  - docker run -e CI=true razear/inventory-app mvn test -B
 =======
+>>>>>>> removing comments from tavis.yml
+#  - docker run -e CI=true razear/inventory-app mvn test -B
 #  - docker run -e CI=true razear/inventory-app mvn test -Bgit
+<<<<<<< HEAD
 >>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
 >>>>>>> adding SaleInvoiceDto and SaleTransactionDto  closes #15 and fixing project errors
+=======
+
+>>>>>>> removing comments from tavis.yml
   - mvn test
   - mvn clean install
