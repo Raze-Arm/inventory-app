@@ -1,5 +1,9 @@
 package raze.spring.inventory.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.SupplierDtoToSupplier;
 import raze.spring.inventory.converter.SupplierToSupplierDto;
@@ -29,6 +33,16 @@ public class SupplierServiceImpl implements SupplierService {
         this.supplierDtoToSupplier = supplierDtoToSupplier;
         this.supplierToSupplierDto = supplierToSupplierDto;
       }
+
+    @Override
+    public Page<SupplierDto> getSupplierPage(int page, int size, String sort, String search) {
+          final Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+          if(search.length() > 0) {
+              return  this.supplierRepository.findAll(pageable, search).map(this.supplierToSupplierDto::convert);
+          } else {
+              return this.supplierRepository.findAll(pageable).map(this.supplierToSupplierDto::convert);
+          }
+    }
 
     @Transactional
     @Override

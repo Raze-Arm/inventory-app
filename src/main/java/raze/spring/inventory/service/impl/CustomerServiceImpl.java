@@ -1,5 +1,9 @@
 package raze.spring.inventory.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.CustomerDtoToCustomer;
 import raze.spring.inventory.converter.CustomerToCustomerDto;
@@ -29,6 +33,17 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerDtoToCustomer = customerDtoToCustomer;
         this.customerToCustomerDto = customerToCustomerDto;
       }
+
+    @Override
+    public Page<CustomerDto> getCustomerPage(int page, int size, String sort, String search) {
+          final Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+          if(search.length() > 0) {
+              return this.customerRepository.findAll(pageable, search).map(this.customerToCustomerDto::convert);
+          } else {
+              return this.customerRepository.findAll(pageable).map(this.customerToCustomerDto::convert);
+          }
+
+    }
 
     @Transactional
     @Override

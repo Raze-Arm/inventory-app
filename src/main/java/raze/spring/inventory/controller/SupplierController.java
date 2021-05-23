@@ -1,6 +1,7 @@
 package raze.spring.inventory.controller;
 
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,14 @@ public class SupplierController {
         this.supplierService = supplierService;
     }
 
+    @GetMapping(path = {"/supplier", "/supplier/"}, params = {"type=page"})
+    public ResponseEntity<Page<SupplierDto>> getSupplierPage(
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size,
+            @RequestParam("sort") String sort,
+            @RequestParam("search") String search) {
+        return ResponseEntity.ok(this.supplierService.getSupplierPage(page,size,sort, search));
+    }
 
     @GetMapping(path = {"/supplier", "/supplier/"})
     public ResponseEntity<List<SupplierDto>> getAllSuppliers() {

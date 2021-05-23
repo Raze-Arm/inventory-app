@@ -1,5 +1,6 @@
 package raze.spring.inventory.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.CustomerService;
@@ -17,6 +18,14 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @GetMapping(path = {"/customer", "/customer/"}, params = {"type=page"})
+    public ResponseEntity<Page<CustomerDto>> getCustomerPage(
+        @RequestParam("page") Integer page,
+        @RequestParam("size") Integer size,
+        @RequestParam("sort") String sort,
+        @RequestParam("search") String search) {
+        return ResponseEntity.ok(this.customerService.getCustomerPage(page,size,sort, search));
+    }
 
     @GetMapping(path = {"/customer", "/customer/"})
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
