@@ -22,8 +22,8 @@ public class CustomerController {
     public ResponseEntity<Page<CustomerDto>> getCustomerPage(
         @RequestParam("page") Integer page,
         @RequestParam("size") Integer size,
-        @RequestParam("sort") String sort,
-        @RequestParam("search") String search) {
+        @RequestParam(value = "sort",required = false) String sort,
+        @RequestParam(value = "search", required = false) String search) {
         return ResponseEntity.ok(this.customerService.getCustomerPage(page,size,sort, search));
     }
 

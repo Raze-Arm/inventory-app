@@ -37,10 +37,10 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Page<SupplierDto> getSupplierPage(int page, int size, String sort, String search) {
           final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
-          if(search.length() > 0) {
-              return  this.supplierRepository.findAll(pageable, search).map(this.supplierToSupplierDto::convert);
+          if(search == null || search.length() == 0) {
+              return  this.supplierRepository.findAll(pageable).map(this.supplierToSupplierDto::convert);
           } else {
-              return this.supplierRepository.findAll(pageable).map(this.supplierToSupplierDto::convert);
+              return this.supplierRepository.findAll(pageable, search).map(this.supplierToSupplierDto::convert);
           }
     }
 

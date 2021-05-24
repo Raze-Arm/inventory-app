@@ -24,8 +24,8 @@ public class SupplierController {
     public ResponseEntity<Page<SupplierDto>> getSupplierPage(
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
-            @RequestParam("sort") String sort,
-            @RequestParam("search") String search) {
+            @RequestParam(value = "sort",required = false) String sort,
+            @RequestParam(value = "search", required = false) String search)  {
         return ResponseEntity.ok(this.supplierService.getSupplierPage(page,size,sort, search));
     }
 

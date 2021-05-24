@@ -37,10 +37,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Page<CustomerDto> getCustomerPage(int page, int size, String sort, String search) {
           final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
-          if(search.length() > 0) {
-              return this.customerRepository.findAll(pageable, search).map(this.customerToCustomerDto::convert);
-          } else {
+          if(search == null || search.length() == 0) {
               return this.customerRepository.findAll(pageable).map(this.customerToCustomerDto::convert);
+          } else {
+              return this.customerRepository.findAll(pageable, search).map(this.customerToCustomerDto::convert);
           }
 
     }
