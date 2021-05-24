@@ -18,7 +18,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping(path = {"/customer", "/customer/"}, params = {"type=page"})
+    @GetMapping(path = {"/customer", "/customer/"})
     public ResponseEntity<Page<CustomerDto>> getCustomerPage(
         @RequestParam("page") Integer page,
         @RequestParam("size") Integer size,
@@ -27,7 +27,7 @@ public class CustomerController {
         return ResponseEntity.ok(this.customerService.getCustomerPage(page,size,sort, search));
     }
 
-    @GetMapping(path = {"/customer", "/customer/"})
+    @GetMapping(path = {"/customer", "/customer/"}, params = {"search-type=list"})
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         return  ResponseEntity.ok(this.customerService.getCustomerList());
     }

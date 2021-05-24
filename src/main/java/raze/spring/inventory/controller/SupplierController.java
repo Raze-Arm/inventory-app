@@ -20,7 +20,7 @@ public class SupplierController {
         this.supplierService = supplierService;
     }
 
-    @GetMapping(path = {"/supplier", "/supplier/"}, params = {"type=page"})
+    @GetMapping(path = {"/supplier", "/supplier/"} )
     public ResponseEntity<Page<SupplierDto>> getSupplierPage(
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
@@ -29,7 +29,7 @@ public class SupplierController {
         return ResponseEntity.ok(this.supplierService.getSupplierPage(page,size,sort, search));
     }
 
-    @GetMapping(path = {"/supplier", "/supplier/"})
+    @GetMapping(path = {"/supplier", "/supplier/"}, params = {"search-type=list"})
     public ResponseEntity<List<SupplierDto>> getAllSuppliers() {
         return  ResponseEntity.ok(this.supplierService.getSupplierList());
     }

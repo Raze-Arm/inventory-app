@@ -36,7 +36,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Page<SupplierDto> getSupplierPage(int page, int size, String sort, String search) {
-          final Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+          final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
           if(search.length() > 0) {
               return  this.supplierRepository.findAll(pageable, search).map(this.supplierToSupplierDto::convert);
           } else {
