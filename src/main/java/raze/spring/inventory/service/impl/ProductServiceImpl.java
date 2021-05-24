@@ -1,5 +1,9 @@
 package raze.spring.inventory.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.ProductDtoToProduct;
 import raze.spring.inventory.converter.ProductViewToProductDto;
@@ -33,6 +37,17 @@ public class ProductServiceImpl implements ProductService {
         this.productDtoToProduct = productDtoToProduct;
         this.productViewToProductDto = productViewToProductDto;
       }
+
+    @Override
+    public Page<ProductDto> getProductDtoPage(int page, int size, String sort, String search) {
+        final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
+        if(search == null || search.length() == 0) {
+            return  this.productViewRepository.findAll(pageable).map(this.productViewToProductDto::convert);
+        } else {
+            return  this.productViewRepository.findAll(pageable, search).map(this.productViewToProductDto::convert);
+        }
+    }
+
     @Transactional
     @Override
     public List<ProductDto> getProductList() {

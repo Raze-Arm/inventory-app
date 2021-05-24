@@ -1,5 +1,6 @@
 package raze.spring.inventory.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.ProductService;
@@ -16,8 +17,15 @@ public class ProductController {
         this.productService = productService;
     }
 
-
     @GetMapping(path = {"/product", "/product/"})
+    public ResponseEntity<Page<ProductDto>> getProductPage(
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size,
+            @RequestParam(value = "sort",required = false) String sort,
+            @RequestParam(value = "search", required = false) String search) {
+        return ResponseEntity.ok(this.productService.getProductDtoPage(page,size,sort, search));
+    }
+    @GetMapping(path = {"/product", "/product/"}, params = {"search-type=list"})
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         return ResponseEntity.ok(this.productService.getProductList());
     }
