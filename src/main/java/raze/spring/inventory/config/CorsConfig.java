@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfig {
 
-    @Value("${origin.address}")
+    @Value("#{systemEnvironment['REACT_APP_ADDRESS'] ?: 'https://localhost:3000'}")
     private String originAddress;
 
     @Bean
