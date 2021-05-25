@@ -29,8 +29,8 @@ public class SaleInvoiceController {
 
 
     @PostMapping(path = {"/sale-invoice", "/sale-invoice/"})
-    public ResponseEntity<UUID> saveInvoice(@RequestBody SaleInvoiceDto invoiceDto) {
-        return ResponseEntity.ok(this.invoiceService.saveInvoice(invoiceDto));
+    public ResponseEntity<UUID> saveInvoice(@RequestBody SaleInvoiceDto invoice) {
+        return ResponseEntity.ok(this.invoiceService.saveInvoice(invoice));
     }
 
 

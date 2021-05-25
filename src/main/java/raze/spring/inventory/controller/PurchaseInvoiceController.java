@@ -29,8 +29,8 @@ public class PurchaseInvoiceController {
 
 
     @PostMapping(path = {"/purchase-invoice", "/purchase-invoice/"})
-    public ResponseEntity<UUID> saveInvoice(@RequestBody PurchaseInvoiceDto invoiceDto) {
-        return  ResponseEntity.ok(this.invoiceService.saveInvoice(invoiceDto));
+    public ResponseEntity<UUID> saveInvoice(@RequestBody PurchaseInvoiceDto invoice) {
+        return  ResponseEntity.ok(this.invoiceService.saveInvoice(invoice));
     }
 
     @DeleteMapping(path = {"/purchase-invoice/{id}", "/purchase-invoice/{id}/"})
