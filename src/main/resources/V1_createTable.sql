@@ -22,7 +22,7 @@ alter table sale_invoice add constraint FKt1eli7jvci5frjgs50tba9p15 foreign key 
 alter table sale_transaction add constraint FK8aggg6jsmks0iklv5wq0i8wpd foreign key (invoice_id) references sale_invoice;
 alter table sale_transaction add constraint FKwbltmowgsigtquwnn824c20a foreign key (product_id) references product;
 
-
+-- ////////////////////////////////////////////////////////////PRODUCT_VIEW
 
 CREATE OR REPLACE VIEW product_view AS
     (SELECT
@@ -51,4 +51,56 @@ CREATE OR REPLACE VIEW product_view AS
             st.product_id, (SUM(st.quantity)) AS quantity
         FROM
             sale_transaction st
-        GROUP BY st.product_id) AS s ON p.id = s.product_id);
+        GROUP BY st.product_id) AS s ON p.id = s.product_id) LIMIT 100;
+
+-- ////////////////////////////////////////////////////////////INVOICE_VIEW
+CREATE OR REPLACE VIEW invoice_view AS
+    (SELECT
+        pi.id AS id,
+        CONCAT(first_name, ' ', last_name) AS NAME,
+        'sale' AS TYPE,
+        created_date
+    FROM
+        purchase_invoice pi
+            LEFT JOIN
+        (SELECT
+            id, first_name, last_name
+        FROM
+            supplier) AS s ON pi.supplier_id = s.id
+    UNION ALL SELECT
+        si.id AS id,
+        CONCAT(first_name, ' ', last_name) AS NAME,
+        'purchase' AS TYPE,
+        created_date
+    FROM
+        sale_invoice si
+            LEFT JOIN
+        (SELECT
+            id, first_name, last_name
+        FROM
+            customer) AS c ON si.customer_id = c.id)
+    LIMIT 100;
+
+-- ////////////////////////////////////////////////////////////TRANSACTION_VIEW
+CREATE OR REPLACE VIEW transaction_view AS
+    (SELECT
+        t.id,
+        p.name AS product_name,
+        t.price,
+        t.quantity,
+        t.type,
+        t.created_date
+    FROM
+        (SELECT
+            *, 'purchase' AS TYPE
+        FROM
+            purchase_transaction tr UNION ALL SELECT
+            *, 'sale' AS TYPE
+        FROM
+            sale_transaction st) AS t
+            LEFT JOIN
+        (SELECT
+            id, name
+        FROM
+            product) AS p ON t.product_id = p.id)
+    LIMIT 100
