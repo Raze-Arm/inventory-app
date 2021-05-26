@@ -34,13 +34,13 @@ CREATE OR REPLACE VIEW product_view AS
         p.sale_price AS SALE_PRICE,
         p.created_date AS CREATED_DATE,
 
-        it.quantity - (CASE
+        (CASE WHEN it.quantity IS NOT NULL THEN it.quantity ELSE 0 END ) - (CASE
             WHEN s.quantity IS NOT NULL THEN s.quantity
             ELSE 0
         END) AS quantity
     FROM
         product p
-            INNER JOIN
+             LEFT JOIN
         (SELECT
             pt.product_id, (SUM(pt.quantity)) AS quantity
         FROM
