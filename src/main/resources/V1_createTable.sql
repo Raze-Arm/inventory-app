@@ -58,7 +58,7 @@ CREATE OR REPLACE VIEW invoice_view AS
     (SELECT
         pi.id AS id,
         CONCAT(first_name, ' ', last_name) AS NAME,
-        'sale' AS TYPE,
+        'purchase' AS TYPE,
         created_date
     FROM
         purchase_invoice pi
@@ -70,7 +70,7 @@ CREATE OR REPLACE VIEW invoice_view AS
     UNION ALL SELECT
         si.id AS id,
         CONCAT(first_name, ' ', last_name) AS NAME,
-        'purchase' AS TYPE,
+        'sale' AS TYPE,
         created_date
     FROM
         sale_invoice si
