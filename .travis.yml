@@ -9,7 +9,7 @@ env:
     - COLLECT_ERROR= 1
 before_install:
   - pip install fandogh-cli --upgrade
-  - mvn install -DSPRING_PROFILES_ACTIVE=dev -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn -DSPRING_PROFILES_ACTIVE=dev install  -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 script:
