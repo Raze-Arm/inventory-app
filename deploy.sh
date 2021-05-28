@@ -1,4 +1,3 @@
-docker build --build-arg APP_ENV=prod -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
 
 
 docker push razear/mega-electric-app:latest
