@@ -4,8 +4,9 @@ services:
   - docker
 before_install:
   - pip install fandogh-cli --upgrade
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 script:
   - mvn -DSPRING_PROFILES_ACTIVE=dev  test
   - mvn -DSPRING_PROFILES_ACTIVE=dev clean install
