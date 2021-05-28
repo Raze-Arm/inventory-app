@@ -2,15 +2,13 @@ package raze.spring.inventory.security.jwt;
 
 import com.google.common.net.HttpHeaders;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
 
-    @Value("#{systemEnvironment['JWT_SECRET_KEY'] ?: 'qwekmq@WEqdoqOPDMAO_WUnoidwoiq'}")
+    @Value("#{systemEnvironment['JWT_SECRET_KEY'] ?: 'qwekmq@WEqdoqOPDMAO_WUneqw22313MNoidJMNSDk2312331oidwoiq'}")
     private  String secretKey;
     @Value("#{systemEnvironment['JWT_TOKEN_PREFIX'] ?: 'Bearer'}")
     private  String tokenPrefix;
