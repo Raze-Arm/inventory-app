@@ -2,6 +2,11 @@ language: java
 sudo: required
 services:
   - docker
+
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - COLLECT_ERROR= 1
 before_install:
   - pip install fandogh-cli --upgrade
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
