@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Profile;
 
 import org.springframework.stereotype.Component;
 import raze.spring.inventory.domain.*;
+import raze.spring.inventory.domain.dto.UserProfileDto;
 import raze.spring.inventory.repository.*;
+import raze.spring.inventory.security.model.UserAccount;
+import raze.spring.inventory.service.UserProfileService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -29,15 +32,16 @@ public class AppInitializer implements CommandLineRunner {
     private final SaleTransactionRepository saleTransactionRepository;
     private final PurchaseInvoiceRepository purchaseInvoiceRepository;
     private final SaleInvoiceRepository saleInvoiceRepository;
+    private final UserProfileService profileService;
 
       public AppInitializer(
-          CustomerRepository customerRepository,
-          SupplierRepository supplierRepository,
-          ProductRepository productRepository,
-          PurchaseTransactionRepository purchaseTransactionRepository,
-          SaleTransactionRepository saleTransactionRepository,
-          PurchaseInvoiceRepository purchaseInvoiceRepository,
-          SaleInvoiceRepository saleInvoiceRepository) {
+              CustomerRepository customerRepository,
+              SupplierRepository supplierRepository,
+              ProductRepository productRepository,
+              PurchaseTransactionRepository purchaseTransactionRepository,
+              SaleTransactionRepository saleTransactionRepository,
+              PurchaseInvoiceRepository purchaseInvoiceRepository,
+              SaleInvoiceRepository saleInvoiceRepository, UserProfileService profileService) {
         this.customerRepository = customerRepository;
         this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
@@ -45,6 +49,7 @@ public class AppInitializer implements CommandLineRunner {
         this.saleTransactionRepository = saleTransactionRepository;
         this.purchaseInvoiceRepository = purchaseInvoiceRepository;
         this.saleInvoiceRepository = saleInvoiceRepository;
+          this.profileService = profileService;
       }
 
     @Transactional
@@ -140,5 +145,14 @@ public class AppInitializer implements CommandLineRunner {
 
         saleInvoiceRepository.saveAll(
             Set.of(arianInvoice1, arianInvoice2, palizanInvoice1, palizanInvoice2, sharifianInvoice1));
+
+        final UserProfileDto userProfileDto =
+            UserProfileDto.builder()
+                .firstName("raze")
+                .lastName("arm")
+                .username("admin")
+                .password("12345")
+                .build();
+        profileService.saveUserProfile(userProfileDto);
     }
 }
