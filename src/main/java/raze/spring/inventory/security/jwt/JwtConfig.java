@@ -1,6 +1,7 @@
 package raze.spring.inventory.security.jwt;
 
 import com.google.common.net.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "application.jwt")
 public class JwtConfig {
 
+    @Value("#{systemEnvironment['JWT_SECRET_KEY'] ?: 'qwekmq@WEqdoqOPDMAO_WUnoidwoiq'}")
     private  String secretKey;
+    @Value("#{systemEnvironment['JWT_TOKEN_PREFIX'] ?: 'Bearer'}")
     private  String tokenPrefix;
+    @Value("#{systemEnvironment['JWT_TOKEN_EXPIRE'] ?: '10'}")
     private Integer tokenExpirationAfterDays;
 
 
