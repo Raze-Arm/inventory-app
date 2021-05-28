@@ -6,8 +6,5 @@ before_install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
 script:
-
-#  - docker run -e CI=true razear/inventory-app mvn test -B
-#  - docker run -e CI=true razear/inventory-app mvn test -Bgit
-  - mvn test
-  - mvn clean install
+  - mvn -DSPRING_PROFILES_ACTIVE=dev  test
+  - mvn -DSPRING_PROFILES_ACTIVE=dev clean install
