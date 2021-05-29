@@ -18,7 +18,8 @@ script:
 
 before_deploy:
   - fandogh login --username $FANDOGH_USERNAME --password $FANDOGH_PASSWORD
-  - docker build --build-arg APP_ENV=prod -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
+  - fandogh namespace active --name $FANDOGH_NAMESPACE
+  - docker build  -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
 
 deploy:
   provider: script
