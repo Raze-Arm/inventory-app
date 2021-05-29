@@ -1,16 +1,53 @@
+-- drop table if exists customer;
+-- drop table if exists product;
+-- drop table if exists purchase_invoice;
+-- drop table if exists purchase_transaction;
+-- drop table if exists sale_invoice;
+-- drop table if exists sale_transaction;
+-- drop table if exists supplier;
+-- drop table if exists user_account;
+-- drop table if exists user_account_user_permission;
+-- drop table if exists user_session;
+-- drop table if exists user_profile;
+-- alter table if exists purchase_invoice drop foreign key FKqtx4kjstn77n9v4wowt0mlxkx;
+-- alter table purchase_transaction drop foreign key FKk5ila2wwhg03dmjj09xc5pikb;
+-- alter table purchase_transaction drop foreign key FK850huaktm1ev5g3jefeb8qdat;
+-- alter table sale_invoice drop foreign key FKt1eli7jvci5frjgs50tba9p15;
+-- alter table sale_transaction drop foreign key FK8aggg6jsmks0iklv5wq0i8wpd;
+-- alter table sale_transaction drop foreign key FKwbltmowgsigtquwnn824c20a;
+-- alter table user_account_user_permissions drop foreign key FKajmdd9jsygg62yohq6fe9ppbn
+-- alter table user_profile drop foreign key FKp581a3prvwt8w63lu5s4w9jub
+alter table purchase_invoice drop foreign key FKqtx4kjstn77n9v4wowt0mlxkx;
+alter table purchase_transaction drop foreign key FKk5ila2wwhg03dmjj09xc5pikb;
+alter table purchase_transaction drop foreign key FK850huaktm1ev5g3jefeb8qdat;
+alter table sale_invoice drop foreign key FKt1eli7jvci5frjgs50tba9p15;
+alter table sale_transaction drop foreign key FK8aggg6jsmks0iklv5wq0i8wpd;
+alter table sale_transaction drop foreign key FKwbltmowgsigtquwnn824c20a;
+alter table user_account_user_permissions drop foreign key FKajmdd9jsygg62yohq6fe9ppbn;
+alter table user_profile drop foreign key FKp581a3prvwt8w63lu5s4w9jub;
+
+
+
+
 drop table if exists customer;
+-- drop table if exists hibernate_sequence
+drop table if exists invoice_view;
 drop table if exists product;
+drop table if exists product_view;
 drop table if exists purchase_invoice;
 drop table if exists purchase_transaction;
 drop table if exists sale_invoice;
 drop table if exists sale_transaction;
 drop table if exists supplier;
+drop table if exists transaction_view;
 drop table if exists user_account;
-drop table if exists user_account_user_permission;
-drop table if exists user_session;
+drop table if exists user_account_user_permissions;
 drop table if exists user_profile;
+drop table if exists user_session;
+drop table if exists hibernate_sequence;
 
-create sequence hibernate_sequence start with 1 increment by 1;
+create table hibernate_sequence (next_val bigint) engine=InnoDB;
+insert into hibernate_sequence values ( 1 );
 
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
@@ -21,19 +58,33 @@ create table sale_transaction (id varchar(36) not null, created_date timestamp, 
 create table supplier (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create table user_account (id bigint not null, creation_date timestamp, is_account_non_expired boolean, is_account_non_locked boolean, is_credentials_non_expired boolean, is_enabled boolean, modified_date timestamp, password varchar(255), user_roles varchar(255), username varchar(255), primary key (id));
 create table user_account_user_permissions (user_account_id bigint not null, user_permissions varchar(255));
-create table user_session (username varchar(255) not null, token clob, primary key (username));
+create table user_session (username varchar(255) not null, token longtext, primary key (username));
 create table user_profile (id varchar(36) not null, created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, account_id bigint not null, primary key (id));
 
-alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier;
-alter table purchase_transaction add constraint FKk5ila2wwhg03dmjj09xc5pikb foreign key (invoice_id) references purchase_invoice;
-alter table purchase_transaction add constraint FK850huaktm1ev5g3jefeb8qdat foreign key (product_id) references product;
-alter table sale_invoice add constraint FKt1eli7jvci5frjgs50tba9p15 foreign key (customer_id) references customer;
-alter table sale_transaction add constraint FK8aggg6jsmks0iklv5wq0i8wpd foreign key (invoice_id) references sale_invoice;
-alter table sale_transaction add constraint FKwbltmowgsigtquwnn824c20a foreign key (product_id) references product;
+-- alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier;
+-- alter table purchase_transaction add constraint FKk5ila2wwhg03dmjj09xc5pikb foreign key (invoice_id) references purchase_invoice;
+-- alter table purchase_transaction add constraint FK850huaktm1ev5g3jefeb8qdat foreign key (product_id) references product;
+-- alter table sale_invoice add constraint FKt1eli7jvci5frjgs50tba9p15 foreign key (customer_id) references customer;
+-- alter table sale_transaction add constraint FK8aggg6jsmks0iklv5wq0i8wpd foreign key (invoice_id) references sale_invoice;
+-- alter table sale_transaction add constraint FKwbltmowgsigtquwnn824c20a foreign key (product_id) references product;
+-- alter table user_account add constraint UK_castjbvpeeus0r8lbpehiu0e4 unique (username);
+-- alter table user_account_user_permissions add constraint FKajmdd9jsygg62yohq6fe9ppbn foreign key (user_account_id) references user_account;
+-- alter table user_profile add constraint UK_k3d1y1iufa28c7v4vtxsqw9aa unique (account_id);
+-- alter table user_profile add constraint FKp581a3prvwt8w63lu5s4w9jub foreign key (account_id) references user_account;
+
 alter table user_account add constraint UK_castjbvpeeus0r8lbpehiu0e4 unique (username);
-alter table user_account_user_permissions add constraint FKajmdd9jsygg62yohq6fe9ppbn foreign key (user_account_id) references user_account;
 alter table user_profile add constraint UK_k3d1y1iufa28c7v4vtxsqw9aa unique (account_id);
-alter table user_profile add constraint FKp581a3prvwt8w63lu5s4w9jub foreign key (account_id) references user_account;
+alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier (id);
+alter table purchase_transaction add constraint FKk5ila2wwhg03dmjj09xc5pikb foreign key (invoice_id) references purchase_invoice (id);
+alter table purchase_transaction add constraint FK850huaktm1ev5g3jefeb8qdat foreign key (product_id) references product (id);
+alter table sale_invoice add constraint FKt1eli7jvci5frjgs50tba9p15 foreign key (customer_id) references customer (id);
+alter table sale_transaction add constraint FK8aggg6jsmks0iklv5wq0i8wpd foreign key (invoice_id) references sale_invoice (id);
+alter table sale_transaction add constraint FKwbltmowgsigtquwnn824c20a foreign key (product_id) references product (id);
+alter table user_account_user_permissions add constraint FKajmdd9jsygg62yohq6fe9ppbn foreign key (user_account_id) references user_account (id);
+alter table user_profile add constraint FKp581a3prvwt8w63lu5s4w9jub foreign key (account_id) references user_account (id);
+
+
+
 
 -- ////////////////////////////////////////////////////////////PRODUCT_VIEW
 
