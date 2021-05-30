@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.SaleInvoiceService;
 import raze.spring.inventory.domain.dto.SaleInvoiceDto;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public class SaleInvoiceController {
 
 
     @PostMapping(path = {"/sale-invoice", "/sale-invoice/"})
-    public ResponseEntity<UUID> saveInvoice(@RequestBody SaleInvoiceDto invoice) {
+    public ResponseEntity<UUID> saveInvoice(@Valid @RequestBody SaleInvoiceDto invoice) {
         return ResponseEntity.ok(this.invoiceService.saveInvoice(invoice));
     }
 

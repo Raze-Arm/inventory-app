@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.CustomerService;
 import raze.spring.inventory.domain.dto.CustomerDto;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,12 +39,12 @@ public class CustomerController {
     }
 
     @PostMapping(path = {"/customer", "/customer/"})
-    public ResponseEntity<UUID> saveCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<UUID> saveCustomer(@Valid @RequestBody CustomerDto customerDto) {
         return ResponseEntity.ok(this.customerService.saveCustomer(customerDto));
     }
 
     @PutMapping(path = {"/customer", "/customer/"} )
-    public ResponseEntity<Void> updateCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Void> updateCustomer(@Valid@RequestBody CustomerDto customerDto) {
         this.customerService.updateCustomer(customerDto);
         return ResponseEntity.ok().build();
     }

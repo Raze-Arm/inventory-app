@@ -4,8 +4,11 @@ package raze.spring.inventory.domain;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -27,10 +30,13 @@ public class Product {
     @Type(type = "org.hibernate.type.UUIDCharType")
     @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
-
+    @NotBlank(message = "last name is mandatory")
+    @Length(min = 3, max = 20, message = "size must be between 2 and 30")
     private String name;
 
+    @Min(value = 0, message = "must be greater than or equal 0")
     private BigDecimal price;
+    @Min(value = 0, message = "must be greater than or equal 0")
     private BigDecimal salePrice;
 
 

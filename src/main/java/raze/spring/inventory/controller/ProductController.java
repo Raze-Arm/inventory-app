@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.ProductService;
 import raze.spring.inventory.domain.dto.ProductDto;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,13 +38,13 @@ public class ProductController {
 
 
     @PostMapping(path = {"/product", "/product/"})
-    public ResponseEntity<UUID> postProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<UUID> postProduct(@Valid @RequestBody ProductDto productDto) {
         return ResponseEntity.ok(this.productService.saveProduct(productDto));
     }
 
 
     @PutMapping(path = {"/product", "/product/"})
-    public ResponseEntity<Void>  updateProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<Void>  updateProduct(@Valid@RequestBody ProductDto productDto) {
         this.productService.updateProduct(productDto);
         return ResponseEntity.ok().build();
     }

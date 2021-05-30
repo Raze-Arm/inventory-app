@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.SupplierService;
 import raze.spring.inventory.domain.dto.SupplierDto;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,12 +41,12 @@ public class SupplierController {
     }
 
     @PostMapping(path = {"/supplier"})
-    public ResponseEntity<UUID> saveSupplier(@RequestBody SupplierDto supplierDto) {
+    public ResponseEntity<UUID> saveSupplier(@Valid @RequestBody SupplierDto supplierDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(this.supplierService.saveSupplier(supplierDto));
     }
     @PutMapping(path = {"/supplier"})
-    public ResponseEntity<Void> updateSupplier(@RequestBody SupplierDto supplierDto) {
+    public ResponseEntity<Void> updateSupplier(@Valid@RequestBody SupplierDto supplierDto) {
         this.supplierService.updateSupplier(supplierDto);
         return  ResponseEntity.ok().build();
     }

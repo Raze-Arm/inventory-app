@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -26,8 +27,10 @@ public class PurchaseTransaction {
 
     private String description;
 
+    @Min(value = 1 , message = "must be greater than or equal 1")
     private Long quantity;
 
+    @Min(value = 0 , message = "must be greater than or equal 0")
     private BigDecimal price;
 
 

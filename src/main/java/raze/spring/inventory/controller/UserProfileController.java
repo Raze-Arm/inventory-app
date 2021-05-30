@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.domain.dto.UserProfileDto;
 import raze.spring.inventory.service.UserProfileService;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -16,7 +17,7 @@ public class UserProfileController {
     }
 
     @PostMapping(path = {"/user", "/user/"})
-    public ResponseEntity<UUID> saveUserProfile(@RequestBody UserProfileDto profile) {
+    public ResponseEntity<UUID> saveUserProfile(@Valid @RequestBody UserProfileDto profile) {
         return ResponseEntity.ok(this.profileService.saveUserProfile(profile));
     }
 
@@ -26,7 +27,7 @@ public class UserProfileController {
     }
 
     @PutMapping(path = {"/user", "/user/"})
-    public ResponseEntity<Void> updateUserProfile(@RequestBody UserProfileDto profile) {
+    public ResponseEntity<Void> updateUserProfile(@Valid @RequestBody UserProfileDto profile) {
         this.profileService.updateUserProfile(profile);
         return ResponseEntity.ok().build();
     }
