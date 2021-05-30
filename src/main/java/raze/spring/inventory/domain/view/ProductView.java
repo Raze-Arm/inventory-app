@@ -3,6 +3,7 @@ package raze.spring.inventory.domain.view;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -24,6 +25,7 @@ public class ProductView {
       private String description;
       private BigDecimal price;
       private BigDecimal salePrice;
+      @Column(columnDefinition = "NUMERIC(19, 0)")
       private Long quantity;
       private Timestamp createdDate;
 }

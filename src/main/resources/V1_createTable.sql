@@ -9,57 +9,60 @@
 -- drop table if exists user_account_user_permission;
 -- drop table if exists user_session;
 -- drop table if exists user_profile;
--- alter table if exists purchase_invoice drop foreign key FKqtx4kjstn77n9v4wowt0mlxkx;
+-- alter table  purchase_invoice drop foreign key FKqtx4kjstn77n9v4wowt0mlxkx;
 -- alter table purchase_transaction drop foreign key FKk5ila2wwhg03dmjj09xc5pikb;
 -- alter table purchase_transaction drop foreign key FK850huaktm1ev5g3jefeb8qdat;
 -- alter table sale_invoice drop foreign key FKt1eli7jvci5frjgs50tba9p15;
 -- alter table sale_transaction drop foreign key FK8aggg6jsmks0iklv5wq0i8wpd;
 -- alter table sale_transaction drop foreign key FKwbltmowgsigtquwnn824c20a;
 -- alter table user_account_user_permissions drop foreign key FKajmdd9jsygg62yohq6fe9ppbn
--- alter table user_profile drop foreign key FKp581a3prvwt8w63lu5s4w9jub
-alter table purchase_invoice drop foreign key FKqtx4kjstn77n9v4wowt0mlxkx;
-alter table purchase_transaction drop foreign key FKk5ila2wwhg03dmjj09xc5pikb;
-alter table purchase_transaction drop foreign key FK850huaktm1ev5g3jefeb8qdat;
-alter table sale_invoice drop foreign key FKt1eli7jvci5frjgs50tba9p15;
-alter table sale_transaction drop foreign key FK8aggg6jsmks0iklv5wq0i8wpd;
-alter table sale_transaction drop foreign key FKwbltmowgsigtquwnn824c20a;
-alter table user_account_user_permissions drop foreign key FKajmdd9jsygg62yohq6fe9ppbn;
-alter table user_profile drop foreign key FKp581a3prvwt8w63lu5s4w9jub;
+-- alter table user_profile drop foreign key FKp581a3prvwt8w63lu5s4w9jub;
+
+-- alter table purchase_invoice drop  foreign key  FKqtx4kjstn77n9v4wowt0mlxkx;
+-- alter table purchase_transaction drop foreign key FKk5ila2wwhg03dmjj09xc5pikb;
+-- alter table purchase_transaction drop foreign key FK850huaktm1ev5g3jefeb8qdat;
+-- alter table sale_invoice drop foreign key FKt1eli7jvci5frjgs50tba9p15;
+-- alter table sale_transaction drop foreign key FK8aggg6jsmks0iklv5wq0i8wpd;
+-- alter table sale_transaction drop foreign key FKwbltmowgsigtquwnn824c20a;
+-- alter table user_account_user_permissions drop foreign key FKajmdd9jsygg62yohq6fe9ppbn;
+-- alter table user_profile drop foreign key FKp581a3prvwt8w63lu5s4w9jub;
 
 
 
 
-drop table if exists customer;
+drop table if exists customer  cascade ;
 -- drop table if exists hibernate_sequence
-drop table if exists invoice_view;
-drop table if exists product;
-drop table if exists product_view;
-drop table if exists purchase_invoice;
-drop table if exists purchase_transaction;
-drop table if exists sale_invoice;
-drop table if exists sale_transaction;
-drop table if exists supplier;
-drop table if exists transaction_view;
-drop table if exists user_account;
-drop table if exists user_account_user_permissions;
-drop table if exists user_profile;
-drop table if exists user_session;
-drop table if exists hibernate_sequence;
+drop table if exists invoice_view cascade;
+drop table if exists product cascade;
+drop table if exists product_view cascade;
+drop table if exists purchase_invoice cascade;
+drop table if exists purchase_transaction cascade;
+drop table if exists sale_invoice cascade;
+drop table if exists sale_transaction cascade;
+drop table if exists supplier cascade;
+drop table if exists transaction_view cascade;
+drop table if exists user_account cascade;
+drop table if exists user_account_user_permissions cascade;
+drop table if exists user_profile cascade;
+drop table if exists user_session cascade;
+drop table if exists hibernate_sequence cascade;
 
-create table hibernate_sequence (next_val bigint) engine=InnoDB;
+
+
+create   table hibernate_sequence (next_val bigint) engine=InnoDB;
 insert into hibernate_sequence values ( 1 );
 
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
-create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
-create table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
-create table purchase_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36) not null, primary key (id));
-create table sale_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, customer_id varchar(36), primary key (id));
-create table sale_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36) not null, primary key (id));
-create table supplier (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
-create table user_account (id bigint not null, creation_date timestamp, is_account_non_expired boolean, is_account_non_locked boolean, is_credentials_non_expired boolean, is_enabled boolean, modified_date timestamp, password varchar(255), user_roles varchar(255), username varchar(255), primary key (id));
-create table user_account_user_permissions (user_account_id bigint not null, user_permissions varchar(255));
-create table user_session (username varchar(255) not null, token longtext, primary key (username));
-create table user_profile (id varchar(36) not null, created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, account_id bigint not null, primary key (id));
+create    table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
+create  table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
+create    table purchase_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36) not null, primary key (id));
+create    table sale_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, customer_id varchar(36), primary key (id));
+create  table sale_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36) not null, primary key (id));
+create   table supplier (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
+create   table user_account (id bigint not null, creation_date timestamp, is_account_non_expired boolean, is_account_non_locked boolean, is_credentials_non_expired boolean, is_enabled boolean, modified_date timestamp, password varchar(255), user_roles varchar(255), username varchar(255), primary key (id));
+create    table user_account_user_permissions (user_account_id bigint not null, user_permissions varchar(255));
+create    table user_session (username varchar(255) not null, token longtext, primary key (username));
+create    table user_profile (id varchar(36) not null, created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, account_id bigint not null, primary key (id));
 
 -- alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier;
 -- alter table purchase_transaction add constraint FKk5ila2wwhg03dmjj09xc5pikb foreign key (invoice_id) references purchase_invoice;

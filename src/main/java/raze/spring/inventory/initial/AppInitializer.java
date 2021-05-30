@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import raze.spring.inventory.domain.*;
 import raze.spring.inventory.domain.dto.UserProfileDto;
 import raze.spring.inventory.repository.*;
-import raze.spring.inventory.security.model.UserAccount;
+import raze.spring.inventory.security.repository.UserAccountRepository;
 import raze.spring.inventory.service.UserProfileService;
 
 import javax.transaction.Transactional;
@@ -33,6 +33,9 @@ public class AppInitializer implements CommandLineRunner {
     private final PurchaseInvoiceRepository purchaseInvoiceRepository;
     private final SaleInvoiceRepository saleInvoiceRepository;
     private final UserProfileService profileService;
+    private final UserProfileRepository profileRepository;
+    private final UserAccountRepository accountRepository;
+
 
       public AppInitializer(
               CustomerRepository customerRepository,
@@ -41,7 +44,7 @@ public class AppInitializer implements CommandLineRunner {
               PurchaseTransactionRepository purchaseTransactionRepository,
               SaleTransactionRepository saleTransactionRepository,
               PurchaseInvoiceRepository purchaseInvoiceRepository,
-              SaleInvoiceRepository saleInvoiceRepository, UserProfileService profileService) {
+              SaleInvoiceRepository saleInvoiceRepository, UserProfileService profileService, UserProfileRepository profileRepository, UserAccountRepository accountRepository) {
         this.customerRepository = customerRepository;
         this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
@@ -50,11 +53,24 @@ public class AppInitializer implements CommandLineRunner {
         this.purchaseInvoiceRepository = purchaseInvoiceRepository;
         this.saleInvoiceRepository = saleInvoiceRepository;
           this.profileService = profileService;
+          this.profileRepository = profileRepository;
+          this.accountRepository = accountRepository;
+      }
+
+      public  void cleanup() {
+          this.customerRepository.deleteAll();
+          this.supplierRepository.deleteAll();
+          this.productRepository.deleteAll();
+          this.purchaseInvoiceRepository.deleteAll();
+          this.saleInvoiceRepository.deleteAll();
+          this.profileRepository.deleteAll();
+          this.accountRepository.deleteAll();
       }
 
     @Transactional
     @Override
     public void run(String... args) throws Exception {
+          cleanup();
         log.debug("Initializing Mock Data...");
         Supplier adibSupplier = Supplier.builder().id(UUID.randomUUID()).firstName("sadegh").lastName("adib").address("Esfehan").build();
         Supplier zareiSupplier = Supplier.builder().firstName("mohammad").lastName("zarei").address("Shiraz").build();
