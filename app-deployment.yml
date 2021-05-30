@@ -16,7 +16,7 @@ spec:
 #    - name: MYSQL_PASSWORD
 #      value: ${MYSQL_PASSWORD}
 #    - name: MYSQL_DB_NAME
-      value: ${MYSQL_DB_NAME}
+#      value: ${MYSQL_DB_NAME}
   port_mapping:
     - port: 8080
       target_port: 8080
