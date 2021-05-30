@@ -25,7 +25,6 @@ public class ProductView {
       private String description;
       private BigDecimal price;
       private BigDecimal salePrice;
-      @Column(columnDefinition = "NUMERIC(19, 0)")
       private Long quantity;
       private Timestamp createdDate;
 }

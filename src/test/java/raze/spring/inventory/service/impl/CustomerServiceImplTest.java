@@ -18,9 +18,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @Profile("test")
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "dev"})
 @SpringBootTest()
 class CustomerServiceImplTest {
     private static  String FIRST_NAME = "FIRST NAME";
@@ -42,8 +41,8 @@ class CustomerServiceImplTest {
 
     @Test
     void getCustomerList() {
-        final Customer customer1 = Customer.builder().firstName(FIRST_NAME).build();
-        final Customer customer2 = Customer.builder().firstName(FIRST_NAME2).build();
+        final Customer customer1 = Customer.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        final Customer customer2 = Customer.builder().firstName(FIRST_NAME2).lastName(LAST_NAME2).build();
         this.customerRepository.saveAll(Set.of(customer1, customer2));
 
 
@@ -53,8 +52,8 @@ class CustomerServiceImplTest {
 
     @Test
     void getCustomer() {
-        final Customer customer1 = Customer.builder().firstName(FIRST_NAME).build();
-        final Customer customer2 = Customer.builder().firstName(FIRST_NAME2).build();
+        final Customer customer1 = Customer.builder().firstName(FIRST_NAME).lastName(LAST_NAME).build();
+        final Customer customer2 = Customer.builder().firstName(FIRST_NAME2).lastName(LAST_NAME2).build();
         this.customerRepository.saveAll(Set.of(customer1, customer2));
 
         CustomerDto customerDto = this.customerService.getCustomer(customer1.getId());

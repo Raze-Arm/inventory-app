@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
+import raze.spring.inventory.domain.PurchaseTransaction;
+import raze.spring.inventory.repository.PurchaseTransactionRepository;
 import raze.spring.inventory.service.ProductService;
 import raze.spring.inventory.domain.Product;
 import raze.spring.inventory.domain.dto.ProductDto;
@@ -22,7 +24,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Profile("test")
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "dev"})
 @SpringBootTest()
 class ProductServiceImplTest {
     private static UUID ID = UUID.randomUUID();
@@ -42,6 +44,9 @@ class ProductServiceImplTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private PurchaseTransactionRepository transactionRepository;
+
 
     @Autowired
     private ProductViewRepository productViewRepository;
@@ -49,19 +54,21 @@ class ProductServiceImplTest {
 
     @BeforeEach
     public void beforeEachTest(){
-        final ProductView productView1 = ProductView.builder().id(ID).name(NAME).price(PRICE).salePrice(SALE_PRICE).quantity(QUANTITY).build();
-        final ProductView productView2 = ProductView.builder().id(ID2).name(NAME2).price(PRICE2).salePrice(SALE_PRICE2).quantity(QUANTITY2).build();
-        productViewRepository.saveAll(Set.of(productView1, productView2));
-    }
-
-    @AfterEach
-    public void afterEachTest() {
-        productViewRepository.deleteAll();
+        this.transactionRepository.deleteAll();
+        this.productRepository.deleteAll();
     }
 
 
     @Test
     void getProductList() {
+        final Product product = Product.builder().name(NAME).price(PRICE).salePrice(SALE_PRICE).build();
+        this.productRepository.save(product);
+        final Product product2 = Product.builder().name(NAME2).price(PRICE2).salePrice(SALE_PRICE2).build();
+        this.productRepository.save(product2);
+        final PurchaseTransaction transaction = PurchaseTransaction.builder().product(product).quantity(QUANTITY).build();
+        final PurchaseTransaction transaction2 = PurchaseTransaction.builder().product(product2).quantity(QUANTITY).build();
+        this.transactionRepository.save(transaction);
+        this.transactionRepository.save(transaction2);
 
         List<ProductDto> productDtos = this.productService.getProductList();
         assertEquals(productDtos.size(), 2);
@@ -69,8 +76,13 @@ class ProductServiceImplTest {
 
     @Test
     void getProduct() {
+        final Product product = Product.builder().name(NAME).price(PRICE).salePrice(SALE_PRICE).build();
+        this.productRepository.save(product);
+        final PurchaseTransaction transaction = PurchaseTransaction.builder().product(product).quantity(QUANTITY).build();
+        this.transactionRepository.save(transaction);
 
-        final ProductDto productDto = this.productService.getProduct(ID);
+
+        final ProductDto productDto = this.productService.getProduct(product.getId());
         assertEquals(productDto.getName(), NAME);
         assertEquals(productDto.getQuantity(), QUANTITY);
         assertEquals(productDto.getPrice().stripTrailingZeros(), PRICE.stripTrailingZeros());
