@@ -1,0 +1,28 @@
+kind: ExternalService
+name: mega-electric-app
+spec:
+  image: mysql
+  env:
+    - name: VERSION
+      value: ${VERSION}
+    - name: SPRING_PROFILES_ACTIVE
+      value: ${SPRING_PROFILES_ACTIVE}
+    - name: JWT_SECRET_KEY
+      value: ${JWT_SECRET_KEY}
+    - name: JWT_TOKEN_EXPIRE
+      value: ${JWT_TOKEN_EXPIRE}
+    - name: JWT_TOKEN_PREFIX
+      value: ${JWT_TOKEN_PREFIX}
+    - name: MYSQL_USERNAME
+      value: ${MYSQL_USERNAME}
+    - name: MYSQL_PASSWORD
+      value: ${MYSQL_PASSWORD}
+    - name: MYSQL_DB_NAME
+      value: ${MYSQL_DB_NAME}
+  port_mapping:
+    - port: 8080
+      target_port: 8080
+      # default protocol is TCP
+  resources:
+    memory: 500Mi
+
