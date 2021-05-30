@@ -7,7 +7,7 @@ docker push razear/mega-electric-app:$SHA
 
 
 fandogh service apply -f app-deployment.yml -p \
-                 -p VERSION=$SHA \
+                 -p SHA=$SHA \
                  -p SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE \
                  -p JWT_SECRET_KEY=$JWT_SECRET_KEY \
                  -p JWT_TOKEN_EXPIRE=$JWT_TOKEN_EXPIRE -p JWT_TOKEN_PREFIX=$JWT_TOKEN_PREFIX \

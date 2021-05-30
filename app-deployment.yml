@@ -1,7 +1,7 @@
 kind: ExternalService
 name: mega-electric-app
 spec:
-  image:  razear/mega-electric-app:${VERSION}
+  image:  razear/mega-electric-app:${SHA}
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: ${SPRING_PROFILES_ACTIVE}
