@@ -1,10 +1,8 @@
 kind: ExternalService
 name: mega-electric-app
 spec:
-  image: mysql
+  image:  razear/mega-electric-app:${VERSION}
   env:
-    - name: VERSION
-      value: ${VERSION}
     - name: SPRING_PROFILES_ACTIVE
       value: ${SPRING_PROFILES_ACTIVE}
     - name: JWT_SECRET_KEY
