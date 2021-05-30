@@ -62,7 +62,7 @@ create   table supplier (id varchar(36) not null, address varchar(255), created_
 create   table user_account (id bigint not null, creation_date timestamp, is_account_non_expired boolean, is_account_non_locked boolean, is_credentials_non_expired boolean, is_enabled boolean, modified_date timestamp, password varchar(255), user_roles varchar(255), username varchar(255), primary key (id));
 create    table user_account_user_permissions (user_account_id bigint not null, user_permissions varchar(255));
 create    table user_session (username varchar(255) not null, token longtext, primary key (username));
-create    table user_profile (id varchar(36) not null, created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, account_id bigint not null, primary key (id));
+create    table user_profile (id varchar(36) not null, created_date timestamp, first_name varchar(255), last_name varchar(255), photo_path varchar(255), modified_date timestamp, account_id bigint not null, primary key (id));
 
 -- alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier;
 -- alter table purchase_transaction add constraint FKk5ila2wwhg03dmjj09xc5pikb foreign key (invoice_id) references purchase_invoice;

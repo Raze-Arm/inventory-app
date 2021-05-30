@@ -6,6 +6,7 @@ import raze.spring.inventory.domain.dto.UserProfileDto;
 import raze.spring.inventory.service.UserProfileService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -27,7 +28,7 @@ public class UserProfileController {
     }
 
     @PutMapping(path = {"/user", "/user/"})
-    public ResponseEntity<Void> updateUserProfile(@Valid @RequestBody UserProfileDto profile) {
+    public ResponseEntity<Void> updateUserProfile(@Valid @ModelAttribute UserProfileDto profile) throws IOException {
         this.profileService.updateUserProfile(profile);
         return ResponseEntity.ok().build();
     }

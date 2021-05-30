@@ -33,6 +33,8 @@ public class UserProfile {
     @Length(min = 3, max = 20, message = "size must be between 2 and 30")
     private String lastName;
 
+    private String photoPath;
+
     @OneToOne(optional = false, cascade = {CascadeType.ALL})
     private UserAccount account;
 
