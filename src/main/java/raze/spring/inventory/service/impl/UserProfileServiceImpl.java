@@ -52,11 +52,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public Resource getUserPhoto(String username) throws MalformedURLException {
-//        final Path path = Paths.get("user-photos/").toAbsolutePath().normalize();
         final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElseThrow();
         log.debug("USER PHOTO PATH: {}",profile.getPhotoPath());
-    //        Path filePath = path.resolve(profile.getPhotoPath()).normalize();
-    Resource resource = new UrlResource(Paths.get(profile.getPhotoPath()).toAbsolutePath().toUri());
+        Resource resource = new UrlResource(Paths.get(profile.getPhotoPath()).toAbsolutePath().toUri());
         if(resource.exists()) return resource;
         else throw new MalformedURLException();
     }
