@@ -1,0 +1,33 @@
+kind: ExternalService
+name: mega-electric-app
+spec:
+  image:  razear/mega-electric-app:${SHA}
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+#      value: ${SPRING_PROFILES_ACTIVE}
+      secret: spring-profiles-active
+    - name: JWT_SECRET_KEY
+#      value: ${JWT_SECRET_KEY}
+      secret: jwt-secret-key
+    - name: JWT_TOKEN_EXPIRE
+#      value: ${JWT_TOKEN_EXPIRE}
+      secret: jwt-token-expire
+    - name: JWT_TOKEN_PREFIX
+#      value: ${JWT_TOKEN_PREFIX}
+      secret jwt-token-prefix
+    - name: MYSQL_USERNAME
+#      value: ${MYSQL_USERNAME}
+      secret: mysql-username
+    - name: MYSQL_PASSWORD
+#      value: ${MYSQL_PASSWORD}
+      secret: mysql-password
+    - name: MYSQL_DB_NAME
+#      value: ${MYSQL_DB_NAME}
+      secret: mysql-db-name
+  port_mapping:
+    - port: 8080
+      target_port: 8080
+      # default protocol is TCP
+  resources:
+    memory: 500Mi
+

@@ -2,10 +2,27 @@ language: java
 sudo: required
 services:
   - docker
+
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - COLLECT_ERROR=1
 before_install:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - pip install fandogh-cli --upgrade
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - mvn -DSPRING_PROFILES_ACTIVE=dev install  -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
 script:
-#  - docker run -e CI=true razear/inventory-app mvn test -B
-  - mvn test
-  - mvn clean install
+  - mvn -DSPRING_PROFILES_ACTIVE=dev  test
+  - mvn -DSPRING_PROFILES_ACTIVE=dev clean install
+
+before_deploy:
+  - fandogh login --username $FANDOGH_USERNAME --password $FANDOGH_PASSWORD
+  - fandogh namespace active --name $FANDOGH_NAMESPACE
+  - docker build  -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: main
