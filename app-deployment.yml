@@ -14,7 +14,7 @@ spec:
       secret: jwt-token-expire
     - name: JWT_TOKEN_PREFIX
 #      value: ${JWT_TOKEN_PREFIX}
-      secret jwt-token-prefix
+      secret: jwt-token-prefix
     - name: MYSQL_USERNAME
 #      value: ${MYSQL_USERNAME}
       secret: mysql-username
