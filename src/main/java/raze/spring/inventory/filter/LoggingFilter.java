@@ -55,157 +55,157 @@ public class LoggingFilter implements Filter {
             responseWrapper.copyBodyToResponse();
 
             final String method = requestWrapper.getMethod().trim();
-            if(!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")){
-                chain.doFilter(requestWrapper, responseWrapper);
-                return;
-            }
+//            if(!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")){
+////                chain.doFilter(requestWrapper, responseWrapper);
+//            }
 
-            if(responseWrapper.getStatus() >= 400 || requestWrapper.getRequestURL().toString().contains("image") || requestWrapper.getRequestURL().toString().equals("/")) {
-                chain.doFilter(requestWrapper, responseWrapper);
-                return;
-            }
+          if ((!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")) ||
+                  responseWrapper.getStatus() >= 400
+              || requestWrapper.getRequestURL().toString().contains("image")
+              || requestWrapper.getRequestURL().toString().equals("/") ) {
+//            chain.doFilter(requestWrapper, responseWrapper);
+          }
 
-
-
-
-            final String path  = requestWrapper.getRequestURI();
-
-            String userAgent = requestWrapper.getHeader("User-Agent");
-            if (userAgent == null) userAgent = requestWrapper.getHeader("user-agent");
-            String expires = responseWrapper.getHeader("Expires");
-            Activity activity = new Activity();
-            activity.setIp(this.getClientIpAddress(requestWrapper));
-            activity.setExpires(expires);
-            activity.setRequestMethod(requestWrapper.getMethod());
-            activity.setResponseStatus(responseWrapper.getStatus());
-            activity.setUrl(requestWrapper.getRequestURI());
-
-
-            activity.setRequestMethod(method);
-            switch (Method.valueOf(method)) {
-                case POST: {
-                    if(path.contains("/v1/user")) {
-                        activity.setEntity("user");
-                        activity.setParameter(responseBody.replace("\"", ""));
-                    }
-                    if(path.contains("/v1/product")) {
-                        activity.setEntity("Product");
-                        activity.setParameter(responseBody.replace("\"", ""));
-                    }
-                    if(path.contains("/v1/supplier")) {
-                        activity.setEntity("supplier");
-                        activity.setParameter(responseBody.replace("\"", ""));
-                    }
-                    if(path.contains("/v1/customer")) {
-                        activity.setEntity("customer");
-                        activity.setParameter(responseBody.replace("\"", ""));
-                    }
-                    if(path.contains("/v1/sale-invoice")) {
-                        activity.setEntity("sale-invoice");
-                        activity.setParameter(responseBody.replace("\"", ""));
-
-                    }
-                    if(path.contains("/v1/purchase-invoice")) {
-                        activity.setEntity("purchase-invoice");
-                        activity.setParameter(responseBody.replace("\"", ""));
-                    }
-                    break;
-                }
-                case PUT: {
-                    if(path.contains("/v1/user")) {
-                        activity.setEntity("user");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/product")) {
-                        activity.setEntity("Product");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/supplier")) {
-                        activity.setEntity("supplier");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/customer")) {
-                        activity.setEntity("customer");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/sale-invoice")) {
-                        activity.setEntity("sale-invoice");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-
-                    }
-                    if(path.contains("/v1/purchase-invoice")) {
-                        activity.setEntity("purchase-invoice");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                }
-                case DELETE: {
-                    if(path.contains("/v1/user")) {
-                        activity.setEntity("user");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/product")) {
-                        activity.setEntity("Product");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/supplier")) {
-                        activity.setEntity("supplier");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/customer")) {
-                        activity.setEntity("customer");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    if(path.contains("/v1/sale-invoice")) {
-                        activity.setEntity("sale-invoice");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-
-                    }
-                    if(path.contains("/v1/purchase-invoice")) {
-                        activity.setEntity("purchase-invoice");
-                        activity.setParameter(requestWrapper.getParameter("id"));
-                    }
-                    break;
-                }
-                default: {
-                    chain.doFilter(requestWrapper, responseWrapper);
-                    return;
-                }
-            }
-
-
-
-            Matcher m = Pattern.compile("(([^)]+))").matcher(userAgent);
-            if (m.find()) {
-                activity.setUserAgent(m.group(1));
-            }
-            if (SecurityContextHolder.getContext().getAuthentication() != null &&
-                    SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
-                    //when Anonymous Authentication is enabled
-                    !(SecurityContextHolder.getContext().getAuthentication()
-                            instanceof AnonymousAuthenticationToken)) {
-                String username =  SecurityContextHolder.getContext().getAuthentication().getName();
-                log.debug("interceptor received user {} request ", username);
-                final UserAccount user = this.userAccountService.getUserByUsername(username);
-                activity.setUser(user);
-                if (!activity.getUrl().contains("image") && !activity.getUrl().equals("/"))
-                    activity = activityService.save(activity);
-                chain.doFilter(requestWrapper, responseWrapper);
-                return;
-            } else if (activity.getUrl().equals("/")) {
-                Activity existingActivity = this.activityService.findFirst();
-                if (existingActivity != null) {
-                    activity.setId(existingActivity.getId());
-                    activity.setCreated(existingActivity.getCreated());
-                } else
-                    activity = this.activityService.save(activity);
-            }
-            chain.doFilter(requestWrapper, responseWrapper);
-            return;
-
-
+           else logRequest(requestWrapper, responseWrapper, responseBody, method);
+//            chain.doFilter(requestWrapper, responseWrapper);
 
         }
 
+    }
+
+    private void logRequest(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper, String responseBody, String method) {
+        final String path  = requestWrapper.getRequestURI();
+
+        String userAgent = requestWrapper.getHeader("User-Agent");
+        if (userAgent == null) userAgent = requestWrapper.getHeader("user-agent");
+        String expires = responseWrapper.getHeader("Expires");
+        Activity activity = new Activity();
+        activity.setIp(this.getClientIpAddress(requestWrapper));
+        activity.setExpires(expires);
+        activity.setRequestMethod(requestWrapper.getMethod());
+        activity.setResponseStatus(responseWrapper.getStatus());
+        activity.setUrl(requestWrapper.getRequestURI());
+
+
+        activity.setRequestMethod(method);
+        switch (Method.valueOf(method)) {
+            case POST: {
+                if(path.contains("/v1/user")) {
+                    activity.setEntity("user");
+                    activity.setParameter(responseBody.replace("\"", ""));
+                }
+                if(path.contains("/v1/product")) {
+                    activity.setEntity("Product");
+                    activity.setParameter(responseBody.replace("\"", ""));
+                }
+                if(path.contains("/v1/supplier")) {
+                    activity.setEntity("supplier");
+                    activity.setParameter(responseBody.replace("\"", ""));
+                }
+                if(path.contains("/v1/customer")) {
+                    activity.setEntity("customer");
+                    activity.setParameter(responseBody.replace("\"", ""));
+                }
+                if(path.contains("/v1/sale-invoice")) {
+                    activity.setEntity("sale-invoice");
+                    activity.setParameter(responseBody.replace("\"", ""));
+
+                }
+                if(path.contains("/v1/purchase-invoice")) {
+                    activity.setEntity("purchase-invoice");
+                    activity.setParameter(responseBody.replace("\"", ""));
+                }
+                break;
+            }
+            case PUT: {
+                if(path.contains("/v1/user")) {
+                    activity.setEntity("user");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/product")) {
+                    activity.setEntity("Product");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/supplier")) {
+                    activity.setEntity("supplier");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/customer")) {
+                    activity.setEntity("customer");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/sale-invoice")) {
+                    activity.setEntity("sale-invoice");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+
+                }
+                if(path.contains("/v1/purchase-invoice")) {
+                    activity.setEntity("purchase-invoice");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/profile")) {
+                    activity.setEntity("profile");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+            }
+            case DELETE: {
+                if(path.contains("/v1/user")) {
+                    activity.setEntity("user");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/product")) {
+                    activity.setEntity("Product");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/supplier")) {
+                    activity.setEntity("supplier");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/customer")) {
+                    activity.setEntity("customer");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                if(path.contains("/v1/sale-invoice")) {
+                    activity.setEntity("sale-invoice");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+
+                }
+                if(path.contains("/v1/purchase-invoice")) {
+                    activity.setEntity("purchase-invoice");
+                    activity.setParameter(requestWrapper.getParameter("id"));
+                }
+                break;
+            }
+            default: {
+//                    chain.doFilter(requestWrapper, responseWrapper);
+            }
+        }
+
+
+        Matcher m = Pattern.compile("(([^)]+))").matcher(userAgent);
+        if (m.find()) {
+            activity.setUserAgent(m.group(1));
+        }
+        if (SecurityContextHolder.getContext().getAuthentication() != null &&
+                SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
+                //when Anonymous Authentication is enabled
+                !(SecurityContextHolder.getContext().getAuthentication()
+                        instanceof AnonymousAuthenticationToken)) {
+            String username =  SecurityContextHolder.getContext().getAuthentication().getName();
+            log.debug("interceptor received user {} request ", username);
+            final UserAccount user = this.userAccountService.getUserByUsername(username);
+            activity.setUser(user);
+            if (!activity.getUrl().contains("image") && !activity.getUrl().equals("/"))
+                activity = activityService.save(activity);
+//                chain.doFilter(requestWrapper, responseWrapper);
+        } else if (activity.getUrl().equals("/")) {
+            Activity existingActivity = this.activityService.findFirst();
+            if (existingActivity != null) {
+                activity.setId(existingActivity.getId());
+                activity.setCreated(existingActivity.getCreated());
+            } else
+                activity = this.activityService.save(activity);
+        }
     }
 
 
