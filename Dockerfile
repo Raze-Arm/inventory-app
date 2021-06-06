@@ -1,6 +1,9 @@
 FROM amazoncorretto:11-alpine-jdk
-COPY target/inventory-0.0.1-SNAPSHOT.jar inventory-app.jar
-COPY /files/images/user-photos/placeholder /files/images/user-photos/placeholder/profile-placeholder.jpg
+RUN mkdir  -p spring-app/files/images/user-photos/placeholder/
+WORKDIR /spring-app
+
+COPY target/inventory-0.0.1-SNAPSHOT.jar /spring-app/inventory-app.jar
+COPY /files/images/user-photos/placeholder /spring-app/files/images/user-photos/placeholder/profile-placeholder.jpg
 
 ARG ALLOWED_ORIGINS
 ARG SPRING_PROFILES_ACTIVE
