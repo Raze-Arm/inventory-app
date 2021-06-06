@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Profile;
 
 import org.springframework.stereotype.Component;
 import raze.spring.inventory.domain.*;
-import raze.spring.inventory.domain.dto.UserProfileDto;
+import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.repository.*;
 import raze.spring.inventory.security.repository.UserAccountRepository;
-import raze.spring.inventory.service.UserProfileService;
+import raze.spring.inventory.security.role.UserRole;
+import raze.spring.inventory.service.ProfileService;
+import raze.spring.inventory.service.UserService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -32,7 +34,8 @@ public class AppInitializer implements CommandLineRunner {
     private final SaleTransactionRepository saleTransactionRepository;
     private final PurchaseInvoiceRepository purchaseInvoiceRepository;
     private final SaleInvoiceRepository saleInvoiceRepository;
-    private final UserProfileService profileService;
+    private final ProfileService profileService;
+    private final UserService userService;
     private final UserProfileRepository profileRepository;
     private final UserAccountRepository accountRepository;
 
@@ -44,7 +47,7 @@ public class AppInitializer implements CommandLineRunner {
               PurchaseTransactionRepository purchaseTransactionRepository,
               SaleTransactionRepository saleTransactionRepository,
               PurchaseInvoiceRepository purchaseInvoiceRepository,
-              SaleInvoiceRepository saleInvoiceRepository, UserProfileService profileService, UserProfileRepository profileRepository, UserAccountRepository accountRepository) {
+              SaleInvoiceRepository saleInvoiceRepository, ProfileService profileService, UserService userService, UserProfileRepository profileRepository, UserAccountRepository accountRepository) {
         this.customerRepository = customerRepository;
         this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
@@ -53,6 +56,7 @@ public class AppInitializer implements CommandLineRunner {
         this.purchaseInvoiceRepository = purchaseInvoiceRepository;
         this.saleInvoiceRepository = saleInvoiceRepository;
           this.profileService = profileService;
+          this.userService = userService;
           this.profileRepository = profileRepository;
           this.accountRepository = accountRepository;
       }
@@ -162,13 +166,14 @@ public class AppInitializer implements CommandLineRunner {
         saleInvoiceRepository.saveAll(
             Set.of(arianInvoice1, arianInvoice2, palizanInvoice1, palizanInvoice2, sharifianInvoice1));
 
-        final UserProfileDto userProfileDto =
-            UserProfileDto.builder()
+        final ProfileDto profileDto =
+            ProfileDto.builder()
                 .firstName("raze")
                 .lastName("arm")
                 .username("admin")
                 .password("12345")
+                    .role(UserRole.ADMIN)
                 .build();
-        profileService.saveUserProfile(userProfileDto);
+        userService.saveUser(profileDto);
     }
 }

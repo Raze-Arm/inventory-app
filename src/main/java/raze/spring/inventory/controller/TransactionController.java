@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import raze.spring.inventory.domain.dto.PurchaseTransactionDto;
+import raze.spring.inventory.domain.dto.SaleTransactionDto;
 import raze.spring.inventory.domain.view.TransactionView;
 import raze.spring.inventory.service.TransactionService;
 
@@ -18,11 +20,28 @@ public class TransactionController {
 
 
     @GetMapping(path = {"/transaction", "/transaction/"})
-    public ResponseEntity<Page<TransactionView>> getCustomerPage(
+    public ResponseEntity<Page<TransactionView>> getTrnsactionPage(
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
             @RequestParam(value = "sort",required = false) String sort,
             @RequestParam(value = "search", required = false) String search) {
         return ResponseEntity.ok(this.transactionService.getTransactionPage(page,size,sort, search));
     }
+    @GetMapping(path = {"/transaction/sale", "/transaction/sale/"})
+    public ResponseEntity<Page<SaleTransactionDto>> getSaleTransactionPage(
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size,
+            @RequestParam(value = "sort",required = false) String sort,
+            @RequestParam(value = "search", required = false) String search) {
+        return ResponseEntity.ok(this.transactionService.getSaleTransactionPage(page,size,sort, search));
+    }
+    @GetMapping(path = {"/transaction/purchase", "/transaction/purchase/"})
+    public ResponseEntity<Page<PurchaseTransactionDto>> getPurchaseTransactionPage(
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size,
+            @RequestParam(value = "sort",required = false) String sort,
+            @RequestParam(value = "search", required = false) String search) {
+        return ResponseEntity.ok(this.transactionService.getPurchaseTransaction(page,size,sort, search));
+    }
+
 }

@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(indexes = @Index(columnList = "firstName, lastName"))
 public class Customer {
     @Id
     @GeneratedValue(generator = "UUID")

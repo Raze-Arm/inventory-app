@@ -1,5 +1,6 @@
 package raze.spring.inventory.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.service.SaleInvoiceService;
@@ -17,8 +18,15 @@ public class SaleInvoiceController {
         this.invoiceService = invoiceService;
     }
 
-
     @GetMapping(path = {"/sale-invoice", "/sale-invoice/"})
+    public ResponseEntity<Page<SaleInvoiceDto>> getInvoicePage(
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size,
+            @RequestParam(value = "sort",required = false) String sort,
+            @RequestParam(value = "search", required = false) String search) {
+        return ResponseEntity.ok(this.invoiceService.getInvoicePage(page,size,sort, search));
+    }
+    @GetMapping(path = {"/sale-invoice", "/sale-invoice/"}, params = {"search-type=list"})
     public ResponseEntity<List<SaleInvoiceDto>> getAllInvoices() {
         return ResponseEntity.ok(this.invoiceService.getInvoiceList());
     }

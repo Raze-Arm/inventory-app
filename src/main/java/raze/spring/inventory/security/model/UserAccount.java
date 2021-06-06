@@ -1,10 +1,14 @@
 package raze.spring.inventory.security.model;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import raze.spring.inventory.security.role.UserRole;
 
 
 import javax.persistence.*;
+import java.security.Principal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +21,8 @@ import java.util.stream.Collectors;
 @Getter
 @EqualsAndHashCode()
 @Entity
-public class UserAccount  {
+@Table(indexes = @Index(columnList = "username"))
+public class UserAccount implements UserDetails, Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -103,6 +108,32 @@ public class UserAccount  {
 
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.userRoles.getGrantedAuthorities();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isEnabled;
+    }
+
+
+    @Override
     public String toString() {
         return "UserAccount{" +
                 "id=" + id +
@@ -112,6 +143,11 @@ public class UserAccount  {
                 ", isCredentialsNonExpired=" + isCredentialsNonExpired +
                 ", isEnabled=" + isEnabled +
                 '}';
+    }
+
+    @Override
+    public String getName() {
+        return this.username;
     }
 }
 

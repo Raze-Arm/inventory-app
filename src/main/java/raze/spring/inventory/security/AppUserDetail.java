@@ -11,7 +11,6 @@ import java.util.Set;
 @Setter
 public class AppUserDetail implements UserDetails {
   private final Long id;
-  private final Long employeeId;
   private final String username;
   private final String password;
   private final Set<? extends GrantedAuthority> grantedAuthorities;
@@ -21,9 +20,8 @@ public class AppUserDetail implements UserDetails {
   private final Boolean isEnabled;
 
     @Builder
-    public AppUserDetail(Long id, Long employeeId, String username, String password, Set<? extends GrantedAuthority> grantedAuthorities, Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, Boolean isEnabled) {
+    public AppUserDetail(Long id, String username, String password, Set<? extends GrantedAuthority> grantedAuthorities, Boolean isAccountNonExpired, Boolean isAccountNonLocked, Boolean isCredentialsNonExpired, Boolean isEnabled) {
         this.id = id;
-        this.employeeId = employeeId;
         this.username = username;
         this.password = password;
         this.grantedAuthorities = grantedAuthorities;
