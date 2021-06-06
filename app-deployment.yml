@@ -7,5 +7,5 @@ spec:
     memory: 500Mi
   volume_mounts:
     - mount_path: /files
-      sub_path: spring-app
+#      sub_path: spring-app
       volume_name: backend-files

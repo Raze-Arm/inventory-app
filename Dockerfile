@@ -1,6 +1,6 @@
 FROM amazoncorretto:11-alpine-jdk
 COPY target/inventory-0.0.1-SNAPSHOT.jar inventory-app.jar
-COPY files files
+COPY /files/images/user-photos/placeholder /files/images/user-photos/placeholder/profile-placeholder.jpg
 
 ARG ALLOWED_ORIGINS
 ARG SPRING_PROFILES_ACTIVE
@@ -21,6 +21,7 @@ ENV MYSQL_USERNAME ${MYSQL_USERNAME}
 ENV MYSQL_PASSWORD ${MYSQL_PASSWORD}
 ENV MYSQL_HOST ${MYSQL_HOST}
 ENV MYSQL_DB_NAME ${MYSQL_DB_NAME}
+
 
 
 
