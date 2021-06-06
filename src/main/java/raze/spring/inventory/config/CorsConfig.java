@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Configuration
 public class CorsConfig {
 
-    @Value("#{systemEnvironment['REACT_APP_ADDRESS'] ?: 'https://localhost:3000'}")
+    @Value("#{systemEnvironment['ALLOWED_ORIGINS'] ?: 'https://localhost:3000'}")
     private String originAddress;
 
     @Bean
