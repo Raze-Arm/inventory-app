@@ -22,7 +22,8 @@ public class CorsConfig {
         config.setAllowCredentials(true);
 //        config.addAllowedOrigin(originAddress);
 //        config.addAllowedOrigin("https://mega-electric-web-app");
-        config.setAllowedOriginPatterns(Arrays.asList("https://*.fandogh.cloud"));
+        config.addAllowedOrigin("https://mega-electric-nginx-razar.fandogh.cloud");
+//        config.setAllowedOriginPatterns(Arrays.asList("https://*.fandogh.cloud"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
