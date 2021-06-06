@@ -3,9 +3,6 @@ name: mega-electric-app
 spec:
   image:  razear/mega-electric-app:${SHA}
   port: 8080
-#  port_mapping:
-#    - port: 8080
-#      target_port: 8080
   resources:
     memory: 500Mi
 
