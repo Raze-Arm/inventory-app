@@ -14,12 +14,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(indexes = @Index(columnList = "firstName, lastName"))
 public class Supplier {
     @Id
     @GeneratedValue(generator = "UUID")

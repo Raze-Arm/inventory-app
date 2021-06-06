@@ -23,17 +23,17 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         final UserAccount userAccount = this.userAccountService.getUserByUsername(username);
-    final AppUserDetail appUserDetail =
-        AppUserDetail.builder()
-                .id(userAccount.getId())
-            .username(userAccount.getUsername())
-            .password(userAccount.getPassword())
-            .grantedAuthorities(userAccount.getUserRoles().getGrantedAuthorities())
-            .isAccountNonExpired(userAccount.getIsAccountNonExpired())
-            .isAccountNonLocked(userAccount.getIsAccountNonLocked())
-            .isCredentialsNonExpired(userAccount.getIsCredentialsNonExpired())
-            .isEnabled(userAccount.getIsEnabled())
-            .build();
-        return appUserDetail;
+//    final AppUserDetail appUserDetail =
+//        AppUserDetail.builder()
+//                .id(userAccount.getId())
+//            .username(userAccount.getUsername())
+//            .password(userAccount.getPassword())
+//            .grantedAuthorities(userAccount.getUserRoles().getGrantedAuthorities())
+//            .isAccountNonExpired(userAccount.getIsAccountNonExpired())
+//            .isAccountNonLocked(userAccount.getIsAccountNonLocked())
+//            .isCredentialsNonExpired(userAccount.getIsCredentialsNonExpired())
+//            .isEnabled(userAccount.getIsEnabled())
+//            .build();
+        return userAccount;
     }
 }

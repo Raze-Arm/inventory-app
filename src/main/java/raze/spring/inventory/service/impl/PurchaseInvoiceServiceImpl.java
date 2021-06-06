@@ -1,5 +1,9 @@
 package raze.spring.inventory.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.PurchaseInvoiceDtoToPurchaseInvoice;
 import raze.spring.inventory.converter.PurchaseInvoiceToPurchaseInvoiceDto;
@@ -28,6 +32,17 @@ public class PurchaseInvoiceServiceImpl implements PurchaseInvoiceService {
         this.invoiceDtoToInvoice = invoiceDtoToInvoice;
         this.invoiceToInvoiceDto = invoiceToInvoiceDto;
       }
+
+    @Override
+    public Page<PurchaseInvoiceDto> getInvoicePage(int page, int size, String sort, String search) {
+        final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
+        if(search == null || search.length() == 0) {
+            return this.invoiceRepository.findAll(pageable).map(this.invoiceToInvoiceDto::convert);
+        } else {
+            return  this.invoiceRepository.findAll(pageable, search).map(this.invoiceToInvoiceDto::convert);
+        }
+    }
+
     @Transactional
     @Override
     public List<PurchaseInvoiceDto> getInvoiceList() {

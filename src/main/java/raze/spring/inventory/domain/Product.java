@@ -23,6 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(indexes = @Index(columnList = "name"))
 public class Product {
     @Id
     @GeneratedValue(generator = "UUID")

@@ -11,4 +11,5 @@ public interface UserSessionService {
     boolean  isTokenValid(String token) throws ObjectNotFoundException;
     void insertSession(UserSession userSession);
     void removeSession(String username);
+    void removeToken(String token);
 }

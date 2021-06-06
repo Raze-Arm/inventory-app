@@ -69,4 +69,9 @@ public class UserSessionServiceImpl implements UserSessionService {
     public void removeSession(String username) {
         if (username != null) this.userSessionRepository.deleteById(username);
     }
+
+    @Override
+    public void removeToken(String token) {
+        if(token != null) this.userSessionRepository.deleteByToken(token);
+    }
 }
