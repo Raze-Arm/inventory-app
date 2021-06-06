@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
+    private final static String PHOTO_DIR = "files/images/user-photos/";
     private final UserProfileRepository userProfileRepository;
     private final UserProfileDtoToUserProfile profileDtoToProfile;
     private final UserProfileToUserProfileDto profileToProfileDto;
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
         final UserProfile profile = this.userProfileRepository.findById(id).orElse(null);
         String photoPath;
         if(profile == null || profile.getPhotoPath() == null) {
-            photoPath = "user-photos/placeholder/profile-placeholder.jpg";
+            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
         } else {
             photoPath = profile.getPhotoPath();
         }
@@ -77,9 +78,9 @@ public class UserServiceImpl implements UserService {
         MultipartFile file = profileDto.getPhoto();
         if(file != null){
             String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
-            String uploadDir = "user-photos/" ;
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
-            profileToSave.setPhotoPath(uploadDir + fileName);
+//            String uploadDir = "files/images/user-photos/" ;
+            FileUploadUtil.saveFile(PHOTO_DIR, fileName, file);
+            profileToSave.setPhotoPath(PHOTO_DIR + fileName);
         }
     }
     @Transactional

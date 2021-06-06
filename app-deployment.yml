@@ -5,4 +5,7 @@ spec:
   port: 8080
   resources:
     memory: 500Mi
-
+  volume_mounts:
+    - mount_path: /files
+      sub_path: spring-app
+      volume_name: backend-files

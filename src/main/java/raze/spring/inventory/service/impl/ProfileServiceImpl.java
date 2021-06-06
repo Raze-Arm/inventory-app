@@ -31,6 +31,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class ProfileServiceImpl implements ProfileService {
+    private final static String PHOTO_DIR = "files/images/user-photos/";
     private final UserProfileRepository userProfileRepository;
     private final UserProfileDtoToUserProfile profileDtoToProfile;
     private final UserProfileToUserProfileDto profileToProfileDto;
@@ -50,7 +51,7 @@ public class ProfileServiceImpl implements ProfileService {
         final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
         String photoPath;
         if(profile == null || profile.getPhotoPath() == null) {
-            photoPath = "user-photos/placeholder/profile-placeholder.jpg";
+            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
         } else {
             photoPath = profile.getPhotoPath();
         }
@@ -72,9 +73,9 @@ public class ProfileServiceImpl implements ProfileService {
         MultipartFile file = profileDto.getPhoto();
         if(file != null){
             String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
-            String uploadDir = "user-photos/" ;
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
-            profileToSave.setPhotoPath(uploadDir + fileName);
+//            String uploadDir = "files/images/user-photos/" ;
+            FileUploadUtil.saveFile(PHOTO_DIR, fileName, file);
+            profileToSave.setPhotoPath(PHOTO_DIR + fileName);
         }
     }
 
