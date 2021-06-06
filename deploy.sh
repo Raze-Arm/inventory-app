@@ -1,10 +1,5 @@
 
-docker build \
- --build-arg SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE --build-arg JWT_TOKEN=$JWT_TOKEN  \
- --build-arg JWT_TOKEN_EXPIRE=$JWT_TOKEN_EXPIRE --build-arg JWT_TOKEN_PREFIX=$JWT_TOKEN_PREFIX \
- --build-arg MYSQL_USERNAME=$MYSQL_USERNAME --build-arg MYSQL_PASSWORD=$MYSQL_PASSWORD \
- --build-arg MYSQL_HOST=$MYSQL_HOST --build-arg MYSQL_DB_NAME=$MYSQL_DB_NAME \
- -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
+docker build --build-arg SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE --build-arg JWT_TOKEN=$JWT_TOKEN  --build-arg JWT_TOKEN_EXPIRE=$JWT_TOKEN_EXPIRE --build-arg JWT_TOKEN_PREFIX=$JWT_TOKEN_PREFIX --build-arg MYSQL_USERNAME=$MYSQL_USERNAME --build-arg MYSQL_PASSWORD=$MYSQL_PASSWORD --build-arg MYSQL_HOST=$MYSQL_HOST --build-arg MYSQL_DB_NAME=$MYSQL_DB_NAME -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
 docker push razear/mega-electric-app:latest
 docker push razear/mega-electric-app:$SHA
 
