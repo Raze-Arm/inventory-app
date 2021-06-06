@@ -20,8 +20,9 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin(originAddress);
-        config.addAllowedOrigin("https://mega-electric-web-app");
+//        config.addAllowedOrigin(originAddress);
+//        config.addAllowedOrigin("https://mega-electric-web-app");
+        config.setAllowedOriginPatterns(Arrays.asList("https://*-razar.fandogh.cloud"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
