@@ -1,4 +1,14 @@
-FROM amazoncorretto:11-alpine-jdk
-COPY target/inventory-0.0.1-SNAPSHOT.jar inventory-app.jar
+FROM maven:3.8.1-jdk-11
+RUN mkdir   -p spring-app/
+WORKDIR /spring-app
 
-ENTRYPOINT ["java", "-jar" , "/inventory-app.jar"]
+COPY . /spring-app
+
+RUN mvn clean install
+
+
+
+
+
+
+ENTRYPOINT ["java", "-jar" , "/spring-app/target/inventory-0.0.1-SNAPSHOT.jar"]
