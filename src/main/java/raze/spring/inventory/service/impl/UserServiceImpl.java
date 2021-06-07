@@ -75,6 +75,13 @@ public class UserServiceImpl implements UserService {
         return this.profileToProfileDto.convert(profile);
     }
 
+    @Transactional
+    @Override
+    public ProfileDto getUserByUsername(String username) {
+        final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
+        return  profile != null ? this.profileToProfileDto.convert(profile) : null;
+    }
+
     private void saveImageFile(ProfileDto profileDto, UserProfile profileToSave) throws IOException {
         MultipartFile file = profileDto.getPhoto();
         if(file != null){
