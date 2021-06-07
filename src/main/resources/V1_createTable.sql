@@ -51,7 +51,7 @@ drop table if exists hibernate_sequence cascade;
 
 create   table hibernate_sequence (next_val bigint) engine=InnoDB;
 insert into hibernate_sequence values ( 1 );
-
+create table activity (id bigint not null, created timestamp, last_updated timestamp, entity varchar(255), expires varchar(255), ip varchar(255), parameter varchar(255), request_method varchar(255), response_status integer, url varchar(255), user_agent varchar(255), user_id bigint, primary key (id));
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create    table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
 create  table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
@@ -74,7 +74,7 @@ create    table user_profile (id varchar(36) not null, created_date timestamp, f
 -- alter table user_account_user_permissions add constraint FKajmdd9jsygg62yohq6fe9ppbn foreign key (user_account_id) references user_account;
 -- alter table user_profile add constraint UK_k3d1y1iufa28c7v4vtxsqw9aa unique (account_id);
 -- alter table user_profile add constraint FKp581a3prvwt8w63lu5s4w9jub foreign key (account_id) references user_account;
-
+alter table activity add constraint FKb0e1g6c44ampoe1ondy9t6v8w foreign key (user_id) references user_account;
 alter table user_account add constraint UK_castjbvpeeus0r8lbpehiu0e4 unique (username);
 alter table user_profile add constraint UK_k3d1y1iufa28c7v4vtxsqw9aa unique (account_id);
 alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier (id);
