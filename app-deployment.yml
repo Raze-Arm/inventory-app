@@ -5,6 +5,7 @@ spec:
   port: 8080
   resources:
     memory: 500Mi
+  volume_browser_enabled: true
   volume_mounts:
     - mount_path: /spring-app/files
 #      sub_path: files
