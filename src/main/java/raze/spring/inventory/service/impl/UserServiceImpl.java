@@ -59,7 +59,8 @@ public class UserServiceImpl implements UserService {
         final UserProfile profile = this.userProfileRepository.findById(id).orElse(null);
         String photoPath;
         if(profile == null || profile.getPhotoPath() == null) {
-            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
+//            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
+            photoPath =  "profile-placeholder.jpg";
         } else {
             photoPath = profile.getPhotoPath();
         }
