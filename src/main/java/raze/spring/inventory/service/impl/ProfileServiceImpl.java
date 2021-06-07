@@ -4,10 +4,6 @@ import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +47,8 @@ public class ProfileServiceImpl implements ProfileService {
         final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
         String photoPath;
         if(profile == null || profile.getPhotoPath() == null) {
-            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
+//            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
+            photoPath = "profile-placeholder.jpg";
         } else {
             photoPath = profile.getPhotoPath();
         }
