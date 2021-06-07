@@ -20,10 +20,10 @@ import java.util.Set;
 import java.util.UUID;
 
 
-@Profile("!test")
+@Profile("!test & dev")
 @Slf4j
 @Component
-public class AppInitializer implements CommandLineRunner {
+public class AppInitializerDev implements CommandLineRunner {
 
 
 
@@ -40,7 +40,7 @@ public class AppInitializer implements CommandLineRunner {
     private final UserAccountRepository accountRepository;
 
 
-      public AppInitializer(
+      public AppInitializerDev(
               CustomerRepository customerRepository,
               SupplierRepository supplierRepository,
               ProductRepository productRepository,

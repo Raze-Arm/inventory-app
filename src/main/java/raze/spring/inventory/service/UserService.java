@@ -17,6 +17,8 @@ public interface UserService {
 
     ProfileDto getUser(UUID id);
 
+    ProfileDto getUserByUsername(String username);
+
     void updateUser(ProfileDto profileDto) throws IOException;
 
     void deleteUser(UUID id);
