@@ -1,4 +1,4 @@
-
+drop table if exists activity CASCADE;
 drop table if exists customer CASCADE;
 drop table if exists invoice_view CASCADE;
 drop table if exists product CASCADE;
@@ -19,6 +19,7 @@ drop sequence if exists hibernate_sequence;
 create sequence hibernate_sequence start with 1 increment by 1;
 
 -- ////////////////////////////////////////////////////////////TABLES
+create table activity (id bigint not null, created timestamp, last_updated timestamp, entity varchar(255), expires varchar(255), ip varchar(255), parameter varchar(255), request_method varchar(255), response_status integer, url varchar(255), user_agent varchar(255), user_id bigint, primary key (id));
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
 create table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
@@ -31,6 +32,7 @@ create table user_account_user_permissions (user_account_id bigint not null, use
 create table user_session (username varchar(255) not null, token longtext, primary key (username));
 create table user_profile (id varchar(36) not null, created_date timestamp, first_name varchar(255), last_name varchar(255), photo_path varchar(255), modified_date timestamp, account_id bigint not null, primary key (id));
 -- ////////////////////////////////////////////////////////////KEYS
+alter table activity add constraint FKb0e1g6c44ampoe1ondy9t6v8w foreign key (user_id) references user_account;
 alter table purchase_invoice add constraint FKqtx4kjstn77n9v4wowt0mlxkx foreign key (supplier_id) references supplier;
 alter table purchase_transaction add constraint FKk5ila2wwhg03dmjj09xc5pikb foreign key (invoice_id) references purchase_invoice ;
 alter table purchase_transaction add constraint FK850huaktm1ev5g3jefeb8qdat foreign key (product_id) references product;
