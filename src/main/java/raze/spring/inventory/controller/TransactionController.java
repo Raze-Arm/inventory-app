@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import raze.spring.inventory.domain.dto.PurchaseTransactionDto;
 import raze.spring.inventory.domain.dto.SaleTransactionDto;
-import raze.spring.inventory.domain.view.TransactionView;
+import raze.spring.inventory.domain.dto.TransactionDto;
 import raze.spring.inventory.service.TransactionService;
 
 @RestController
@@ -20,7 +20,7 @@ public class TransactionController {
 
 
     @GetMapping(path = {"/transaction", "/transaction/"})
-    public ResponseEntity<Page<TransactionView>> getTrnsactionPage(
+    public ResponseEntity<Page<TransactionDto>> getTrnsactionPage(
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size,
             @RequestParam(value = "sort",required = false) String sort,

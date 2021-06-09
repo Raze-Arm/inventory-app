@@ -1,12 +1,14 @@
 package raze.spring.inventory.security.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import raze.spring.inventory.security.role.UserRole;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Date;
@@ -27,7 +29,11 @@ public class UserAccount implements UserDetails, Principal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
+    @NotBlank(message = "last name is mandatory")
+    @Length(min = 4, max = 30, message = "size must be between 4 and 30")
     private String username;
+    @NotBlank(message = "last name is mandatory")
+    @Length(min = 8, max = 35, message = "size must be between 8 and 35")
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRoles  ;

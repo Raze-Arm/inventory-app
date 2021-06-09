@@ -64,6 +64,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeRequests()
 //            .antMatchers("/h2-console/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
+//            .antMatchers("/download/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
         .anyRequest()
         .authenticated()
         .and()

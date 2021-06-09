@@ -43,6 +43,12 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getUser(id));
     }
 
+    @GetMapping(path = {"/user"}, params = {"username"})
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProfileDto> getUserByUsername(@RequestParam("username") String username) {
+        return ResponseEntity.ok(this.userService.getUserByUsername(username));
+    }
+
 
     @PutMapping(path = {"/user", "/user/"})
     @PreAuthorize("hasRole('ADMIN')")
@@ -52,9 +58,16 @@ public class UserController {
     }
 
     @GetMapping(path = {"/download/user/{id}"})
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Resource> downloadUserPhoto(@PathVariable UUID id) throws MalformedURLException {
         return ResponseEntity.ok(this.userService.getUserPhoto(id));
+    }
+
+    @GetMapping(path = {"/download/user"})
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Resource> downloadUserPhotoByUsername(@RequestParam("username")String username) throws MalformedURLException {
+        return  ResponseEntity.ok(this.userService.getUserPhotoByUsername(username));
     }
 
     @DeleteMapping(path = {"/user/{id}", "/user/{id}/"})

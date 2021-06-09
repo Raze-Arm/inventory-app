@@ -85,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
             this.productRepository.save(productToEdit);
     }
 
+    @Transactional
     @Override
     public void deleteProduct(UUID id) {
         this.productRepository.deleteById(id);

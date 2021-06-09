@@ -23,9 +23,9 @@ create table activity (id bigint not null, created timestamp, last_updated times
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
 create table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
-create table purchase_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36) not null, primary key (id));
+create table purchase_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36), product_name varchar(255), primary key (id));
 create table sale_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, customer_id varchar(36), primary key (id));
-create table sale_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36) not null, primary key (id));
+create table sale_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36), product_name varchar(255) , primary key (id));
 create table supplier (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
 create table user_account (id bigint not null, creation_date timestamp, is_account_non_expired boolean, is_account_non_locked boolean, is_credentials_non_expired boolean, is_enabled boolean, modified_date timestamp, password varchar(255), user_roles varchar(255), username varchar(255), primary key (id));
 create table user_account_user_permissions (user_account_id bigint not null, user_permissions varchar(255));
@@ -115,7 +115,7 @@ LIMIT 100;
 CREATE OR REPLACE VIEW transaction_view AS
 (SELECT
      t.id,
-     p.name AS product_name,
+     t.product_name,
      t.price,
      t.quantity,
      t.type,
@@ -125,12 +125,7 @@ FROM
          *, 'purchase' AS TYPE
      FROM
          purchase_transaction tr UNION ALL SELECT
-                                               *, 'sale' AS TYPE
+         *, 'sale' AS TYPE
      FROM
          sale_transaction st) AS t
-        LEFT JOIN
-    (SELECT
-         id, name
-     FROM
-         product) AS p ON t.product_id = p.id)
-LIMIT 100
+)LIMIT 100
