@@ -22,7 +22,7 @@ import java.util.Set;
 @SuperBuilder
 @Table(indexes = @Index(columnList = "name"))
 public class Product  extends BaseEntity{
-    @NotBlank(message = "last name is mandatory")
+    @NotBlank(message = "name is mandatory")
     @Length(min = 3, max = 30, message = "size must be between 3 and 30")
     private String name;
 

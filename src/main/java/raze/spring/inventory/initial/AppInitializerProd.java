@@ -35,7 +35,7 @@ public class AppInitializerProd implements CommandLineRunner {
                             .firstName("raze")
                             .lastName("arm")
                             .username("admin")
-                            .password("12345")
+                            .password("1234567890")
                             .role(UserRole.ADMIN)
                             .build();
             userService.saveUser(profileDto);
