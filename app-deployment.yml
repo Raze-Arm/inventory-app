@@ -3,6 +3,32 @@ name: mega-electric-app
 spec:
   image:  razear/mega-electric-app:${SHA}
   port: 8080
+  env:
+    - name: ALLOWED_ORIGINS
+      value: ${$ALLOWED_ORIGINS}
+    - name: SPRING_PROFILES_ACTIVE
+      value: ${SPRING_PROFILES_ACTIVE}
+    - name: JWT_TOKEN
+      value: ${JWT_TOKEN}
+      hidden: true
+    - name: JWT_TOKEN_EXPIRE
+      value: ${JWT_TOKEN_EXPIRE}
+      hidden: true
+    - name: JWT_TOKEN_PREFIX
+      value: ${JWT_TOKEN_PREFIX}
+      hidden: true
+    - name: MYSQL_USERNAME
+      value: ${MYSQL_USERNAME}
+      hidden: true
+    - name: MYSQL_PASSWORD
+      value: ${MYSQL_PASSWORD}
+      hidden: true
+    - name: MYSQL_HOST
+      value: ${MYSQL_HOST}
+      hidden: true
+    - name: MYSQL_DB_NAME
+      value: ${MYSQL_DB_NAME}
+      hidden: true
   resources:
     memory: 500Mi
   volume_browser_enabled: true

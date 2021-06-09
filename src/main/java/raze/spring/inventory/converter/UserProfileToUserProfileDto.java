@@ -6,9 +6,16 @@ import org.springframework.stereotype.Component;
 import raze.spring.inventory.domain.UserProfile;
 import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.security.model.UserAccount;
+import raze.spring.inventory.utility.DateMapper;
 
 @Component
 public class UserProfileToUserProfileDto implements Converter<UserProfile, ProfileDto> {
+    private final DateMapper dateMapper;
+
+    public UserProfileToUserProfileDto(DateMapper dateMapper) {
+        this.dateMapper = dateMapper;
+    }
+
     @Synchronized
     @Override
     public ProfileDto convert(UserProfile userProfile) {
@@ -19,6 +26,7 @@ public class UserProfileToUserProfileDto implements Converter<UserProfile, Profi
                 .lastName(userProfile.getLastName())
                 .username(account != null ? account.getUsername() : null)
                 .role(account.getUserRoles())
+                .createdDate(dateMapper.asOffsetDateTime(userProfile.getCreatedDate()))
                 .build();
     }
 }

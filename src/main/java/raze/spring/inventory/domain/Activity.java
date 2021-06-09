@@ -1,13 +1,25 @@
 package raze.spring.inventory.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import raze.spring.inventory.security.model.UserAccount;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
-public class Activity extends BaseEntity{
-
+public class Activity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String userAgent;
     private String ip;
     private String expires;
@@ -19,79 +31,23 @@ public class Activity extends BaseEntity{
     private String url;
     private String entity;
     private String parameter;
+    private Timestamp created;
+    private Timestamp lastUpdated;
 
 
-    public String getUserAgent() {
-        return userAgent;
+
+    @PrePersist
+    public void beforeSave() {
+        if(created == null) {
+            final LocalDateTime localDateTime = Instant.now().atZone(ZoneId.of("Asia/Tehran")).toLocalDateTime();
+            created =  Timestamp.valueOf(localDateTime);
+        }
     }
 
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
-
-    public String getExpires() {
-        return expires;
-    }
-
-    public void setExpires(String expires) {
-        this.expires = expires;
-    }
-
-    public UserAccount getUser() {
-        return user;
-    }
-
-    public void setUser(UserAccount user) {
-        this.user = user;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getRequestMethod() {
-        return requestMethod;
-    }
-
-    public void setRequestMethod(String requestMethod) {
-        this.requestMethod = requestMethod;
-    }
-
-
-    public Integer getResponseStatus() {
-        return responseStatus;
-    }
-
-    public void setResponseStatus(Integer responseStatus) {
-        this.responseStatus = responseStatus;
-    }
-
-    public String getEntity() {
-        return entity;
-    }
-
-    public void setEntity(String entity) {
-        this.entity = entity;
-    }
-
-    public String getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
+    @PreUpdate
+    public void beforeUpdate() {
+        final LocalDateTime localDateTime = Instant.now().atZone(ZoneId.of("Asia/Tehran")).toLocalDateTime();
+        lastUpdated =  Timestamp.valueOf(localDateTime);
     }
 }
 

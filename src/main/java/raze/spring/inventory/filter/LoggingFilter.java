@@ -1,5 +1,8 @@
 package raze.spring.inventory.filter;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +28,7 @@ public class LoggingFilter implements Filter {
 
     private final ActivityService activityService;
     private final UserAccountService userAccountService;
+
 
     public LoggingFilter(ActivityService activityService, UserAccountService userAccountService) {
         this.activityService = activityService;
@@ -54,6 +58,7 @@ public class LoggingFilter implements Filter {
             String responseBody = new String(responseWrapper.getContentAsByteArray());
             responseWrapper.copyBodyToResponse();
 
+
             final String method = requestWrapper.getMethod().trim();
 //            if(!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")){
 ////                chain.doFilter(requestWrapper, responseWrapper);
@@ -66,14 +71,14 @@ public class LoggingFilter implements Filter {
 //            chain.doFilter(requestWrapper, responseWrapper);
           }
 
-           else logRequest(requestWrapper, responseWrapper, responseBody, method);
+           else logRequest(requestWrapper, responseWrapper, requestBody, responseBody, method);
 //            chain.doFilter(requestWrapper, responseWrapper);
 
         }
 
     }
 
-    private void logRequest(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper, String responseBody, String method) {
+    private void logRequest(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper,String requestBody, String responseBody, String method) throws IOException {
         final String path  = requestWrapper.getRequestURI();
 
         String userAgent = requestWrapper.getHeader("User-Agent");
@@ -86,6 +91,9 @@ public class LoggingFilter implements Filter {
         activity.setResponseStatus(responseWrapper.getStatus());
         activity.setUrl(requestWrapper.getRequestURI());
 
+        final ObjectMapper mapper = new ObjectMapper();
+        final JsonFactory jsonFactory = mapper.getFactory();
+        JsonParser jsonParser = jsonFactory.createParser(requestBody);
 
         activity.setRequestMethod(method);
         switch (Method.valueOf(method)) {
@@ -95,7 +103,7 @@ public class LoggingFilter implements Filter {
                     activity.setParameter(responseBody.replace("\"", ""));
                 }
                 if(path.contains("/v1/product")) {
-                    activity.setEntity("Product");
+                    activity.setEntity("product");
                     activity.setParameter(responseBody.replace("\"", ""));
                 }
                 if(path.contains("/v1/supplier")) {
@@ -118,67 +126,17 @@ public class LoggingFilter implements Filter {
                 break;
             }
             case PUT: {
-                if(path.contains("/v1/user")) {
-                    activity.setEntity("user");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/product")) {
-                    activity.setEntity("Product");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/supplier")) {
-                    activity.setEntity("supplier");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/customer")) {
-                    activity.setEntity("customer");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/sale-invoice")) {
-                    activity.setEntity("sale-invoice");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-
-                }
-                if(path.contains("/v1/purchase-invoice")) {
-                    activity.setEntity("purchase-invoice");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
+                setEntityAndParameter(requestBody, path, activity);
                 if(path.contains("/profile")) {
                     activity.setEntity("profile");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-            }
-            case DELETE: {
-                if(path.contains("/v1/user")) {
-                    activity.setEntity("user");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/product")) {
-                    activity.setEntity("Product");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/supplier")) {
-                    activity.setEntity("supplier");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/customer")) {
-                    activity.setEntity("customer");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-                }
-                if(path.contains("/v1/sale-invoice")) {
-                    activity.setEntity("sale-invoice");
-                    activity.setParameter(requestWrapper.getParameter("id"));
-
-                }
-                if(path.contains("/v1/purchase-invoice")) {
-                    activity.setEntity("purchase-invoice");
-                    activity.setParameter(requestWrapper.getParameter("id"));
                 }
                 break;
             }
-            default: {
-//                    chain.doFilter(requestWrapper, responseWrapper);
+            case DELETE: {
+                setEntityAndParameter(requestBody, path, activity);
+                break;
             }
+            default: { }
         }
 
 
@@ -205,6 +163,34 @@ public class LoggingFilter implements Filter {
                 activity.setCreated(existingActivity.getCreated());
             } else
                 activity = this.activityService.save(activity);
+        }
+    }
+
+    private void setEntityAndParameter(String requestBody, String path, Activity activity) {
+        final String[] strArr = requestBody.split(",");
+        for (String s : strArr) {
+            if(s.contains("\"id\":")) {
+                String id = s.replace("\"id\":", "").replace("\"", "").replace("{", "").replace(":", "");
+                activity.setParameter(id);
+            }
+        }
+        if(path.contains("/v1/user")) {
+            activity.setEntity("user");
+        }
+        if(path.contains("/v1/product")) {
+            activity.setEntity("product");
+        }
+        if(path.contains("/v1/supplier")) {
+            activity.setEntity("supplier");
+        }
+        if(path.contains("/v1/customer")) {
+            activity.setEntity("customer");
+        }
+        if(path.contains("/v1/sale-invoice")) {
+            activity.setEntity("sale-invoice");
+        }
+        if(path.contains("/v1/purchase-invoice")) {
+            activity.setEntity("purchase-invoice");
         }
     }
 

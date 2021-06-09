@@ -1,14 +1,14 @@
 package raze.spring.inventory.domain;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Length;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
+
 import java.util.UUID;
 
 @Entity
@@ -16,14 +16,8 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PurchaseTransaction {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
-    private UUID id;
+@SuperBuilder
+public class PurchaseTransaction extends BaseEntity {
 
     private String description;
 
@@ -35,35 +29,25 @@ public class PurchaseTransaction {
 
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
+
+    @Length(min = 3, max = 30, message = "size must be between 3 and 30")
+    private String productName;
+
 
 
 
     public UUID getProductId() {return  this.product != null ? product.getId() : null ;}
 
-
-
     @ManyToOne
     private PurchaseInvoice invoice;
 
-
-
-
-
-    private Timestamp createdDate;
-
-    private Timestamp modifiedDate;
-
     @PrePersist
-    public void beforeSave() {
-        if(createdDate == null) {
-            createdDate =  Timestamp.from(Instant.now());
+    public void beforeTrSave() {
+        if(this.product != null) {
+            this.productName = product.getName();
         }
     }
 
-    @PreUpdate
-    public void beforeUpdate() {
-        modifiedDate =  Timestamp.from(Instant.now());
-    }
 }

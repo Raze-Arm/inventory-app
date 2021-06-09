@@ -24,10 +24,10 @@ public class PurchaseTransactionToPurchaseTransactionDto implements Converter<Pu
         return PurchaseTransactionDto.builder()
                 .id(purchaseTransaction.getId())
                 .productId(product != null ? product.getId() : null)
+                .productName(purchaseTransaction.getProductName())
                 .price(purchaseTransaction.getPrice())
                 .description(purchaseTransaction.getDescription())
                 .quantity(purchaseTransaction.getQuantity())
-                .productName(product != null ? product.getName() : null)
                 .createdDate(dateMapper.asOffsetDateTime(purchaseTransaction.getCreatedDate()))
                 .build();
     }

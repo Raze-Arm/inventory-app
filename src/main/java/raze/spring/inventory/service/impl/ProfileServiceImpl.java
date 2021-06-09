@@ -19,10 +19,9 @@ import raze.spring.inventory.utility.FileUploadUtil;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -66,13 +65,17 @@ public class ProfileServiceImpl implements ProfileService {
 
 
 
-    private void saveImageFile(ProfileDto profileDto, UserProfile profileToSave) throws IOException {
+
+
+    static void saveImageFile(ProfileDto profileDto, UserProfile profileToSave, String photoDir) throws IOException {
         MultipartFile file = profileDto.getPhoto();
         if(file != null){
+            final String existingPhoto =  profileToSave.getPhotoPath();
+            if(existingPhoto != null) java.nio.file.Files.deleteIfExists(Path.of(existingPhoto));
             String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
 //            String uploadDir = "files/images/user-photos/" ;
-            FileUploadUtil.saveFile(PHOTO_DIR, fileName, file);
-            profileToSave.setPhotoPath(PHOTO_DIR + fileName);
+            FileUploadUtil.saveFile(photoDir, fileName, file);
+            profileToSave.setPhotoPath(photoDir + fileName);
         }
     }
 
@@ -95,7 +98,7 @@ public class ProfileServiceImpl implements ProfileService {
             if(password != null)account.setPassword(passwordEncoder.encode(password));
             profileToEdit.setAccount(account);
         }
-        saveImageFile(profileDto, profileToEdit);
+        saveImageFile(profileDto, profileToEdit, PHOTO_DIR);
         this.userProfileRepository.save(profileToEdit);
 
     }

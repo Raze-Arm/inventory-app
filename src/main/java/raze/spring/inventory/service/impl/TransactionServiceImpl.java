@@ -7,9 +7,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.converter.PurchaseTransactionToPurchaseTransactionDto;
 import raze.spring.inventory.converter.SaleTransactionToSaleTransactionDto;
+import raze.spring.inventory.converter.TransactionViewToTransactionDto;
 import raze.spring.inventory.domain.dto.PurchaseTransactionDto;
 import raze.spring.inventory.domain.dto.SaleTransactionDto;
-import raze.spring.inventory.domain.view.TransactionView;
+import raze.spring.inventory.domain.dto.TransactionDto;
 import raze.spring.inventory.repository.PurchaseTransactionRepository;
 import raze.spring.inventory.repository.SaleTransactionRepository;
 import raze.spring.inventory.repository.TransactionViewRepository;
@@ -22,23 +23,25 @@ public class TransactionServiceImpl implements TransactionService {
     private final SaleTransactionRepository saleTrRepository;
     private final PurchaseTransactionToPurchaseTransactionDto purchaseToPurchaseDto;
     private final SaleTransactionToSaleTransactionDto saleToSaleDto;
+    private final TransactionViewToTransactionDto transactionViewToTransactionDto;
 
-    public TransactionServiceImpl(TransactionViewRepository transactionViewRepository, PurchaseTransactionRepository purchaseTrRepository, SaleTransactionRepository saleTrRepository, PurchaseTransactionToPurchaseTransactionDto purchaseToPurchaseDto, SaleTransactionToSaleTransactionDto saleToSaleDto) {
+    public TransactionServiceImpl(TransactionViewRepository transactionViewRepository, PurchaseTransactionRepository purchaseTrRepository, SaleTransactionRepository saleTrRepository, PurchaseTransactionToPurchaseTransactionDto purchaseToPurchaseDto, SaleTransactionToSaleTransactionDto saleToSaleDto, TransactionViewToTransactionDto transactionViewToTransactionDto) {
         this.transactionViewRepository = transactionViewRepository;
         this.purchaseTrRepository = purchaseTrRepository;
         this.saleTrRepository = saleTrRepository;
         this.purchaseToPurchaseDto = purchaseToPurchaseDto;
         this.saleToSaleDto = saleToSaleDto;
+        this.transactionViewToTransactionDto = transactionViewToTransactionDto;
     }
 
 
     @Override
-    public Page<TransactionView> getTransactionPage(int page, int size, String sort, String search) {
+    public Page<TransactionDto> getTransactionPage(int page, int size, String sort, String search) {
         final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
         if(search == null || search.length() == 0) {
-            return  this.transactionViewRepository.findAll(pageable);
+            return  this.transactionViewRepository.findAll(pageable).map(transactionViewToTransactionDto::convert);
         } else {
-            return  this.transactionViewRepository.findAll(pageable, search);
+            return  this.transactionViewRepository.findAll(pageable, search).map(transactionViewToTransactionDto::convert);
         }
     }
 

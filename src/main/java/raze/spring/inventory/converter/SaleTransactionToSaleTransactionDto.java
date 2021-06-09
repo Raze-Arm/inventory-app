@@ -23,7 +23,7 @@ public class SaleTransactionToSaleTransactionDto implements Converter<SaleTransa
         return SaleTransactionDto.builder()
                 .id(saleTransaction.getId())
                 .productId(product != null ? product.getId() : null)
-                .productName(product != null ? product.getName() : null)
+                .productName(saleTransaction.getProductName())
                 .price(saleTransaction.getPrice())
                 .quantity(saleTransaction.getQuantity())
                 .description(saleTransaction.getDescription())

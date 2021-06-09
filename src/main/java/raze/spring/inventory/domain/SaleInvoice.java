@@ -1,29 +1,23 @@
 package raze.spring.inventory.domain;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
-@Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class SaleInvoice {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID" , strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    @Column(length = 36 , columnDefinition = "varchar(36)", updatable = false, nullable = false)
-    private UUID id;
+@SuperBuilder
+@Entity
+public class SaleInvoice extends BaseEntity {
 
 
 
@@ -41,14 +35,11 @@ public class SaleInvoice {
 
 
 
-    private Timestamp createdDate;
-
-    private Timestamp modifiedDate;
-
     @PrePersist
     public void beforeSave() {
-        if(createdDate == null) {
-            createdDate =  Timestamp.from(Instant.now());
+        if(this.getCreatedDate() == null) {
+            final LocalDateTime localDateTime = Instant.now().atZone(ZoneId.of("Asia/Tehran")).toLocalDateTime();
+            this.setCreatedDate(Timestamp.valueOf(localDateTime));
         }
 
         if(transactions != null) transactions.forEach(t -> t.setInvoice(this));
@@ -57,7 +48,8 @@ public class SaleInvoice {
 
     @PreUpdate
     public void beforeUpdate() {
-        modifiedDate =  Timestamp.from(Instant.now());
+        final LocalDateTime localDateTime = Instant.now().atZone(ZoneId.of("Asia/Tehran")).toLocalDateTime();
+        this.setModifiedDate(Timestamp.valueOf(localDateTime));
 
         if(transactions != null) transactions.forEach(t -> t.setInvoice(this));
 

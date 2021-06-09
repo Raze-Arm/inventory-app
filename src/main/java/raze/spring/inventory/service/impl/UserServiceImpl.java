@@ -1,6 +1,5 @@
 package raze.spring.inventory.service.impl;
 
-import com.google.common.io.Files;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import raze.spring.inventory.converter.UserProfileDtoToUserProfile;
 import raze.spring.inventory.converter.UserProfileToUserProfileDto;
 import raze.spring.inventory.domain.UserProfile;
@@ -17,7 +15,6 @@ import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.repository.UserProfileRepository;
 import raze.spring.inventory.security.model.UserAccount;
 import raze.spring.inventory.service.UserService;
-import raze.spring.inventory.utility.FileUploadUtil;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -53,10 +50,21 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
+    @Transactional
     @Override
     public Resource getUserPhoto(UUID id) throws MalformedURLException {
         final UserProfile profile = this.userProfileRepository.findById(id).orElse(null);
+        return getPhotoResource(profile);
+    }
+
+    @Transactional
+    @Override
+    public Resource getUserPhotoByUsername(String username) throws MalformedURLException {
+        final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
+        return getPhotoResource(profile);
+    }
+
+    private Resource getPhotoResource(UserProfile profile) throws MalformedURLException {
         String photoPath;
         if(profile == null || profile.getPhotoPath() == null) {
 //            photoPath = PHOTO_DIR + "placeholder/profile-placeholder.jpg";
@@ -68,6 +76,7 @@ public class UserServiceImpl implements UserService {
         if(resource.exists()) return resource;
         else throw new MalformedURLException();
     }
+
     @Transactional
     @Override
     public ProfileDto getUser(UUID id) {
@@ -83,13 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void saveImageFile(ProfileDto profileDto, UserProfile profileToSave) throws IOException {
-        MultipartFile file = profileDto.getPhoto();
-        if(file != null){
-            String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
-//            String uploadDir = "files/images/user-photos/" ;
-            FileUploadUtil.saveFile(PHOTO_DIR, fileName, file);
-            profileToSave.setPhotoPath(PHOTO_DIR + fileName);
-        }
+        ProfileServiceImpl.saveImageFile(profileDto, profileToSave, PHOTO_DIR);
     }
     @Transactional
     @Override
