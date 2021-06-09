@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(indexes = @Index(columnList = "firstName, lastName"))
 public class Customer extends BaseEntity {
 
-    @NotBlank(message = "last name is mandatory")
+    @NotBlank(message = "first name is mandatory")
     @Length(min = 3, max = 30, message = "size must be between 3 and 30")
     private String firstName;
     @NotBlank(message = "last name is mandatory")

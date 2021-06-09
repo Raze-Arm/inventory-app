@@ -29,11 +29,10 @@ public class UserAccount implements UserDetails, Principal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
-    @NotBlank(message = "last name is mandatory")
+    @NotBlank(message = "username is mandatory")
     @Length(min = 4, max = 30, message = "size must be between 4 and 30")
     private String username;
-    @NotBlank(message = "last name is mandatory")
-    @Length(min = 8, max = 35, message = "size must be between 8 and 35")
+    @NotBlank(message = "password is mandatory")
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRoles  ;
