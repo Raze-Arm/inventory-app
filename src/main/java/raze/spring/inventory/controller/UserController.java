@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
-@RestController
+@RestController()
+@RequestMapping("/v1")
 public class UserController {
     private final UserService userService;
 
