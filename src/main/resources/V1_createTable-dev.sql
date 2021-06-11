@@ -56,13 +56,13 @@ create index IDXshil01lken9uud5fvqe7g1t58 on user_profile (first_name, last_name
 
 CREATE OR REPLACE VIEW product_view AS
 (SELECT
-     p.id AS id,
+     p.id ,
 
-     p.name AS name,
-     p.description AS description,
-     p.price AS price,
-     p.sale_price AS SALE_PRICE,
-     p.created_date AS CREATED_DATE,
+     p.name ,
+     p.description ,
+     p.price ,
+     p.sale_price ,
+     p.created_date ,
      p.image_available ,
 
      (CASE WHEN it.quantity IS NOT NULL THEN it.quantity ELSE 0 END ) - (CASE
