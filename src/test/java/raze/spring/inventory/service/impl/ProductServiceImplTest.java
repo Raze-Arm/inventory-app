@@ -16,6 +16,7 @@ import raze.spring.inventory.domain.view.ProductView;
 import raze.spring.inventory.repository.ProductRepository;
 import raze.spring.inventory.repository.ProductViewRepository;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -90,7 +91,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void saveProduct() {
+    void saveProduct() throws IOException {
         final ProductDto productDto = ProductDto.builder().name(NAME).price(PRICE).salePrice(SALE_PRICE).build();
 
         final UUID id = this.productService.saveProduct(productDto);
@@ -103,7 +104,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void updateProduct() {
+    void updateProduct() throws IOException {
         final Product product = Product.builder().name(NAME).price(PRICE).salePrice(SALE_PRICE).build();
         this.productRepository.save(product);
 

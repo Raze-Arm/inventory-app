@@ -1,6 +1,7 @@
 package raze.spring.inventory.initial;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.boot.CommandLineRunner;
 
 import org.springframework.context.annotation.Profile;
@@ -15,7 +16,9 @@ import raze.spring.inventory.service.ProfileService;
 import raze.spring.inventory.service.UserService;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.UUID;
 
@@ -160,6 +163,7 @@ public class AppInitializerDev implements CommandLineRunner {
         SaleInvoice palizanInvoice2 = SaleInvoice.builder().customer(palizanCustomer).transactions(saleList4).build();
         SaleInvoice sharifianInvoice1 = SaleInvoice.builder().customer(sharifianCustomer).transactions(saleList5).build();
 
+        FileUtils.cleanDirectory(new File("files/images/"));
         purchaseInvoiceRepository.saveAll(
             Set.of(adibInvoice1, adibInvoice2, zareiInvoice1, zareiInvoice2));
 

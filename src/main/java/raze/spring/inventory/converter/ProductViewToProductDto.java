@@ -28,6 +28,7 @@ public class ProductViewToProductDto implements Converter<ProductView, ProductDt
                     .salePrice(product.getSalePrice())
                     .quantity(product.getQuantity())
                     .description(product.getDescription())
+                    .imageAvailable(product.getImageAvailable())
                     .createdDate(dateMapper.asOffsetDateTime(product.getCreatedDate()))
                 .build();
     }

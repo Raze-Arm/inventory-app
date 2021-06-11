@@ -2,6 +2,7 @@ package raze.spring.inventory.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -24,6 +25,9 @@ public class ProductDto {
     private BigDecimal price;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal salePrice;
+
+    private MultipartFile image;
+    private Boolean imageAvailable;
 
     private String description;
 

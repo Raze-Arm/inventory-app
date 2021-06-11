@@ -11,11 +11,13 @@ public class ProductDtoToProduct implements Converter<ProductDto, Product> {
     @Synchronized
     @Override
     public Product convert(ProductDto productDto) {
-        return Product.builder()
+        final Product product =  Product.builder()
                 .name(productDto.getName())
                 .price(productDto.getPrice())
                 .salePrice(productDto.getSalePrice())
                 .description(productDto.getDescription())
                 .build();
+        if(productDto.getImage() != null) product.setImageAvailable(true);
+        return  product;
     }
 }

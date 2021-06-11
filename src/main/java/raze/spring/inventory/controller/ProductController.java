@@ -1,5 +1,6 @@
 package raze.spring.inventory.controller;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +8,8 @@ import raze.spring.inventory.service.ProductService;
 import raze.spring.inventory.domain.dto.ProductDto;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,16 +38,19 @@ public class ProductController {
     public ResponseEntity<ProductDto> getProduct(@PathVariable("id")UUID id){
         return ResponseEntity.ok(this.productService.getProduct(id));
     }
-
+    @GetMapping(path = {"/download/product/{id}"})
+    public ResponseEntity<Resource> downloadProductImage(@PathVariable UUID id) {
+        return ResponseEntity.ok(this.productService.getProductImage(id));
+    }
 
     @PostMapping(path = {"/product", "/product/"})
-    public ResponseEntity<UUID> postProduct(@Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<UUID> postProduct(@Valid @ModelAttribute ProductDto productDto) throws IOException {
         return ResponseEntity.ok(this.productService.saveProduct(productDto));
     }
 
 
     @PutMapping(path = {"/product", "/product/"})
-    public ResponseEntity<Void>  updateProduct(@Valid@RequestBody ProductDto productDto) {
+    public ResponseEntity<Void>  updateProduct(@Valid@ModelAttribute ProductDto productDto) throws IOException {
         this.productService.updateProduct(productDto);
         return ResponseEntity.ok().build();
     }

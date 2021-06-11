@@ -61,7 +61,7 @@ public class PurchaseInvoiceServiceImpl implements PurchaseInvoiceService {
     @Transactional
     @Override
     public UUID saveInvoice(PurchaseInvoiceDto invoiceDto) {
-
+        if(invoiceDto.getTransactions() == null) throw new NullPointerException("Null Transactions");
         final PurchaseInvoice invoice =
             this.invoiceRepository.save(
                 Objects.requireNonNull(this.invoiceDtoToInvoice.convert(invoiceDto)));

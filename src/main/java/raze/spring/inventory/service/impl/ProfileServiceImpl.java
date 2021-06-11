@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 @Service
 public class ProfileServiceImpl implements ProfileService {
     private final static String PHOTO_DIR = "files/images/user-photos/";
+
     private final UserProfileRepository userProfileRepository;
     private final UserProfileDtoToUserProfile profileDtoToProfile;
     private final UserProfileToUserProfileDto profileToProfileDto;
