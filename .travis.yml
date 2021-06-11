@@ -27,3 +27,6 @@ deploy:
   script: bash ./deploy.sh
   on:
     branch: main
+
+after_deploy:
+  - echo "y" | fandogh service reset --service mege-electric-nginx
