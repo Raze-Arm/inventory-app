@@ -10,7 +10,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
+@RestController()
+@RequestMapping("/v1")
 public class SaleInvoiceController {
     private final SaleInvoiceService invoiceService;
 

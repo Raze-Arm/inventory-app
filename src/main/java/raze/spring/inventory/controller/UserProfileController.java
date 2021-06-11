@@ -11,7 +11,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-@RestController
+@RestController()
+@RequestMapping("/v1")
 public class UserProfileController {
     private final ProfileService profileService;
 

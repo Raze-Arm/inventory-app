@@ -7,4 +7,6 @@ fandogh service apply -f app-deployment.yml  \
                  -p JWT_TOKEN=$JWT_TOKEN  -p JWT_TOKEN_EXPIRE=$JWT_TOKEN_EXPIRE -p JWT_TOKEN_PREFIX=$JWT_TOKEN_PREFIX \
                  -p MYSQL_USERNAME=$MYSQL_USERNAME -p MYSQL_PASSWORD=$MYSQL_PASSWORD -p MYSQL_HOST=$MYSQL_HOST  \
                  -p MYSQL_DB_NAME=$MYSQL_DB_NAME
-                 
+
+
+fandogh service reset mege-electric-nginx

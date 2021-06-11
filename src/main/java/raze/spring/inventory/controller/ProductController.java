@@ -13,7 +13,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
+@RestController()
+@RequestMapping("/v1")
 public class ProductController {
     private final ProductService productService;
 
