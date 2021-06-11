@@ -21,7 +21,7 @@ create sequence hibernate_sequence start with 1 increment by 1;
 -- ////////////////////////////////////////////////////////////TABLES
 create table activity (id bigint not null, created timestamp, last_updated timestamp, entity varchar(255), expires varchar(255), ip varchar(255), parameter varchar(255), request_method varchar(255), response_status integer, url varchar(255), user_agent varchar(255), user_id bigint, primary key (id));
 create table customer (id varchar(36) not null, address varchar(255), created_date timestamp, first_name varchar(255), last_name varchar(255), modified_date timestamp, primary key (id));
-create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), primary key (id));
+create table product (id varchar(36) not null, created_date timestamp, modified_date timestamp, name varchar(255), price decimal(19,2), sale_price decimal(19,2), description varchar(255), image_available boolean default false, primary key (id));
 create table purchase_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, supplier_id varchar(36), primary key (id));
 create table purchase_transaction (id varchar(36) not null, created_date timestamp, description varchar(255), modified_date timestamp, price decimal(19,2), quantity bigint, invoice_id varchar(36), product_id varchar(36), product_name varchar(255), primary key (id));
 create table sale_invoice (id varchar(36) not null, created_date timestamp, modified_date timestamp, customer_id varchar(36), primary key (id));
@@ -63,6 +63,7 @@ CREATE OR REPLACE VIEW product_view AS
      p.price AS price,
      p.sale_price AS SALE_PRICE,
      p.created_date AS CREATED_DATE,
+     p.image_available ,
 
      (CASE WHEN it.quantity IS NOT NULL THEN it.quantity ELSE 0 END ) - (CASE
                                                                              WHEN s.quantity IS NOT NULL THEN s.quantity

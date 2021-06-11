@@ -31,6 +31,7 @@ public class Product  extends BaseEntity{
     @Min(value = 0, message = "must be greater than or equal 0")
     private BigDecimal salePrice;
 
+    private Boolean imageAvailable = false;
 
 
 

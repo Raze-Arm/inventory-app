@@ -26,5 +26,6 @@ public class ProductView {
       private BigDecimal price;
       private BigDecimal salePrice;
       private Long quantity;
+      private Boolean imageAvailable;
       private Timestamp createdDate;
 }

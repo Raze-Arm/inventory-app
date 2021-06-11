@@ -66,7 +66,7 @@ public class LoggingFilter implements Filter {
 
           if ((!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")) ||
                   responseWrapper.getStatus() >= 400
-              || requestWrapper.getRequestURL().toString().contains("image")
+//              || requestWrapper.getRequestURL().toString().contains("image")
               || requestWrapper.getRequestURL().toString().equals("/") ) {
 //            chain.doFilter(requestWrapper, responseWrapper);
           }
@@ -126,14 +126,14 @@ public class LoggingFilter implements Filter {
                 break;
             }
             case PUT: {
-                setEntityAndParameter(requestBody, path, activity);
+                setEntityAndParameter(requestBody, path, activity, requestWrapper);
                 if(path.contains("/profile")) {
                     activity.setEntity("profile");
                 }
                 break;
             }
             case DELETE: {
-                setEntityAndParameter(requestBody, path, activity);
+                setEntityAndParameter(requestBody, path, activity,requestWrapper);
                 break;
             }
             default: { }
@@ -166,7 +166,7 @@ public class LoggingFilter implements Filter {
         }
     }
 
-    private void setEntityAndParameter(String requestBody, String path, Activity activity) {
+    private void setEntityAndParameter(String requestBody, String path, Activity activity, ContentCachingRequestWrapper requestWrapper) {
         final String[] strArr = requestBody.split(",");
         for (String s : strArr) {
             if(s.contains("\"id\":")) {
@@ -176,9 +176,11 @@ public class LoggingFilter implements Filter {
         }
         if(path.contains("/v1/user")) {
             activity.setEntity("user");
+            activity.setParameter(requestWrapper.getParameter("id"));
         }
         if(path.contains("/v1/product")) {
             activity.setEntity("product");
+            activity.setParameter(requestWrapper.getParameter("id"));
         }
         if(path.contains("/v1/supplier")) {
             activity.setEntity("supplier");
