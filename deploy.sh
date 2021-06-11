@@ -9,4 +9,4 @@ fandogh service apply -f app-deployment.yml  \
                  -p MYSQL_DB_NAME=$MYSQL_DB_NAME
 
 
-fandogh service reset mege-electric-nginx
+fandogh service reset --service mege-electric-nginx <<< "Y"
