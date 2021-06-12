@@ -17,6 +17,7 @@ public interface ProductService {
     ProductDto getProduct(UUID id);
 
     Resource getProductImage(UUID id) ;
+    Resource getProductSmallImage(UUID id);
     UUID saveProduct(ProductDto productDto) throws IOException;
 
     void updateProduct(ProductDto productDto) throws IOException;

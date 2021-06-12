@@ -63,8 +63,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             new JwtTokenVerifier(this.userSessionService, secretKey, jwtConfig),
             JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeRequests()
-            .antMatchers("/h2-console/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
+//            .antMatchers("/h2-console/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
             .antMatchers("/v1/download/product/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
+            .antMatchers("/v1/download/small/product/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
         .anyRequest()
         .authenticated()
         .and()

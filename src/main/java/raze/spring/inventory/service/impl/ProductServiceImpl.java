@@ -25,10 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -84,7 +82,25 @@ public class ProductServiceImpl implements ProductService {
     public Resource getProductImage(UUID id)  {
         final Product product =this.productRepository.findById(id).orElse(null);
         try{
-            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString());
+            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString()+ ".original.");
+            if(result.size() > 0) {
+
+                Resource resource =new  UrlResource(result.get(0).toAbsolutePath().toUri());
+                if(resource.exists())return  resource;
+                else throw new MalformedURLException();
+            }
+        }catch (IOException e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Resource getProductSmallImage(UUID id) {
+        final Product product =this.productRepository.findById(id).orElse(null);
+        try{
+            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString() + ".small.");
             if(result.size() > 0) {
 
                 Resource resource =new  UrlResource(result.get(0).toAbsolutePath().toUri());
@@ -128,7 +144,7 @@ public class ProductServiceImpl implements ProductService {
 //            final String existingImage =  product.getId()+"/"+ product.getName() + ".original.";
             final boolean isDir = java.nio.file.Files.isDirectory(Path.of(IMAGE_DIR + product.getId()));
             if(isDir) FileUtils.deleteDirectory(new File(IMAGE_DIR + product.getId()));
-            String fileName =  product.getId() + ".original." + Files.getFileExtension(file.getResource().getFilename());
+            String fileName =  product.getId() + ".original."+ Date.from(Instant.now()).toString() + "." + Files.getFileExtension(file.getResource().getFilename());
             FileUploadUtil.saveFile(imageDir + product.getId() + "/", fileName, file);
         }
     }
