@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import raze.spring.inventory.Exception.ObjectNotFoundException;
 import raze.spring.inventory.converter.UserProfileDtoToUserProfile;
 import raze.spring.inventory.converter.UserProfileToUserProfileDto;
 import raze.spring.inventory.domain.UserProfile;
@@ -86,8 +88,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ProfileDto getUserByUsername(String username) {
+    public ProfileDto getUserByUsername(String username) throws UsernameNotFoundException {
         final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
+        if(profile == null) throw new UsernameNotFoundException("Username not found");
         return  profile != null ? this.profileToProfileDto.convert(profile) : null;
     }
 

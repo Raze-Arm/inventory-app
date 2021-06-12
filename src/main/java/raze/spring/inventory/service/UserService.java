@@ -2,6 +2,8 @@ package raze.spring.inventory.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import raze.spring.inventory.Exception.ObjectNotFoundException;
 import raze.spring.inventory.domain.dto.ProfileDto;
 
 import java.io.IOException;
@@ -19,7 +21,7 @@ public interface UserService {
 
     ProfileDto getUser(UUID id);
 
-    ProfileDto getUserByUsername(String username);
+    ProfileDto getUserByUsername(String username) throws  UsernameNotFoundException;
 
     void updateUser(ProfileDto profileDto) throws IOException;
 

@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import raze.spring.inventory.Exception.ObjectNotFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -31,6 +33,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             new HttpHeaders(),
             HttpStatus.FORBIDDEN,
             webRequest);
+    }
+    @ExceptionHandler({UsernameNotFoundException.class})
+    protected ResponseEntity<Object> handleIllegalException(Exception ex, WebRequest webRequest) {
+        return  handleExceptionInternal(
+                ex,
+                ex.getMessage(),
+                new HttpHeaders(),
+                HttpStatus.UNAUTHORIZED,
+                webRequest
+        );
     }
 
     @ExceptionHandler({TransactionSystemException.class})

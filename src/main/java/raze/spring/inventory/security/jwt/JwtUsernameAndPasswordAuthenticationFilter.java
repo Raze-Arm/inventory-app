@@ -3,6 +3,7 @@ package raze.spring.inventory.security.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
-
+@Slf4j
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final UserSessionService userSessionService;
     private final AuthenticationManager authenticationManager;
@@ -79,6 +80,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         this.userSessionService.insertSession(new UserSession(username, token));
         response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix()+ " " + token);
     }
+
+
 
 
 }
