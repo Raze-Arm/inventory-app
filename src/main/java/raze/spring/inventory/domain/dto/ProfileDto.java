@@ -2,6 +2,7 @@ package raze.spring.inventory.domain.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import raze.spring.inventory.security.role.UserRole;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProfileDto {
     private UUID id ;
     private String firstName;
