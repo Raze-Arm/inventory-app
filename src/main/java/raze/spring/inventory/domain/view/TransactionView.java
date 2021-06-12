@@ -21,7 +21,10 @@ public class TransactionView {
     @Id
     @Type(type="uuid-char")
     private UUID id;
+    @Type(type="uuid-char")
+    private UUID productId;
     private String productName;
+    private Boolean imageAvailable;
     private BigDecimal price;
     private Long quantity;
     private String type;

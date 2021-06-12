@@ -25,6 +25,7 @@ public class PurchaseTransactionToPurchaseTransactionDto implements Converter<Pu
                 .id(purchaseTransaction.getId())
                 .productId(product != null ? product.getId() : null)
                 .productName(purchaseTransaction.getProductName())
+                .imageAvailable(product != null ? product.getImageAvailable() : null)
                 .price(purchaseTransaction.getPrice())
                 .description(purchaseTransaction.getDescription())
                 .quantity(purchaseTransaction.getQuantity())

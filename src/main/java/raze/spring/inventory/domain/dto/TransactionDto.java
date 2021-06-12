@@ -17,7 +17,9 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionDto {
     private UUID id;
+    private UUID productId;
     private String productName;
+    private Boolean imageAvailable;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal price;
     private Long quantity;

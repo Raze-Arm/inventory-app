@@ -18,6 +18,7 @@ public class PurchaseTransactionDto {
     private UUID id;
     private UUID productId;
     private String productName;
+    private Boolean imageAvailable;
     private Long quantity;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal price;

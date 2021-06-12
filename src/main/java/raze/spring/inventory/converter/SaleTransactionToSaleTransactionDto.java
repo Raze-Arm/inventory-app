@@ -24,6 +24,7 @@ public class SaleTransactionToSaleTransactionDto implements Converter<SaleTransa
                 .id(saleTransaction.getId())
                 .productId(product != null ? product.getId() : null)
                 .productName(saleTransaction.getProductName())
+                .imageAvailable(product != null ? product.getImageAvailable() : null)
                 .price(saleTransaction.getPrice())
                 .quantity(saleTransaction.getQuantity())
                 .description(saleTransaction.getDescription())
