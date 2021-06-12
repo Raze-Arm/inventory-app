@@ -44,6 +44,11 @@ public class ProductController {
         return ResponseEntity.ok(this.productService.getProductImage(id));
     }
 
+    @GetMapping(path = {"/download/small/product/{id}"})
+    public ResponseEntity<Resource> downloadSmallProductImage(@PathVariable UUID id) {
+        return ResponseEntity.ok(this.productService.getProductSmallImage(id));
+    }
+
     @PostMapping(path = {"/product", "/product/"})
     public ResponseEntity<UUID> postProduct(@Valid @ModelAttribute ProductDto productDto) throws IOException {
         return ResponseEntity.ok(this.productService.saveProduct(productDto));
