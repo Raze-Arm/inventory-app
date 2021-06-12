@@ -1,5 +1,6 @@
 package raze.spring.inventory.security.service.impl;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.security.model.UserAccount;
@@ -19,9 +20,9 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public UserAccount getUserByUsername(String username) throws NoSuchElementException {
-        final UserAccount userAccount = this.userAccountRepository.findByUsername(username).orElseThrow();
-
+    public UserAccount getUserByUsername(String username) throws UsernameNotFoundException {
+        final UserAccount userAccount = this.userAccountRepository.findByUsername(username).orElse(null);
+        if(userAccount == null) throw new UsernameNotFoundException("Username " + username + " not found");
         return userAccount;
     }
 

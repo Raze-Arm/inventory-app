@@ -1,6 +1,7 @@
 package raze.spring.inventory.security.service.impl;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import raze.spring.inventory.security.model.UserAccount;
 import raze.spring.inventory.security.service.UserAccountService;
 
 
+@Slf4j
 @Service("appUserDetailService")
 public class UserDetailServiceImpl implements UserDetailsService {
     private final UserAccountService userAccountService;
@@ -23,6 +25,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         final UserAccount userAccount = this.userAccountService.getUserByUsername(username);
+
 //    final AppUserDetail appUserDetail =
 //        AppUserDetail.builder()
 //                .id(userAccount.getId())

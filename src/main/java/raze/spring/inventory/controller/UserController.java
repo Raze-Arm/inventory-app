@@ -4,6 +4,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.service.UserService;
@@ -46,7 +47,7 @@ public class UserController {
 
     @GetMapping(path = {"/user"}, params = {"username"})
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProfileDto> getUserByUsername(@RequestParam("username") String username) {
+    public ResponseEntity<ProfileDto> getUserByUsername(@RequestParam("username") String username) throws UsernameNotFoundException {
         return ResponseEntity.ok(this.userService.getUserByUsername(username));
     }
 

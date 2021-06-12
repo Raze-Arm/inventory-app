@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,13 +11,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import raze.spring.inventory.security.exception.CustomAccessDeniedHandler;
+import raze.spring.inventory.security.exception.CustomAuthenticationEntryPoint;
 import raze.spring.inventory.security.jwt.JwtConfig;
 import raze.spring.inventory.security.jwt.JwtTokenVerifier;
 import raze.spring.inventory.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
@@ -37,14 +34,18 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserSessionService userSessionService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
 
-    public AppSecurityConfig(PasswordEncoder passwordEncoder, @Qualifier("appUserDetailService") UserDetailsService userDetailsService, UserSessionService userSessionService, SecretKey secretKey, JwtConfig jwtConfig) {
+    public AppSecurityConfig(PasswordEncoder passwordEncoder, @Qualifier("appUserDetailService") UserDetailsService userDetailsService, UserSessionService userSessionService, SecretKey secretKey, JwtConfig jwtConfig, CustomAuthenticationEntryPoint customAuthenticationEntryPoint, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.userSessionService = userSessionService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     @Override
@@ -84,8 +85,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             })
         .and()
         .exceptionHandling()
-        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-    ;
+        .authenticationEntryPoint(customAuthenticationEntryPoint)
+        .accessDeniedHandler(customAccessDeniedHandler);
     }
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource() {
@@ -110,6 +111,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
+        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         return daoAuthenticationProvider;
     }
 
