@@ -82,7 +82,7 @@ FROM
          st.product_id, (SUM(st.quantity)) AS quantity
      FROM
          sale_transaction st
-     GROUP BY st.product_id) AS s ON p.id = s.product_id) LIMIT 100;
+     GROUP BY st.product_id) AS s ON p.id = s.product_id) LIMIT 1000;
 
 -- ////////////////////////////////////////////////////////////INVOICE_VIEW
 CREATE OR REPLACE VIEW invoice_view AS
@@ -110,23 +110,27 @@ FROM
          id, first_name, last_name
      FROM
          customer) AS c ON si.customer_id = c.id)
-LIMIT 100;
+LIMIT 1000;
 
 -- ////////////////////////////////////////////////////////////TRANSACTION_VIEW
 CREATE OR REPLACE VIEW transaction_view AS
 (SELECT
-     t.id,
-     t.product_name,
-     t.price,
-     t.quantity,
-     t.type,
-     t.created_date
+        tr.id,
+        tr.product_id,
+        tr.product_name,
+        tr.price,
+        tr.quantity,
+        tr.TYPE,
+        tr.created_date,
+        p.image_available
 FROM
     (SELECT
          *, 'purchase' AS TYPE
      FROM
-         purchase_transaction tr UNION ALL SELECT
+         purchase_transaction tr UNION  SELECT
          *, 'sale' AS TYPE
      FROM
-         sale_transaction st) AS t
-)LIMIT 100
+         sale_transaction st) AS tr
+          LEFT JOIN (SELECT id as i , image_available FROM
+             product pr) AS p  ON tr.product_id = p.i
+) LIMIT 1000;

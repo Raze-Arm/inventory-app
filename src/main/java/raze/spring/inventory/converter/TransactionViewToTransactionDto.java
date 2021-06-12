@@ -20,7 +20,9 @@ public class TransactionViewToTransactionDto implements Converter<TransactionVie
     public TransactionDto convert(TransactionView transactionView) {
         return TransactionDto.builder()
                 .id(transactionView.getId())
+                .productId(transactionView.getProductId())
                 .productName(transactionView.getProductName())
+                .imageAvailable(transactionView.getImageAvailable())
                 .price(transactionView.getPrice())
                 .quantity(transactionView.getQuantity())
                 .type(transactionView.getType())
