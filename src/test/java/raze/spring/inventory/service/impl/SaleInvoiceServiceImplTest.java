@@ -6,18 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
+import raze.spring.inventory.domain.*;
+import raze.spring.inventory.domain.dto.PurchaseTransactionDto;
+import raze.spring.inventory.repository.*;
+import raze.spring.inventory.service.PurchaseInvoiceService;
 import raze.spring.inventory.service.SaleInvoiceService;
-import raze.spring.inventory.domain.Customer;
-import raze.spring.inventory.domain.Product;
-import raze.spring.inventory.domain.SaleInvoice;
-import raze.spring.inventory.domain.SaleTransaction;
 import raze.spring.inventory.domain.dto.CustomerDto;
 import raze.spring.inventory.domain.dto.SaleInvoiceDto;
 import raze.spring.inventory.domain.dto.SaleTransactionDto;
-import raze.spring.inventory.repository.CustomerRepository;
-import raze.spring.inventory.repository.ProductRepository;
-import raze.spring.inventory.repository.SaleInvoiceRepository;
-import raze.spring.inventory.repository.SaleTransactionRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -60,6 +56,9 @@ class SaleInvoiceServiceImplTest {
     @Autowired
     private SaleInvoiceService invoiceService;
 
+    @Autowired
+    private PurchaseTransactionRepository purchaseTransactionRepository;
+
     SaleTransaction transaction;
     SaleInvoice invoice;
     @BeforeEach
@@ -101,6 +100,8 @@ class SaleInvoiceServiceImplTest {
         this.productRepository.save(product);
         final Customer customer = Customer.builder().firstName(FIRST_NAME).build();
         this.customerRepository.save(customer);
+        final PurchaseTransaction purchaseTransaction = PurchaseTransaction.builder().quantity(QUANTITY + 2) .product(product).build();
+
         final SaleTransactionDto  transactionDto = SaleTransactionDto.builder().quantity(QUANTITY).productId(product.getId()).build();
         final SaleInvoiceDto invoiceDto =
             SaleInvoiceDto.builder()
@@ -108,6 +109,8 @@ class SaleInvoiceServiceImplTest {
                 .customer(CustomerDto.builder().id(customer.getId()).firstName(FIRST_NAME).build())
                 .build();
 
+
+        this.purchaseTransactionRepository.save(purchaseTransaction);
         final UUID id = this.invoiceService.saveInvoice(invoiceDto);
         final  SaleInvoice savedInvoice =  this.invoiceRepository.findById(id).orElseThrow();
         assertNotNull(id);
