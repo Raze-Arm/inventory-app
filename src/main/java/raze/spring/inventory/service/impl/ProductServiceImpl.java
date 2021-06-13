@@ -82,7 +82,8 @@ public class ProductServiceImpl implements ProductService {
     public Resource getProductImage(UUID id)  {
         final Product product =this.productRepository.findById(id).orElse(null);
         try{
-            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString()+ ".original.");
+            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), ".original.");
+//            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString()+ ".original.");
             if(result.size() > 0) {
 
                 Resource resource =new  UrlResource(result.get(0).toAbsolutePath().toUri());
@@ -100,7 +101,8 @@ public class ProductServiceImpl implements ProductService {
     public Resource getProductSmallImage(UUID id) {
         final Product product =this.productRepository.findById(id).orElse(null);
         try{
-            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString() + ".small.");
+//            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString() + ".small.");
+            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), ".small.");
             if(result.size() > 0) {
 
                 Resource resource =new  UrlResource(result.get(0).toAbsolutePath().toUri());
@@ -144,7 +146,8 @@ public class ProductServiceImpl implements ProductService {
 //            final String existingImage =  product.getId()+"/"+ product.getName() + ".original.";
             final boolean isDir = java.nio.file.Files.isDirectory(Path.of(IMAGE_DIR + product.getId()));
             if(isDir) FileUtils.deleteDirectory(new File(IMAGE_DIR + product.getId()));
-            String fileName =  product.getId() + ".original."+ Date.from(Instant.now()).toString() + "." + Files.getFileExtension(file.getResource().getFilename());
+//            String fileName =  product.getId() + ".original."+ Date.from(Instant.now()).toString() + "." + Files.getFileExtension(file.getResource().getFilename());
+            String fileName =   Date.from(Instant.now()).toString() + ".original." + Files.getFileExtension(file.getResource().getFilename());
             FileUploadUtil.saveFile(imageDir + product.getId() + "/", fileName, file);
         }
     }
