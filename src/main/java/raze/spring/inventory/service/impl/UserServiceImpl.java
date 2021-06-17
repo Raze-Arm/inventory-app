@@ -108,11 +108,10 @@ public class UserServiceImpl implements UserService {
         return this.profileToProfileDto.convert(profile);
     }
 
-//    @Transactional()
+    @Transactional()
     @Override
     public ProfileDto getUserByUsername(String username) throws UsernameNotFoundException {
         final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
-        if(profile == null) throw new UsernameNotFoundException("Username not found");
         return  profile != null ? this.profileToProfileDto.convert(profile) : null;
     }
 
