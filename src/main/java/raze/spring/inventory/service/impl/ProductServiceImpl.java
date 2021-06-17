@@ -80,9 +80,9 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Resource getProductImage(UUID id)  {
-        final Product product =this.productRepository.findById(id).orElse(null);
+//        final Product product =this.productRepository.findById(id).orElse(null);
         try{
-            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), ".original.");
+            List<Path> result = findByFileName(Path.of(IMAGE_DIR + id  ), ".original.");
 //            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString()+ ".original.");
             if(result.size() > 0) {
 
@@ -99,10 +99,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Resource getProductSmallImage(UUID id) {
-        final Product product =this.productRepository.findById(id).orElse(null);
+//        final Product product =this.productRepository.findById(id).orElse(null);
         try{
 //            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString() + ".small.");
-            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), ".small.");
+            List<Path> result = findByFileName(Path.of(IMAGE_DIR + id  ), ".small.");
             if(result.size() > 0) {
 
                 Resource resource =new  UrlResource(result.get(0).toAbsolutePath().toUri());

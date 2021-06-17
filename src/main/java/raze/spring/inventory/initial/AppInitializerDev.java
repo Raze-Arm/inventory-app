@@ -178,6 +178,24 @@ public class AppInitializerDev implements CommandLineRunner {
                 .password("12345")
                     .role(UserRole.ADMIN)
                 .build();
+        final ProfileDto profileDto1 =
+                ProfileDto.builder()
+                        .firstName("anna")
+                        .lastName("noris")
+                        .username("anna")
+                        .password("12345")
+                        .role(UserRole.BASIC)
+                        .build();
+        final ProfileDto profileDto2 =
+                ProfileDto.builder()
+                        .firstName("sam")
+                        .lastName("vin")
+                        .username("sam")
+                        .password("12345")
+                        .role(UserRole.USER)
+                        .build();
         userService.saveUser(profileDto);
+        userService.saveUser(profileDto1);
+        userService.saveUser(profileDto2);
     }
 }

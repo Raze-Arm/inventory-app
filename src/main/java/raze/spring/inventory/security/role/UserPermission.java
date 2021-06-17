@@ -2,6 +2,7 @@ package raze.spring.inventory.security.role;
 
 
 public  enum UserPermission {
+    BASIC("BASIC"),
     FULL("FULL");
 
 

@@ -8,7 +8,6 @@ env:
     - SHA=$(git rev-parse HEAD)
     - COLLECT_ERROR=1
 before_install:
-  - pip install fandogh-cli --upgrade
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 #  - mvn -DSPRING_PROFILES_ACTIVE=dev install  -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - docker build -t razear/inventory-app -f Dockerfile.dev .
@@ -16,12 +15,18 @@ script:
   - mvn -DSPRING_PROFILES_ACTIVE=dev  test
 #  - mvn  clean install
 
+after_success:
+  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - docker build -t razear/mega-electric-app-dev:latest -t razear/mega-electric-app-dev:$SHA -f Dockerfile .
+  - docker push razear/mega-electric-app-dev:latest
+  - docker push razear/mega-electric-app-dev:$SHA
+
 before_deploy:
-  - mvn -DSPRING_PROFILES_ACTIVE=prod clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+#  - mvn -DSPRING_PROFILES_ACTIVE=prod clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 #  - docker build --build-arg ALLOWED_ORIGINS=$ALLOWED_ORIGINS --build-arg SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE --build-arg JWT_TOKEN=$JWT_TOKEN  --build-arg JWT_TOKEN_EXPIRE=$JWT_TOKEN_EXPIRE --build-arg JWT_TOKEN_PREFIX=$JWT_TOKEN_PREFIX --build-arg MYSQL_USERNAME=$MYSQL_USERNAME --build-arg MYSQL_PASSWORD=$MYSQL_PASSWORD --build-arg MYSQL_HOST=$MYSQL_HOST --build-arg MYSQL_DB_NAME=$MYSQL_DB_NAME -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
   - docker build -t razear/mega-electric-app:latest -t razear/mega-electric-app:$SHA -f Dockerfile .
-  - fandogh login --username $FANDOGH_USERNAME --password $FANDOGH_PASSWORD
-  - fandogh namespace active --name $FANDOGH_NAMESPACE
+  - docker push razear/mega-electric-app:latest
+  - docker push razear/mega-electric-app:$SHA
 
 deploy:
   provider: script

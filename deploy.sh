@@ -1,6 +1,7 @@
 
-docker push razear/mega-electric-app:latest
-docker push razear/mega-electric-app:$SHA
+pip install fandogh-cli --upgrade
+fandogh login --username $FANDOGH_USERNAME --password $FANDOGH_PASSWORD
+fandogh namespace active --name $FANDOGH_NAMESPACE
 
 fandogh service apply -f app-deployment.yml  \
                  -p SHA=$SHA -p ALLOWED_ORIGINS=$ALLOWED_ORIGINS -p SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE \

@@ -28,7 +28,7 @@ public class FileRouter extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("file:files/images/product?recursive=true&noop=true&flatten=true")
+        from("file:files/images?recursive=true&noop=true&flatten=true")
                 .doTry()
                     .bean(fileProcessor)
                 .doCatch(Exception.class)
@@ -62,7 +62,6 @@ class FileRemoveProcessor {
     public File removeFile (@ExchangeProperties Map<String, String> properties,
                             @Headers Map<String, String> headers,
                             @Body File file) throws IOException {
-        log.debug("BODY: {} \n HEADERS: {} \n PROPS: {}", file, headers, properties);
         log.debug("removing file path : {} , ", file.getPath());
         FileUtils.cleanDirectory(new File(headers.get("CamelFileParent")));
         return file;

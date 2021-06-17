@@ -3,8 +3,10 @@ package raze.spring.inventory.security.service.impl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.Exception.ObjectNotFoundException;
+import raze.spring.inventory.Exception.UnauthorizedException;
 import raze.spring.inventory.security.model.UserSession;
 import raze.spring.inventory.security.repository.UserSessionRepository;
 import raze.spring.inventory.security.service.UserSessionService;
@@ -23,21 +25,21 @@ public class UserSessionServiceImpl implements UserSessionService {
     }
 
     @Override
-    public UserSession findSessionByUsername(String username) throws ObjectNotFoundException {
-        return this.userSessionRepository.findById(username).orElseThrow(new ObjectNotFoundException("Username Not Found"));
+    public UserSession findSessionByUsername(String username) throws UnauthorizedException {
+        return this.userSessionRepository.findById(username).orElseThrow(new UnauthorizedException("Username Not Found"));
     }
 
     @Override
-    public boolean isSessionValid(String username, String token) throws ObjectNotFoundException {
+    public boolean isSessionValid(String username, String token) throws  UnauthorizedException {
         if(username == null || token == null )return false;
 
-        final UserSession userSession = this.userSessionRepository.findById(username).orElseThrow(new ObjectNotFoundException("Username Not Found"));
+        final UserSession userSession = this.userSessionRepository.findById(username).orElseThrow(new UnauthorizedException("Username Not Found"));
         if(userSession.getToken().equals(token)) return true;
         else return false;
     }
 
     @Override
-    public boolean isTokenValid(String token) throws ObjectNotFoundException {
+    public boolean isTokenValid(String token) throws  UnauthorizedException {
         String tokenSlice = token.substring(7);
 
 

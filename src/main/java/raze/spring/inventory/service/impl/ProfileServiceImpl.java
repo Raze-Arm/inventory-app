@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -73,10 +75,12 @@ public class ProfileServiceImpl implements ProfileService {
         if(file != null){
             final String existingPhoto =  profileToSave.getPhotoPath();
             if(existingPhoto != null) java.nio.file.Files.deleteIfExists(Path.of(existingPhoto));
-            String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
+//            String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
+            String fileName =  Date.from(Instant.now()).toString() + ".original." + Files.getFileExtension(file.getResource().getFilename());
 //            String uploadDir = "files/images/user-photos/" ;
-            FileUploadUtil.saveFile(photoDir, fileName, file);
-            profileToSave.setPhotoPath(photoDir + fileName);
+            final String uploadDir = photoDir + profileDto.getId() + "/";
+            FileUploadUtil.saveFile(uploadDir , fileName, file);
+            profileToSave.setPhotoPath(uploadDir + fileName);
         }
     }
 

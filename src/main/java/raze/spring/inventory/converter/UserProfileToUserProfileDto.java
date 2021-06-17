@@ -20,12 +20,14 @@ public class UserProfileToUserProfileDto implements Converter<UserProfile, Profi
     @Override
     public ProfileDto convert(UserProfile userProfile) {
         final UserAccount account = userProfile.getAccount();
+        final String photoPath = userProfile.getPhotoPath();
         return ProfileDto.builder()
                 .id(userProfile.getId())
                 .firstName(userProfile.getFirstName())
                 .lastName(userProfile.getLastName())
                 .username(account != null ? account.getUsername() : null)
                 .role(account.getUserRoles())
+                .photoAvailable(photoPath != null && photoPath.length() > 0)
                 .createdDate(dateMapper.asOffsetDateTime(userProfile.getCreatedDate()))
                 .build();
     }

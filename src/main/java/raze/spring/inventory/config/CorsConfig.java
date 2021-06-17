@@ -21,7 +21,6 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin(originAddress);
-//        config.setAllowedOriginPatterns(Arrays.asList("https://*.fandogh.cloud"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
