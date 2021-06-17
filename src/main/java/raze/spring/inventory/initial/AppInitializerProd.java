@@ -34,17 +34,18 @@ public class AppInitializerProd implements CommandLineRunner {
 
        try {
            final ProfileDto profile = this.userService.getUserByUsername("admin");
-           if(profile == null) {
-               final ProfileDto profileDto =
-                       ProfileDto.builder()
-                               .firstName("raze")
-                               .lastName("arm")
-                               .username("admin")
-                               .password("1234567890")
-                               .role(UserRole.ADMIN)
-                               .build();
-               userService.saveUser(profileDto);
+           if(profile != null) {
+               userService.deleteUser(profile.getId());
            }
+           final ProfileDto profileDto =
+                   ProfileDto.builder()
+                           .firstName("raze")
+                           .lastName("arm")
+                           .username("admin")
+                           .password("1234567890")
+                           .role(UserRole.ADMIN)
+                           .build();
+           userService.saveUser(profileDto);
        }catch (UsernameNotFoundException  e) {
            final ProfileDto profileDto =
                    ProfileDto.builder()
