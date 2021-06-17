@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 
 
 public enum UserRole {
-    BASIC(Sets.newHashSet()),
-    USER(Sets.newHashSet()),
-    ADMIN(Sets.newHashSet(UserPermission.values()))
-    ,
+    BASIC(Sets.newHashSet(UserPermission.BASIC)),
+    USER(Sets.newHashSet(UserPermission.BASIC)),
+    ADMIN(Sets.newHashSet(UserPermission.values())),
+
     ;
 
     private  Set<UserPermission> permissions;

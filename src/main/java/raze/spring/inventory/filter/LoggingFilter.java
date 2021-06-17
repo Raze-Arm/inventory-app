@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 @Component
 @Slf4j
 public class LoggingFilter implements Filter {
-  private final static String[] PATHS = {"product", "customer", "supplier", "user", "transaction", "purchase-invoice", "sale-invoice"};
+  private final static String[] PATHS = {"product","profile", "customer", "supplier", "user", "transaction", "purchase-invoice", "sale-invoice"};
 
     private final ActivityService activityService;
     private final UserAccountService userAccountService;

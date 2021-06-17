@@ -8,6 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -65,8 +66,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeRequests()
 //            .antMatchers("/h2-console/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
+            .antMatchers("/secured/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
             .antMatchers("/v1/download/product/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
             .antMatchers("/v1/download/small/product/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
+            .antMatchers("/v1/download/small/user/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
         .anyRequest()
         .authenticated()
         .and()
@@ -111,8 +114,13 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
-        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+//        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         return daoAuthenticationProvider;
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/secured/**");
+        super.configure(web);
+    }
 }

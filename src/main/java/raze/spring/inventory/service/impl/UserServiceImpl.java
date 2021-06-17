@@ -21,10 +21,15 @@ import raze.spring.inventory.service.UserService;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
+
+import static raze.spring.inventory.service.impl.ProductServiceImpl.findByFileName;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final static String PHOTO_DIR = "files/images/user-photos/";
@@ -59,6 +64,23 @@ public class UserServiceImpl implements UserService {
         return getPhotoResource(profile);
     }
 
+    @Override
+    public Resource getUserSmallPhoto(UUID id) throws MalformedURLException {
+        try{
+//            List<Path> result = findByFileName(Path.of(IMAGE_DIR + product.getId()  ), product.getId().toString() + ".small.");
+            List<Path> result = findByFileName(Path.of(PHOTO_DIR + id  ), ".small.");
+            if(result.size() > 0) {
+
+                Resource resource =new  UrlResource(result.get(0).toAbsolutePath().toUri());
+                if(resource.exists())return  resource;
+                else throw new MalformedURLException();
+            }
+        }catch (IOException e) {
+            return null;
+        }
+        return  null;
+    }
+
     @Transactional
     @Override
     public Resource getUserPhotoByUsername(String username) throws MalformedURLException {
@@ -86,7 +108,7 @@ public class UserServiceImpl implements UserService {
         return this.profileToProfileDto.convert(profile);
     }
 
-    @Transactional
+//    @Transactional()
     @Override
     public ProfileDto getUserByUsername(String username) throws UsernameNotFoundException {
         final UserProfile profile = this.userProfileRepository.findByAccountUsername(username).orElse(null);
@@ -97,12 +119,13 @@ public class UserServiceImpl implements UserService {
     private void saveImageFile(ProfileDto profileDto, UserProfile profileToSave) throws IOException {
         ProfileServiceImpl.saveImageFile(profileDto, profileToSave, PHOTO_DIR);
     }
-    @Transactional
+    @Transactional(rollbackOn = IOException.class)
     @Override
     public UUID saveUser(ProfileDto profileDto) throws IOException {
         final UserProfile profileToSave = Objects.requireNonNull(this.profileDtoToProfile.convert(profileDto));
-        saveImageFile(profileDto, profileToSave);
         final UserProfile userProfile = this.userProfileRepository.save(profileToSave);
+        profileDto.setId(userProfile.getId());
+        saveImageFile(profileDto, profileToSave);
 
         return userProfile.getId();
     }

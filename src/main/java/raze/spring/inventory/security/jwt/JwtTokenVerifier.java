@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import raze.spring.inventory.Exception.ObjectNotFoundException;
+import raze.spring.inventory.Exception.UnauthorizedException;
 import raze.spring.inventory.security.service.UserSessionService;
 
 
@@ -80,7 +80,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-        } catch (JwtException | NoSuchElementException | ObjectNotFoundException e) {
+        } catch (JwtException | NoSuchElementException | UnauthorizedException e) {
             throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
         }
 

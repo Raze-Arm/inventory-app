@@ -16,6 +16,8 @@ public interface UserService {
     UUID saveUser(ProfileDto profileDto) throws IOException;
 
     Resource getUserPhoto(UUID id) throws MalformedURLException;
+    Resource getUserSmallPhoto(UUID id) throws MalformedURLException;
+
     Resource getUserPhotoByUsername(String username) throws MalformedURLException;
 
 

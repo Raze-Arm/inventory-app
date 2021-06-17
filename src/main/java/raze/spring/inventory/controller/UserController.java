@@ -66,6 +66,11 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getUserPhoto(id));
     }
 
+    @GetMapping(path = {"/download/small/user/{id}"})
+    public ResponseEntity<Resource> downloadSmallUserPhoto(@PathVariable UUID id) throws MalformedURLException {
+        return ResponseEntity.ok(this.userService.getUserSmallPhoto(id));
+    }
+
     @GetMapping(path = {"/download/user"})
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resource> downloadUserPhotoByUsername(@RequestParam("username")String username) throws MalformedURLException {

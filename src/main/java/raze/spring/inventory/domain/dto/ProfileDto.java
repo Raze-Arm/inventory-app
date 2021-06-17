@@ -26,6 +26,7 @@ public class ProfileDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private UserRole role;
     private MultipartFile photo;
+    private boolean photoAvailable;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ", shape = JsonFormat.Shape.STRING)
     private OffsetDateTime createdDate;
