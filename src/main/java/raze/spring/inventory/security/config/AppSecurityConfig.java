@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import raze.spring.inventory.security.exception.CustomAccessDeniedHandler;
 import raze.spring.inventory.security.exception.CustomAuthenticationEntryPoint;
 import raze.spring.inventory.security.jwt.JwtConfig;
@@ -55,7 +56,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         .disable()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+            .and()
         .cors()
         .and()
         .addFilter(
