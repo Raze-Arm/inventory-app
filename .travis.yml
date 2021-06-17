@@ -16,8 +16,8 @@ script:
 #  - mvn  clean install
 
 after_success:
-  - mvn -DALLOWED_ORIGINS=http://localhost:3050 clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - docker build --build-arg ALLOWED_ORIGINS=http://localhost:3050 --build-arg SPRING_PROFILES_ACTIVE=prod --build-arg JWT_TOKEN=jwtojenjwtowqewqqwekenjwtojenjwtok2432342342342enjwtojenjwtokenjwtojenjwt4324242okenjwtojenjwtoke2342342342njwtojenjwtoken  --build-arg JWT_TOKEN_EXPIRE=5 --build-arg JWT_TOKEN_PREFIX=Bearer --build-arg MYSQL_USERNAME=root --build-arg MYSQL_PASSWORD=password --build-arg MYSQL_HOST=http://localhost:3306 --build-arg MYSQL_DB_NAME=inventory -t razear/mega-electric-app-dev:latest -t razear/mega-electric-app-dev:$SHA -f Dockerfile .
+  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - docker build --build-arg ALLOWED_ORIGINS=mega-electric-nginx --build-arg SPRING_PROFILES_ACTIVE=prod --build-arg JWT_TOKEN=jwtojenjwtowqewqqwekenjwtojenjwtok2432342342342enjwtojenjwtokenjwtojenjwt4324242okenjwtojenjwtoke2342342342njwtojenjwtoken  --build-arg JWT_TOKEN_EXPIRE=5 --build-arg JWT_TOKEN_PREFIX=Bearer --build-arg MYSQL_USERNAME=root --build-arg MYSQL_PASSWORD=password --build-arg MYSQL_HOST=http://localhost:3306 --build-arg MYSQL_DB_NAME=inventory -t razear/mega-electric-app-dev:latest -t razear/mega-electric-app-dev:$SHA -f Dockerfile .
   - docker push razear/mega-electric-app-dev:latest
   - docker push razear/mega-electric-app-dev:$SHA
 
