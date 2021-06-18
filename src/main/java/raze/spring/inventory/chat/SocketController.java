@@ -6,6 +6,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -20,7 +21,7 @@ public class SocketController {
 
 
     @MessageMapping("/secured/user")
-    public void send(@Payload  AppSockMessage message, Principal user ) {
+    public void send(@Valid  @Payload  AppSockMessage message, Principal user ) {
         simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/messages", message);
     }
 
