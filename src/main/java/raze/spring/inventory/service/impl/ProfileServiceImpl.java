@@ -2,6 +2,7 @@ package raze.spring.inventory.service.impl;
 
 import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import raze.spring.inventory.service.ProfileService;
 import raze.spring.inventory.utility.FileUploadUtil;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -74,7 +76,8 @@ public class ProfileServiceImpl implements ProfileService {
         MultipartFile file = profileDto.getPhoto();
         if(file != null){
             final String existingPhoto =  profileToSave.getPhotoPath();
-            if(existingPhoto != null) java.nio.file.Files.deleteIfExists(Path.of(existingPhoto));
+            final boolean isDir = java.nio.file.Files.isDirectory(Path.of(PHOTO_DIR + profileDto.getId()));
+            if(isDir) FileUtils.deleteDirectory(new File(PHOTO_DIR + profileDto.getId()));
 //            String fileName = profileDto.getUsername()+ "." + Files.getFileExtension(file.getResource().getFilename());
             String fileName =  Date.from(Instant.now()).toString() + ".original." + Files.getFileExtension(file.getResource().getFilename());
 //            String uploadDir = "files/images/user-photos/" ;

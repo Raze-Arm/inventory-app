@@ -19,9 +19,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import raze.spring.inventory.chat.CustomStompErrorHandler;
-import raze.spring.inventory.chat.OnlineUsers;
-import raze.spring.inventory.chat.StompUser;
 import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.security.service.UserSessionService;
 import raze.spring.inventory.service.UserService;
@@ -92,7 +89,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                               .username(user.getUsername())
                               .firstName(user.getFirstName())
                               .lastName(user.getLastName())
-                               .photoAvailable(user.isPhotoAvailable())
                               .build());
                 }
               }

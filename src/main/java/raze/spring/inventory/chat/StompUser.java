@@ -15,5 +15,4 @@ public class StompUser {
     private String firstName;
     private String lastName;
     private String username;
-    private boolean photoAvailable;
 }

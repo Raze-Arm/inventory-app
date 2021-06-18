@@ -34,7 +34,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus.FORBIDDEN,
             webRequest);
     }
-    @ExceptionHandler({UsernameNotFoundException.class})
+    @ExceptionHandler({UsernameNotFoundException.class, IllegalStateException.class})
     protected ResponseEntity<Object> handleIllegalException(Exception ex, WebRequest webRequest) {
         return  handleExceptionInternal(
                 ex,
