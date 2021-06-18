@@ -16,7 +16,7 @@ public class ScheduledUserInfos {
     }
 
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 20000)
     public void sendMessage() {
         simpMessagingTemplate.convertAndSend("/queue/users", OnlineUsers.getUsers());
 
