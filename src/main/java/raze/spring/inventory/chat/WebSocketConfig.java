@@ -24,6 +24,7 @@ import raze.spring.inventory.security.service.UserSessionService;
 import raze.spring.inventory.service.UserService;
 
 
+import java.security.Principal;
 import java.util.Objects;
 import java.util.Optional;
 @Slf4j
@@ -94,8 +95,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
               }
             }
               if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
-                  final String username = Objects.requireNonNull(accessor.getUser()).getName();
-                  if(username != null)OnlineUsers.removeUserByUsername(username);
+                  final Principal user = accessor.getUser();
+                  if(user != null )
+                  {
+                      final String username = user.getName();
+                      OnlineUsers.removeUserByUsername(username);
+                  }
               }
               return message;
           }

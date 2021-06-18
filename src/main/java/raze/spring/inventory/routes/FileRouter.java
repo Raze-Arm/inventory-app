@@ -49,7 +49,7 @@ class FileProcessor {
                             @Headers Map<String, String> headers,
                             @Body File file ) throws IOException {
         BufferedImage bi = ImageIO.read(file);
-        BufferedImage resizedImg = Scalr.resize(bi, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, 32, 32, Scalr.OP_ANTIALIAS);
+        BufferedImage resizedImg = Scalr.resize(bi, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, 40, 40, Scalr.OP_ANTIALIAS);
         File resizedImageFile = new File( headers.get("CamelFilePath").replace(".original.", ".small."));
         ImageIO.write(resizedImg, Files.getFileExtension(file.getName()) , resizedImageFile);
         return  resizedImageFile;
