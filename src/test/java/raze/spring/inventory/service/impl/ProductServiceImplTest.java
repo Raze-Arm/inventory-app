@@ -17,7 +17,7 @@ import raze.spring.inventory.repository.ProductRepository;
 import raze.spring.inventory.repository.ProductViewRepository;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -32,10 +32,10 @@ class ProductServiceImplTest {
     private static UUID ID2 = UUID.randomUUID();
     private static String NAME = "NAME";
     private static String NAME2 = "NAME2";
-    private static BigDecimal PRICE = new BigDecimal("100000");
-    private static BigDecimal PRICE2 = new BigDecimal("222222");
-    private static BigDecimal SALE_PRICE = new BigDecimal("3333333");
-    private static BigDecimal SALE_PRICE2 = new BigDecimal("4444444");
+    private static BigInteger PRICE = new BigInteger("100000");
+    private static BigInteger PRICE2 = new BigInteger("222222");
+    private static BigInteger SALE_PRICE = new BigInteger("3333333");
+    private static BigInteger SALE_PRICE2 = new BigInteger("4444444");
     private static Long QUANTITY = 5L;
     private static Long QUANTITY2 = 7L;
 
@@ -86,8 +86,8 @@ class ProductServiceImplTest {
         final ProductDto productDto = this.productService.getProduct(product.getId());
         assertEquals(productDto.getName(), NAME);
         assertEquals(productDto.getQuantity(), QUANTITY);
-        assertEquals(productDto.getPrice().stripTrailingZeros(), PRICE.stripTrailingZeros());
-        assertEquals(productDto.getSalePrice().stripTrailingZeros() , SALE_PRICE.stripTrailingZeros());
+        assertEquals(productDto.getPrice(), PRICE);
+        assertEquals(productDto.getSalePrice() , SALE_PRICE);
     }
 
     @Test
@@ -99,8 +99,8 @@ class ProductServiceImplTest {
 
         assertNotNull(id);
         assertEquals(savedProduct.getName(), NAME);
-        assertEquals(savedProduct.getPrice().stripTrailingZeros(), PRICE.stripTrailingZeros());
-        assertEquals(savedProduct.getSalePrice().stripTrailingZeros(), SALE_PRICE.stripTrailingZeros());
+        assertEquals(savedProduct.getPrice(), PRICE);
+        assertEquals(savedProduct.getSalePrice(), SALE_PRICE);
     }
 
     @Test
@@ -115,8 +115,8 @@ class ProductServiceImplTest {
         final Product updatedProduct = this.productRepository.findById(product.getId()).orElseThrow();
 
         assertEquals(updatedProduct.getName(), NAME2);
-        assertEquals(updatedProduct.getPrice().stripTrailingZeros(), PRICE2.stripTrailingZeros());
-        assertEquals(updatedProduct.getSalePrice().stripTrailingZeros(), SALE_PRICE2.stripTrailingZeros());
+        assertEquals(updatedProduct.getPrice(), PRICE2);
+        assertEquals(updatedProduct.getSalePrice(), SALE_PRICE2);
 
     }
 

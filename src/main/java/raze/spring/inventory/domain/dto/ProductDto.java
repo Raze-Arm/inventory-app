@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 
 import java.util.UUID;
@@ -24,9 +25,9 @@ public class ProductDto {
     private String name;
     private Long quantity;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private BigDecimal price;
+    private BigInteger price;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private BigDecimal salePrice;
+    private BigInteger salePrice;
 
     private MultipartFile image;
     private Boolean imageAvailable;

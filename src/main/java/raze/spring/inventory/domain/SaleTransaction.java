@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 
 @Setter
@@ -24,7 +25,7 @@ public class SaleTransaction  extends BaseEntity{
     private Long quantity;
 
     @Min(value = 0 , message = "must be greater than or equal 0")
-    private BigDecimal price;
+    private BigInteger price;
 
 
 

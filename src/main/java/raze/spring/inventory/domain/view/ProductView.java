@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.UUID;
 @Setter
@@ -23,8 +24,8 @@ public class ProductView {
       private UUID id;
       private String name;
       private String description;
-      private BigDecimal price;
-      private BigDecimal salePrice;
+      private BigInteger price;
+      private BigInteger salePrice;
       private Long quantity;
       private Boolean imageAvailable;
       private Timestamp createdDate;
