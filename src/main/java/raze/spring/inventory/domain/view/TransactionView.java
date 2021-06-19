@@ -3,10 +3,12 @@ package raze.spring.inventory.domain.view;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -25,7 +27,8 @@ public class TransactionView {
     private UUID productId;
     private String productName;
     private Boolean imageAvailable;
-    private BigDecimal price;
+    @Column( columnDefinition = "BIGINT")
+    private BigInteger price;
     private Long quantity;
     private String type;
     private Timestamp createdDate;

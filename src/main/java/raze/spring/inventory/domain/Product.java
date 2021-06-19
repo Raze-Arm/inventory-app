@@ -28,8 +28,10 @@ public class Product  extends BaseEntity{
     private String name;
 
     @Min(value = 0, message = "must be greater than or equal 0")
+    @Column( columnDefinition = "BIGINT")
     private BigInteger price;
     @Min(value = 0, message = "must be greater than or equal 0")
+    @Column( columnDefinition = "BIGINT")
     private BigInteger salePrice;
 
     private Boolean imageAvailable = false;
