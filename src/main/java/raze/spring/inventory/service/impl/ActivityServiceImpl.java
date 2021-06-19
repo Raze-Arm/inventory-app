@@ -26,15 +26,6 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Activity save(Activity activity) {
-//        if (activity.getId() == null) { // new activity (user logged in)
-//            Activity firstActivity = this.findFirst();
-//            if (firstActivity != null) {
-//                long total = firstActivity.getTotalVisitors();
-//                activity.setTotalVisitors(++total);
-//                firstActivity.setTotalVisitors(total);
-//                this.activityRepo.save(firstActivity);
-//            }
-//        }
         return this.activityRepo.save(activity);
     }
 
@@ -56,7 +47,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Page<ActivityDto> getUserActivities(String username ,int page, int size, String sort, String search) {
 
-        final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
+        final Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC ,  sort != null ? sort : "created"));
         if(search == null || search.length() == 0) {
             return this.activityRepo.findAllByUsername(pageable, username).map(this.activityToActivityDto::convert);
         } else {
@@ -66,7 +57,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Page<ActivityDto> getActivityPage(int page, int size, String sort, String search) {
-        final Pageable pageable = PageRequest.of(page, size, Sort.by(sort != null ? sort : "id"));
+        final Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC , sort != null ? sort : "created" ));
         if(search == null || search.length() == 0) {
             return this.activityRepo.findAll(pageable).map(this.activityToActivityDto::convert);
         } else {
