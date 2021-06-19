@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class TransactionDto {
     private String productName;
     private Boolean imageAvailable;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private BigDecimal price;
+    private BigInteger price;
     private Long quantity;
     private String type;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ" , shape = JsonFormat.Shape.STRING)

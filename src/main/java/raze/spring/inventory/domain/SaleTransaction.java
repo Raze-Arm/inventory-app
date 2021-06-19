@@ -25,6 +25,7 @@ public class SaleTransaction  extends BaseEntity{
     private Long quantity;
 
     @Min(value = 0 , message = "must be greater than or equal 0")
+    @Column( columnDefinition = "BIGINT")
     private BigInteger price;
 
 

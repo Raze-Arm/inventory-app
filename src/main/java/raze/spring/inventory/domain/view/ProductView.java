@@ -24,7 +24,9 @@ public class ProductView {
       private UUID id;
       private String name;
       private String description;
+      @Column( columnDefinition = "BIGINT")
       private BigInteger price;
+      @Column( columnDefinition = "BIGINT")
       private BigInteger salePrice;
       private Long quantity;
       private Boolean imageAvailable;
