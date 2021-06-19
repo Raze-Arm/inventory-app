@@ -18,6 +18,7 @@ import raze.spring.inventory.security.service.UserSessionService;
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -78,7 +79,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             .signWith(secretKey)
             .compact();
         this.userSessionService.insertSession(new UserSession(username, token));
-        response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix()+ " " + token);
+//        response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix()+ " " + token);
+
+
+        final Cookie cookie = new Cookie(jwtConfig.getAuthorizationHeader() ,  token );
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge( 10 * 24 * 60 * 60);
+        response.addCookie(cookie);
     }
 
 
