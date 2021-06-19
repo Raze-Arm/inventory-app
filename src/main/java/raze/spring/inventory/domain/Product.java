@@ -10,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,9 +28,9 @@ public class Product  extends BaseEntity{
     private String name;
 
     @Min(value = 0, message = "must be greater than or equal 0")
-    private BigDecimal price;
+    private BigInteger price;
     @Min(value = 0, message = "must be greater than or equal 0")
-    private BigDecimal salePrice;
+    private BigInteger salePrice;
 
     private Boolean imageAvailable = false;
 

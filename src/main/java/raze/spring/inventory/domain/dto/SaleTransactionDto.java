@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class SaleTransactionDto {
     private String description;
     private Long quantity;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private BigDecimal price;
+    private BigInteger price;
 
     private UUID productId;
     private String productName;

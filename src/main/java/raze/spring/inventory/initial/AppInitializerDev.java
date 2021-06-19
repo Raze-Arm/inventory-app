@@ -17,7 +17,8 @@ import raze.spring.inventory.service.UserService;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.UUID;
@@ -97,40 +98,40 @@ public class AppInitializerDev implements CommandLineRunner {
         customerRepository.saveAll(Set.of(arianCustomer, palizanCustomer, sharifianCustomer));
 
 
-        Product backLight32Lb = Product.builder().name("32Lb LG").price(new BigDecimal("3500000")) .salePrice(new BigDecimal("4000000")).build();
-        Product backLight40F5000 = Product.builder().name("40F 5000").price(new BigDecimal("6000000")) .salePrice(new BigDecimal("6500000")).build();
-        Product backLight46F5000 = Product.builder().name("46F 5000").price(new BigDecimal("7200000")) .salePrice(new BigDecimal("8000000")).build();
+        Product backLight32Lb = Product.builder().name("32Lb LG").price(new BigInteger("3500000")) .salePrice(new BigInteger("4000000")).build();
+        Product backLight40F5000 = Product.builder().name("40F 5000").price(new BigInteger("6000000")) .salePrice(new BigInteger("6500000")).build();
+        Product backLight46F5000 = Product.builder().name("46F 5000").price(new BigInteger("7200000")) .salePrice(new BigInteger("8000000")).build();
 
 
-        Product backLight32LN = Product.builder().name("32LN").price(new BigDecimal("2800000")) .salePrice(new BigDecimal("3500000")).build();
+        Product backLight32LN = Product.builder().name("32LN").price(new BigInteger("2800000")) .salePrice(new BigInteger("3500000")).build();
 
 
 
         productRepository.saveAll(Set.of(backLight32Lb,backLight32LN, backLight40F5000, backLight46F5000));
 
 
-        PurchaseTransaction transaction1 = PurchaseTransaction.builder().product(backLight32Lb).description("adib supply").quantity(10L).price(new BigDecimal("3500000")).build();
-        PurchaseTransaction transaction2 = PurchaseTransaction.builder().product(backLight40F5000).description("adib supply").quantity(5L).price(new BigDecimal("6000000")).build();
-        PurchaseTransaction transaction3 = PurchaseTransaction.builder().product(backLight46F5000).description("adib supply").quantity(5L).price(new BigDecimal("7200000")).build();
-        PurchaseTransaction transaction4 = PurchaseTransaction.builder().product(backLight32LN).description("adib supply").quantity(10L).price(new BigDecimal("2800000")).build();
+        PurchaseTransaction transaction1 = PurchaseTransaction.builder().product(backLight32Lb).description("adib supply").quantity(10L).price(new BigInteger("3500000")).build();
+        PurchaseTransaction transaction2 = PurchaseTransaction.builder().product(backLight40F5000).description("adib supply").quantity(5L).price(new BigInteger("6000000")).build();
+        PurchaseTransaction transaction3 = PurchaseTransaction.builder().product(backLight46F5000).description("adib supply").quantity(5L).price(new BigInteger("7200000")).build();
+        PurchaseTransaction transaction4 = PurchaseTransaction.builder().product(backLight32LN).description("adib supply").quantity(10L).price(new BigInteger("2800000")).build();
 
-        PurchaseTransaction transaction5 = PurchaseTransaction.builder().product(backLight32Lb).description("zarei supply").quantity(10L).price(new BigDecimal("27000000")).build();
-        PurchaseTransaction transaction6 = PurchaseTransaction.builder().product(backLight40F5000).description("zarei supply").quantity(10L).price(new BigDecimal("6200000")).build();
-        PurchaseTransaction transaction7 = PurchaseTransaction.builder().product(backLight46F5000).description("zarei supply").quantity(10L).price(new BigDecimal("7000000")).build();
-        PurchaseTransaction transaction8 = PurchaseTransaction.builder().product(backLight32LN).description("zarei supply").quantity(10L).price(new BigDecimal("2500000")).build();
+        PurchaseTransaction transaction5 = PurchaseTransaction.builder().product(backLight32Lb).description("zarei supply").quantity(10L).price(new BigInteger("27000000")).build();
+        PurchaseTransaction transaction6 = PurchaseTransaction.builder().product(backLight40F5000).description("zarei supply").quantity(10L).price(new BigInteger("6200000")).build();
+        PurchaseTransaction transaction7 = PurchaseTransaction.builder().product(backLight46F5000).description("zarei supply").quantity(10L).price(new BigInteger("7000000")).build();
+        PurchaseTransaction transaction8 = PurchaseTransaction.builder().product(backLight32LN).description("zarei supply").quantity(10L).price(new BigInteger("2500000")).build();
 
 
 
-        SaleTransaction transaction9 = SaleTransaction.builder().product(backLight32Lb).description("arian sale").quantity(2L).price(new BigDecimal("4000000")).build();
-        SaleTransaction transaction10 = SaleTransaction.builder().product(backLight40F5000).description("arian sale").quantity(1L).price(new BigDecimal("6500000")).build();
-        SaleTransaction transaction11 = SaleTransaction.builder().product(backLight40F5000).description("arian sale").quantity(1L).price(new BigDecimal("6500000")).build();
-        SaleTransaction transaction12 = SaleTransaction.builder().product(backLight46F5000).description("arian sale").quantity(1L).price(new BigDecimal("8000000")).build();
+        SaleTransaction transaction9 = SaleTransaction.builder().product(backLight32Lb).description("arian sale").quantity(2L).price(new BigInteger("4000000")).build();
+        SaleTransaction transaction10 = SaleTransaction.builder().product(backLight40F5000).description("arian sale").quantity(1L).price(new BigInteger("6500000")).build();
+        SaleTransaction transaction11 = SaleTransaction.builder().product(backLight40F5000).description("arian sale").quantity(1L).price(new BigInteger("6500000")).build();
+        SaleTransaction transaction12 = SaleTransaction.builder().product(backLight46F5000).description("arian sale").quantity(1L).price(new BigInteger("8000000")).build();
 
-        SaleTransaction transaction13 = SaleTransaction.builder().product(backLight32Lb).description("palizan sale").quantity(1L).price(new BigDecimal("4000000")).build();
-        SaleTransaction transaction14 = SaleTransaction.builder().product(backLight46F5000).description("palizan sale").quantity(2L).price(new BigDecimal("8000000")).build();
+        SaleTransaction transaction13 = SaleTransaction.builder().product(backLight32Lb).description("palizan sale").quantity(1L).price(new BigInteger("4000000")).build();
+        SaleTransaction transaction14 = SaleTransaction.builder().product(backLight46F5000).description("palizan sale").quantity(2L).price(new BigInteger("8000000")).build();
 
-        SaleTransaction transaction15 = SaleTransaction.builder().product(backLight40F5000).description("sharifian sale").quantity(2L).price(new BigDecimal("7000000")).build();
-        SaleTransaction transaction16 = SaleTransaction.builder().product(backLight46F5000).description("sharifian sale").quantity(3L).price(new BigDecimal("8000000")).build();
+        SaleTransaction transaction15 = SaleTransaction.builder().product(backLight40F5000).description("sharifian sale").quantity(2L).price(new BigInteger("7000000")).build();
+        SaleTransaction transaction16 = SaleTransaction.builder().product(backLight46F5000).description("sharifian sale").quantity(3L).price(new BigInteger("8000000")).build();
 
 
         Set<PurchaseTransaction> supplyList1 = Set.of(transaction1,  transaction3);
