@@ -8,10 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import raze.spring.inventory.security.AppUserDetail;
 import raze.spring.inventory.security.model.UserSession;
-import raze.spring.inventory.security.service.UserAccountService;
 import raze.spring.inventory.security.service.UserSessionService;
 
 
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
 
 @Slf4j
@@ -31,6 +31,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
+
 
 
     public JwtUsernameAndPasswordAuthenticationFilter(UserSessionService userSessionService, AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
@@ -71,21 +72,34 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                                             Authentication authResult) throws IOException, ServletException {
 
         final String username = authResult.getName();
+        final Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
+        final java.sql.Date expiration = java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays()).toString());
+
         final String token = Jwts.builder()
             .setSubject(username)
-            .claim("authorities",authResult.getAuthorities() )
+            .claim("authorities", authorities)
             .setIssuedAt(new Date())
-            .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays()).toString()))
+            .setExpiration(expiration)
             .signWith(secretKey)
             .compact();
-        this.userSessionService.insertSession(new UserSession(username, token));
-//        response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix()+ " " + token);
+        final String userInfo = Jwts.builder()
+                .setSubject(username)
+                .claim("authorities" ,authorities)
+                .setIssuedAt(new Date())
+                .setExpiration(expiration)
+                .compact();
+
+        this.userSessionService.insertSession(
+            new UserSession(username, token));
+
+        final Cookie jwtTokenCookie = new Cookie(jwtConfig.getAuthorizationHeader() ,  token );
+        jwtTokenCookie.setHttpOnly(true);
+        final int maxAge = jwtConfig.getTokenExpirationAfterDays() * 24 * 60 * 60;
+        jwtTokenCookie.setMaxAge(maxAge);
+        response.addCookie(jwtTokenCookie);
+        response.addHeader("user_info", userInfo);
 
 
-        final Cookie cookie = new Cookie(jwtConfig.getAuthorizationHeader() ,  token );
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge( 10 * 24 * 60 * 60);
-        response.addCookie(cookie);
     }
 
 

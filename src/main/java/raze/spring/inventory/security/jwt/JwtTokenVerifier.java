@@ -15,6 +15,7 @@ import raze.spring.inventory.security.service.UserSessionService;
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,41 +39,28 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
-        final String authorizationCookie =
-            Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("Authorization"))
+
+        final Cookie[] cookies = request.getCookies();
+        final String token =
+            Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(jwtConfig.getAuthorizationHeader()))
                 .findAny().get().getValue();
 
 
 
-//        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-        if (Strings.isNullOrEmpty(authorizationCookie) ) {
+
+
+        if (Strings.isNullOrEmpty(token) ) {
             filterChain.doFilter(request, response);
             return;
         }
 
-//        String token = authorizationHeader.substring(7);
-        String token = authorizationCookie;
 
         try {
-
-//            Jws<Claims> claimsJws = Jwts.parser()
-//                .setSigningKey(secretKey)
-//                .parseClaimsJws(token);
-//
-//            Claims body = claimsJws.getBody();
-//
-//            String username = body.getSubject();
-
             final JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
-            Claims cookieBody = (Claims) jwtParser.parse(authorizationCookie).getBody();
-            Claims body = (Claims) jwtParser.parse(authorizationCookie).getBody();
+            Claims cookieBody = (Claims) jwtParser.parse(token).getBody();
+            Claims body = (Claims) jwtParser.parse(token).getBody();
             String username = body.getSubject();
-            log.debug("AUTHORIZATION COOKIE : {}" , cookieBody);
 
             if(!this.userSessionService.isSessionValid(username,token) ) {
                 filterChain.doFilter(request, response);
