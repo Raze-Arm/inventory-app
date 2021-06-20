@@ -12,8 +12,8 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface UserSessionRepository extends JpaRepository<UserSession,String> {
-    @Transactional
     @Modifying
     @Query(value = "DELETE FROM UserSession U    WHERE U.token = :token" )
     void deleteByToken(@Param("token") String token);
+
 }

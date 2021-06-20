@@ -28,8 +28,8 @@ public class CorsConfig {
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("DELETE");
 
-        config.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token", "Access-Control-Allow-Origin"));
-        config.setExposedHeaders(Arrays.asList("x-auth-token", "Authorization", "Access-Control-Allow-Origin"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token", "Access-Control-Allow-Origin", "user_info"));
+        config.setExposedHeaders(Arrays.asList("x-auth-token", "Authorization", "Access-Control-Allow-Origin", "user_info"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

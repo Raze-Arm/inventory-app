@@ -1,10 +1,8 @@
 package raze.spring.inventory.security.jwt;
 
 import com.google.common.base.Strings;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,15 +15,14 @@ import raze.spring.inventory.security.service.UserSessionService;
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class JwtTokenVerifier extends OncePerRequestFilter {
     private final UserSessionService userSessionService;
     private final SecretKey secretKey;
@@ -42,23 +39,27 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
 
-        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
+        final Cookie[] cookies = request.getCookies();
+        final String token =
+            Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(jwtConfig.getAuthorizationHeader()))
+                .findAny().get().getValue();
+
+
+
+
+
+        if (Strings.isNullOrEmpty(token) ) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authorizationHeader.substring(7);
 
         try {
-
-            Jws<Claims> claimsJws = Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token);
-
-            Claims body = claimsJws.getBody();
-
+            final JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+            Claims cookieBody = (Claims) jwtParser.parse(token).getBody();
+            Claims body = (Claims) jwtParser.parse(token).getBody();
             String username = body.getSubject();
 
             if(!this.userSessionService.isSessionValid(username,token) ) {

@@ -1,8 +1,6 @@
 package raze.spring.inventory.security.service.impl;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.Exception.ObjectNotFoundException;
@@ -40,19 +38,19 @@ public class UserSessionServiceImpl implements UserSessionService {
 
     @Override
     public boolean isTokenValid(String token) throws  UnauthorizedException {
-        String tokenSlice = token.substring(7);
+//        String tokenSlice = token.substring(7);
 
-
-
-        Jws<Claims> claimsJws = Jwts.parser()
+        Jws<Claims> claimsJws =
+            Jwts.parserBuilder()
                 .setSigningKey(secretKey)
-                .parseClaimsJws(tokenSlice);
+                .build()
+                .parseClaimsJws(token);
 
         Claims body = claimsJws.getBody();
 
         String username = body.getSubject();
 
-        if (!this.isSessionValid(username, tokenSlice)) {
+        if (!this.isSessionValid(username, token)) {
             return false;
         }
         return true;

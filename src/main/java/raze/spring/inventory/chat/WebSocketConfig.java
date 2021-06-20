@@ -3,9 +3,13 @@ package raze.spring.inventory.chat;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -16,15 +20,22 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.HandshakeInterceptor;
+import org.springframework.web.util.WebUtils;
 import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.security.service.UserSessionService;
 import raze.spring.inventory.service.UserService;
 
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 @Slf4j
@@ -55,10 +66,28 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.setErrorHandler(errorHandler).addEndpoint("/secured/chat").setAllowedOriginPatterns("originAddress");
+        registry.setErrorHandler(errorHandler).addEndpoint("/secured/chat").setAllowedOriginPatterns("originAddress").addInterceptors(httpSessionHandshakeInterceptor());
         registry.setErrorHandler(errorHandler).addEndpoint("/secured/chat")
                 .setAllowedOrigins(originAddress)
-                .withSockJS();
+                .withSockJS().setInterceptors(httpSessionHandshakeInterceptor());
+    }
+    @Bean
+    public HandshakeInterceptor httpSessionHandshakeInterceptor() {
+        return new HandshakeInterceptor() {
+            @Override
+            public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+                if (request instanceof ServletServerHttpRequest) {
+                    ServletServerHttpRequest servletServerRequest = (ServletServerHttpRequest) request;
+                    HttpServletRequest servletRequest = servletServerRequest.getServletRequest();
+                    Cookie token = WebUtils.getCookie(servletRequest, "Authorization");
+                    attributes.put("Authorization", token.getValue());
+                }
+                return true;
+            }
+            @Override
+            public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+            }
+        };
     }
 
     @Override
@@ -72,13 +101,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
             if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-              final String token =
-                  Optional.ofNullable(accessor.getFirstNativeHeader("Authorization")).orElse(null);
+                Map<String, Object> sessionAttributes = accessor.getSessionAttributes();
+                final String token = sessionAttributes.get("Authorization").toString();
+//              final String token =
+//                  Optional.ofNullable(accessor.getFirstNativeHeader("Authorization")).orElse(null);
               final String username =
                   Optional.ofNullable(accessor.getFirstNativeHeader("login")).orElse(null);
               if (token != null && username != null) {
                 final boolean isValid =
-                    sessionService.isSessionValid(username, token.replace("Bearer", "").trim());
+                    sessionService.isSessionValid(username, token.trim());
                 if (isValid) {
                   final ProfileDto user = userService.getUserByUsername(username);
                   accessor.setUser(
