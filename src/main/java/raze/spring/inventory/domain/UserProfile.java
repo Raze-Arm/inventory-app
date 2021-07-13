@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import raze.spring.inventory.security.model.UserAccount;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
@@ -26,7 +27,15 @@ public class UserProfile extends BaseEntity {
     @Length(min = 3, max = 30, message = "size must be between 3 and 30")
     private String lastName;
 
-    private String photoPath;
+  @NotBlank(message = "email is mandatory")
+  @Email(
+      message = "not a valid email",
+      regexp =
+              "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?!-)(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
+   private String email;
+
+
+    private Boolean imageAvailable = false;
 
     @OneToOne(optional = false, cascade = {CascadeType.ALL})
     private UserAccount account;

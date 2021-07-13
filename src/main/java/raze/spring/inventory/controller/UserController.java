@@ -53,31 +53,28 @@ public class UserController {
 
 
     @PutMapping(path = {"/user", "/user/"})
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("#profile.username == authentication.name or hasRole('ADMIN')")
     public ResponseEntity<Void> updateUserProfile(@Valid @ModelAttribute ProfileDto profile) throws IOException {
         this.userService.updateUser(profile);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(path = {"/download/user/{id}"})
-//    @PreAuthorize("hasRole('ADMIN')")
-    @PreAuthorize("permitAll()")
-    public ResponseEntity<Resource> downloadUserPhoto(@PathVariable UUID id) throws MalformedURLException {
-        return ResponseEntity.ok(this.userService.getUserPhoto(id));
+    @GetMapping(path = {"/download/user/{username}"})
+    @PreAuthorize("#username == authentication.name or hasRole('ADMIN')")
+    public ResponseEntity<Resource> downloadUserPhoto(@PathVariable String username) throws MalformedURLException {
+        return ResponseEntity.ok(this.userService.getUserPhoto(username));
     }
 
-    @GetMapping(path = {"/download/small/user/{id}"})
-    public ResponseEntity<Resource> downloadSmallUserPhoto(@PathVariable UUID id) throws MalformedURLException {
-        return ResponseEntity.ok(this.userService.getUserSmallPhoto(id));
+    @GetMapping(path = {"/download/small/user/{username}"})
+    @PreAuthorize("#username == authentication.name or hasRole('ADMIN')")
+    public ResponseEntity<Resource> downloadSmallUserPhoto(@PathVariable String username) throws MalformedURLException {
+        return ResponseEntity.ok(this.userService.getUserSmallPhoto(username));
     }
 
-    @GetMapping(path = {"/download/user"})
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Resource> downloadUserPhotoByUsername(@RequestParam("username")String username) throws MalformedURLException {
-        return  ResponseEntity.ok(this.userService.getUserPhotoByUsername(username));
-    }
 
     @DeleteMapping(path = {"/user/{id}", "/user/{id}/"})
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         this.userService.deleteUser(id);
         return  ResponseEntity.ok().build();

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import raze.spring.inventory.Exception.EmailNotFoundException;
+import raze.spring.inventory.Exception.IllegalTokenException;
+import raze.spring.inventory.Exception.UnauthorizedException;
 
 
 import javax.validation.ConstraintViolation;
@@ -22,7 +25,44 @@ import java.util.*;
 
 @ControllerAdvice
 @Slf4j
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class ExceptionController extends ResponseEntityExceptionHandler {
+
+
+
+    @ExceptionHandler(value = {IllegalTokenException.class})
+    protected ResponseEntity<Object> handleIllegalToken (Exception e, WebRequest request) {
+        return  handleExceptionInternal(
+                e,
+                e.getMessage(),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND,
+                request
+        );
+    }
+
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    protected ResponseEntity<Object> handleUnauthorizedException (Exception e, WebRequest request) {
+        return  handleExceptionInternal(
+                e,
+                e.getMessage(),
+                new HttpHeaders(),
+                HttpStatus.UNAUTHORIZED,
+                request
+        );
+    }
+
+
+
+    @ExceptionHandler(value = {EmailNotFoundException.class})
+    protected ResponseEntity<Object> handleEmailNotFound (Exception e, WebRequest request) {
+        return  handleExceptionInternal(
+          e,
+           e.getMessage(),
+           new HttpHeaders(),
+           HttpStatus.NOT_FOUND,
+           request
+        );
+    }
 
     @ExceptionHandler(value = {NoSuchElementException.class})
     protected ResponseEntity<Object> handleNoSuchElementException(Exception ex, WebRequest webRequest) {

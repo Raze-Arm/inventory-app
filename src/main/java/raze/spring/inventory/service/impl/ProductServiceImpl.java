@@ -3,6 +3,7 @@ package raze.spring.inventory.service.impl;
 import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import raze.spring.inventory.converter.ProductDtoToProduct;
 import raze.spring.inventory.converter.ProductViewToProductDto;
@@ -20,7 +22,6 @@ import raze.spring.inventory.repository.ProductRepository;
 import raze.spring.inventory.repository.ProductViewRepository;
 import raze.spring.inventory.utility.FileUploadUtil;
 
-import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -61,7 +62,6 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Transactional
     @Override
     public List<ProductDto> getProductList() {
 
@@ -69,7 +69,6 @@ public class ProductServiceImpl implements ProductService {
             .map(this.productViewToProductDto::convert)
             .collect(Collectors.toList());
     }
-    @Transactional
     @Override
     public ProductDto getProduct(UUID id) {
 
@@ -77,7 +76,6 @@ public class ProductServiceImpl implements ProductService {
             this.productViewRepository.findById(id).orElseThrow());
     }
 
-    @Transactional
     @Override
     public Resource getProductImage(UUID id)  {
 //        final Product product =this.productRepository.findById(id).orElse(null);
@@ -129,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    @Transactional(rollbackOn = IOException.class)
+
     @Override
     public UUID saveProduct(ProductDto productDto) throws IOException {
         final Product productToSave = Objects.requireNonNull(this.productDtoToProduct.convert(productDto));
@@ -152,21 +150,27 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Transactional
     @Override
     public void updateProduct(ProductDto productDto) throws IOException {
-            if(productDto.getId() == null) throw new NoSuchElementException();
-            final Product productToEdit= this.productRepository.findById(productDto.getId()).orElseThrow();
-            productToEdit.setName(productDto.getName());
-            productToEdit.setPrice(productDto.getPrice());
-            productToEdit.setSalePrice(productDto.getSalePrice());
-            productToEdit.setDescription(productDto.getDescription());
-            saveImageFile(productDto, productToEdit, IMAGE_DIR);
+        final Product productToEdit = updateProductProps(productDto);
 
-            this.productRepository.save(productToEdit);
+        saveImageFile(productDto, productToEdit, IMAGE_DIR);
+
     }
 
     @Transactional
+    @NotNull Product updateProductProps(ProductDto productDto) {
+        if(productDto.getId() == null) throw new NoSuchElementException();
+        final Product productToEdit= this.productRepository.findById(productDto.getId()).orElseThrow();
+        productToEdit.setName(productDto.getName());
+        productToEdit.setPrice(productDto.getPrice());
+        productToEdit.setSalePrice(productDto.getSalePrice());
+        productToEdit.setDescription(productDto.getDescription());
+
+        this.productRepository.save(productToEdit);
+        return productToEdit;
+    }
+
     @Override
     public void deleteProduct(UUID id) {
         this.productRepository.deleteById(id);

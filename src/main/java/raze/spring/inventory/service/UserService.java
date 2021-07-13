@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import raze.spring.inventory.Exception.ObjectNotFoundException;
 import raze.spring.inventory.domain.dto.ProfileDto;
+import raze.spring.inventory.registration.Request;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.UUID;
 
 public interface UserService {
@@ -15,10 +17,12 @@ public interface UserService {
 
     UUID saveUser(ProfileDto profileDto) throws IOException;
 
-    Resource getUserPhoto(UUID id) throws MalformedURLException;
-    Resource getUserSmallPhoto(UUID id) throws MalformedURLException;
+    Resource getUserPhoto(String username) throws MalformedURLException;
+    Resource getUserSmallPhoto(String username) throws MalformedURLException;
 
-    Resource getUserPhotoByUsername(String username) throws MalformedURLException;
+//    Resource getUserPhotoByUsername(String username) throws MalformedURLException;
+
+
 
 
     ProfileDto getUser(UUID id);

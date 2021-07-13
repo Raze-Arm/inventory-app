@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import raze.spring.inventory.security.model.AppSession;
 import raze.spring.inventory.security.model.UserSession;
 import raze.spring.inventory.security.service.UserSessionService;
 
@@ -35,12 +36,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
 
     public JwtUsernameAndPasswordAuthenticationFilter(UserSessionService userSessionService, AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
+        setFilterProcessesUrl("/v1/login");
         this.userSessionService = userSessionService;
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
         this.secretKey = secretKey;
     }
 
+    @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
@@ -55,16 +58,17 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             );
 
 
-            Authentication authenticate = authenticationManager.authenticate(authentication);
-            return authenticate;
+            return authenticationManager.authenticate(authentication);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | AuthenticationException e) {
+            if(e instanceof AuthenticationException) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ((AuthenticationException) e).getMessage());
+                return null;
+            } else throw new RuntimeException(e);
         }
 
     }
 
-    @SneakyThrows
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
@@ -90,14 +94,18 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .compact();
 
         this.userSessionService.insertSession(
-            new UserSession(username, token));
+                new AppSession(username , token));
 
         final Cookie jwtTokenCookie = new Cookie(jwtConfig.getAuthorizationHeader() ,  token );
         jwtTokenCookie.setHttpOnly(true);
-        final int maxAge = jwtConfig.getTokenExpirationAfterDays() * 24 * 60 * 60;
+        final int maxAge = jwtConfig.getTokenExpirationAfterDays() * 86400;  //24 * 60 * 60
         jwtTokenCookie.setMaxAge(maxAge);
+        jwtTokenCookie.setPath("/");
         response.addCookie(jwtTokenCookie);
-        response.addHeader("user_info", userInfo);
+        final Cookie userInfoCookie =  new Cookie("user_info", userInfo);
+        userInfoCookie.setMaxAge(maxAge);
+        userInfoCookie.setPath("/");
+        response.addCookie(userInfoCookie);
 
 
     }

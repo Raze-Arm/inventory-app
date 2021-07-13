@@ -29,6 +29,14 @@ spec:
     - name: MYSQL_DB_NAME
       value: ${MYSQL_DB_NAME}
       hidden: true
+    - name: CONFIRM_ENDPOINT
+      value: ${CONFIRM_ENDPOINT}
+    - name: MAIL_USERNAME
+      value: ${MAIL_USERNAME}
+      hidden: true
+    - name: MAIL_PASSWORD
+      value: ${MAIL_PASSWORD}
+      hidden: true
   resources:
     memory: 500Mi
   volume_browser_enabled: true
