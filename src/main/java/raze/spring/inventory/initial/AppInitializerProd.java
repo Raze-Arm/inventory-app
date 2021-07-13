@@ -40,6 +40,7 @@ public class AppInitializerProd implements CommandLineRunner {
                                .firstName("raze")
                                .lastName("arm")
                                .username("admin")
+                               .email("razear007@gmail.com")
                                .password("1234567890")
                                .role(UserRole.ADMIN)
                                .build();

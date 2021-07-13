@@ -1,0 +1,65 @@
+body {
+    background-color:  #FFFFFF;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    position: fixed ;
+}
+#blue_segment {
+    background-color: #47ccde;
+    height: 30vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    position: fixed ;
+}
+
+#card {
+    position: relative;
+    width: 320px;
+    display: block;
+    margin: 40px auto;
+    text-align: center;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+#upper-side {
+    padding: 2em;
+    background-color: #8BC34A;
+    display: block;
+    color: #fff;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    box-shadow: 3px 5px 3px 2px #888888;
+}
+
+#checkmark {
+    font-weight: lighter;
+    fill: #fff;
+    margin: -3.5em auto auto 20px;
+}
+
+#status {
+    font-weight: lighter;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1em;
+    margin-top: -.2em;
+    margin-bottom: 0;
+}
+
+#lower-side {
+    padding: 2em 2em 5em 2em;
+    background: #fff;
+    display: block;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    box-shadow: 3px 5px 3px 2px #888888;
+}
+
+#message {
+    margin-top: -.5em;
+    color: #757575;
+    letter-spacing: 1px;
+}

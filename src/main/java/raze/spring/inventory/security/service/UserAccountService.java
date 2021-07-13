@@ -12,4 +12,8 @@ public interface UserAccountService {
     UserAccount addUserAccount( UserAccount userAccount) ;
     void updateUserAccount(UserAccount userAccount) throws NoSuchElementException;
     void removeUserAccount(Long id) ;
+    void changePassword(String username, String password);
+    void enableUser(String username);
+    void disableUser(String username);
+    
 }

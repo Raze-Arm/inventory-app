@@ -1,42 +1,53 @@
 package raze.spring.inventory.security.service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import raze.spring.inventory.security.AppUserDetail;
-import raze.spring.inventory.security.model.UserAccount;
+import raze.spring.inventory.Exception.UnauthorizedException;
+import raze.spring.inventory.security.bruteforce.LoginAttemptService;
 import raze.spring.inventory.security.service.UserAccountService;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Slf4j
 @Service("appUserDetailService")
+@AllArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
     private final UserAccountService userAccountService;
+    private final LoginAttemptService loginAttemptService;
+    private final HttpServletRequest request;
 
-    public UserDetailServiceImpl(UserAccountService userAccountService) {
-        this.userAccountService = userAccountService;
-    }
 
-    @SneakyThrows
+//    @SneakyThrows
+//    @SneakyThrows(InternalAuthenticationServiceException.class)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final String ip = getClientIp();
+        if(loginAttemptService.isBlocked(ip)) {
+            log.debug("BLOCKING IP : {}", ip);
+            throw new InternalAuthenticationServiceException("Your ip is temporarily blocked, Please try later");
+        }
 
-        final UserAccount userAccount = this.userAccountService.getUserByUsername(username);
+        try{
+            return this.userAccountService.getUserByUsername(username);
+        }catch (RuntimeException e ) {
+            if (e instanceof AuthenticationException) throw e;
+            throw new InternalAuthenticationServiceException("Error while executing loadUserByUsername", e);
+        }
+    }
 
-//    final AppUserDetail appUserDetail =
-//        AppUserDetail.builder()
-//                .id(userAccount.getId())
-//            .username(userAccount.getUsername())
-//            .password(userAccount.getPassword())
-//            .grantedAuthorities(userAccount.getUserRoles().getGrantedAuthorities())
-//            .isAccountNonExpired(userAccount.getIsAccountNonExpired())
-//            .isAccountNonLocked(userAccount.getIsAccountNonLocked())
-//            .isCredentialsNonExpired(userAccount.getIsCredentialsNonExpired())
-//            .isEnabled(userAccount.getIsEnabled())
-//            .build();
-        return userAccount;
+    private String getClientIp() {
+        final String xfHeader = request.getHeader("X-Forwarded-For");
+        if(xfHeader == null) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
     }
 }

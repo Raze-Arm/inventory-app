@@ -1,18 +1,22 @@
 package raze.spring.inventory.security.service.impl;
 
 import io.jsonwebtoken.*;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import raze.spring.inventory.Exception.ObjectNotFoundException;
 import raze.spring.inventory.Exception.UnauthorizedException;
+import raze.spring.inventory.security.model.AppSession;
 import raze.spring.inventory.security.model.UserSession;
 import raze.spring.inventory.security.repository.UserSessionRepository;
 import raze.spring.inventory.security.service.UserSessionService;
 
 
 import javax.crypto.SecretKey;
+import javax.transaction.Transactional;
 
 @Service
+@Profile("!redis")
 public class UserSessionServiceImpl implements UserSessionService {
     private final UserSessionRepository userSessionRepository;
     private final SecretKey secretKey;
@@ -58,10 +62,10 @@ public class UserSessionServiceImpl implements UserSessionService {
     }
 
     @Override
-    public void insertSession(UserSession userSession) {
+    public void insertSession(AppSession userSession) {
         if (userSession != null) {
 //            this.userSessionRepository.findById(userSession.getUsername()).ifPresent(sessionUser1 -> this.sessionUserRepository.deleteById(sessionUser1.getUsername()));
-            this.userSessionRepository.save(userSession);
+            this.userSessionRepository.save(new UserSession(userSession.getUsername(), userSession.getToken()));
         }
     }
 
@@ -70,6 +74,7 @@ public class UserSessionServiceImpl implements UserSessionService {
         if (username != null) this.userSessionRepository.deleteById(username);
     }
 
+    @Transactional
     @Override
     public void removeToken(String token) {
         if(token != null) this.userSessionRepository.deleteByToken(token);

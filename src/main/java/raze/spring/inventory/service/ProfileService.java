@@ -12,6 +12,7 @@ public interface ProfileService {
 
 
      Resource getUserPhoto(String username) throws MalformedURLException;
+     Resource getUserSmallPhoto(String username);
 
      ProfileDto getUserProfileByUsername(String username);
 

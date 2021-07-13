@@ -10,10 +10,7 @@ import raze.spring.inventory.security.role.UserRole;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @With
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 @Getter
-@EqualsAndHashCode()
 @Entity
 @Table(indexes = @Index(columnList = "username"))
 public class UserAccount implements UserDetails, Principal {
@@ -148,6 +144,20 @@ public class UserAccount implements UserDetails, Principal {
                 ", isCredentialsNonExpired=" + isCredentialsNonExpired +
                 ", isEnabled=" + isEnabled +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserAccount)) return false;
+        UserAccount account = (UserAccount) o;
+        return getId().equals(account.getId()) &&
+                getUsername().equals(account.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername());
     }
 
     @Override

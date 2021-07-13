@@ -53,10 +53,11 @@ public class LoggingFilter implements Filter {
             final String method = requestWrapper.getMethod().trim();
 
 
-          if ((!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")) ||
+            final StringBuffer requestURL = requestWrapper.getRequestURL();
+            if ((!method.equals("POST") && !method.equals("PUT") && !method.equals("DELETE")) ||
                   responseWrapper.getStatus() >= 400
 //              || requestWrapper.getRequestURL().toString().contains("image")
-              || requestWrapper.getRequestURL().toString().equals("/") ) {
+              || requestURL.toString().equals("/") || requestURL.indexOf("/v1/usersecurity") > 0  ) {
           }
 
            else logRequest(requestWrapper, responseWrapper, requestBody, responseBody, method);

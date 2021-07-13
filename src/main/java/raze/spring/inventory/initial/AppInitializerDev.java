@@ -10,16 +10,18 @@ import org.springframework.stereotype.Component;
 import raze.spring.inventory.domain.*;
 import raze.spring.inventory.domain.dto.ProfileDto;
 import raze.spring.inventory.repository.*;
+import raze.spring.inventory.security.model.UserAccount;
 import raze.spring.inventory.security.repository.UserAccountRepository;
 import raze.spring.inventory.security.role.UserRole;
 import raze.spring.inventory.service.ProfileService;
 import raze.spring.inventory.service.UserService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.math.BigInteger;
-import java.math.BigInteger;
-import java.nio.file.Path;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,6 +44,8 @@ public class AppInitializerDev implements CommandLineRunner {
     private final UserService userService;
     private final UserProfileRepository profileRepository;
     private final UserAccountRepository accountRepository;
+
+
 
 
       public AppInitializerDev(
@@ -176,6 +180,7 @@ public class AppInitializerDev implements CommandLineRunner {
                 .firstName("raze")
                 .lastName("arm")
                 .username("admin")
+                    .email("razear007@gmail.com")
                 .password("12345")
                     .role(UserRole.ADMIN)
                 .build();
@@ -184,6 +189,7 @@ public class AppInitializerDev implements CommandLineRunner {
                         .firstName("anna")
                         .lastName("noris")
                         .username("anna")
+                        .email("razear007@gmail.com")
                         .password("12345")
                         .role(UserRole.BASIC)
                         .build();
@@ -192,11 +198,14 @@ public class AppInitializerDev implements CommandLineRunner {
                         .firstName("sam")
                         .lastName("vin")
                         .username("sam")
+                        .email("sam@gmail.com")
                         .password("12345")
                         .role(UserRole.USER)
                         .build();
         userService.saveUser(profileDto);
         userService.saveUser(profileDto1);
         userService.saveUser(profileDto2);
+
+
     }
 }

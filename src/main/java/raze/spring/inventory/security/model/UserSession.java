@@ -12,14 +12,23 @@ import javax.persistence.Lob;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor
-@Builder
-@AllArgsConstructor
 @Getter
 @Entity
-public class UserSession {
+public class UserSession extends AppSession{
     @Id
     private String username;
     @Lob
     private  String token;
+
+    @Builder
+    public UserSession(String username, String token) {
+        super(username, token);
+        this.username = username;
+        this.token = token;
+    }
+
+
+    public UserSession() {
+        super();
+    }
 }

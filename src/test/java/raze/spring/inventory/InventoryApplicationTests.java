@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 
 @Profile("test")
-@ActiveProfiles({"test", "dev"})
+@ActiveProfiles({"test", "dev", "mail"})
 @SpringBootTest
 class InventoryApplicationTests {
 

@@ -25,7 +25,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Profile("test")
-@ActiveProfiles({"test", "dev"})
+@ActiveProfiles({"test", "dev", "mail"})
 @SpringBootTest()
 class ProductServiceImplTest {
     private static UUID ID = UUID.randomUUID();

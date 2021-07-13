@@ -28,6 +28,8 @@ public class UserProfileDtoToUserProfile implements Converter<ProfileDto, UserPr
         return UserProfile.builder()
                 .firstName(profileDto.getFirstName())
                 .lastName(profileDto.getLastName())
+                .email(profileDto.getEmail())
+                .imageAvailable(profileDto.hasImage())
                 .account(userAccount)
                 .build();
     }
