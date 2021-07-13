@@ -19,8 +19,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Profile("test")
-@ActiveProfiles({"test", "dev"})
-@SpringBootTest()
+@ActiveProfiles({"test", "dev", "mail"})
+@SpringBootTest
 class CustomerServiceImplTest {
     private static  String FIRST_NAME = "FIRST NAME";
     private static  String FIRST_NAME2 = "FIRST NAME2";

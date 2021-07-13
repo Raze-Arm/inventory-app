@@ -1,6 +1,7 @@
 package raze.spring.inventory.registration.email;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +15,6 @@ import javax.mail.internet.MimeMessage;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
-
     public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
