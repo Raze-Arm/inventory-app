@@ -71,10 +71,8 @@ public class AppSecurityConfig  {
                            new JwtTokenVerifier(userSessionService, secretKey, jwtConfig),
                            JwtUsernameAndPasswordAuthenticationFilter.class)
                    .authorizeRequests()
-//                   .antMatchers("/login/**").permitAll()
 //            .antMatchers("/h2-console/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
 //            .antMatchers("/secured/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
-//            .antMatchers("/v1/resetpassword/**").permitAll()
 //            .antMatchers("/v1/download/product/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
 //            .antMatchers("/v1/download/small/product/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
 //            .antMatchers("/v1/download/small/user/**").permitAll().and().headers().frameOptions().disable().and().authorizeRequests()
