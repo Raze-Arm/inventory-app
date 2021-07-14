@@ -39,17 +39,17 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
                 request
         );
     }
-
-    @ExceptionHandler(value = {UnauthorizedException.class})
-    protected ResponseEntity<Object> handleUnauthorizedException (Exception e, WebRequest request) {
-        return  handleExceptionInternal(
-                e,
-                e.getMessage(),
-                new HttpHeaders(),
-                HttpStatus.UNAUTHORIZED,
-                request
-        );
-    }
+//
+//    @ExceptionHandler(value = {UnauthorizedException.class})
+//    protected ResponseEntity<Object> handleUnauthorizedException (Exception e, WebRequest request) {
+//        return  handleExceptionInternal(
+//                e,
+//                e.getMessage(),
+//                new HttpHeaders(),
+//                HttpStatus.UNAUTHORIZED,
+//                request
+//        );
+//    }
 
 
 
