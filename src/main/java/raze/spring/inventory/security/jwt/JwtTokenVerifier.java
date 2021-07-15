@@ -46,7 +46,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
 
-
         List<RequestMatcher> matchers = Stream.of( "/v1/forgotpassword")
         .map(AntPathRequestMatcher::new)
         .collect(Collectors.toList());
@@ -57,24 +56,15 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
 
 //    @SneakyThrows(value = IllegalTokenException.class)
-    @SneakyThrows(IllegalTokenException.class)
+//    @SneakyThrows(IllegalTokenException.class)
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
 
-//        final Cookie[] cookies = request.getCookies();
-//        final String token =
-//            Arrays.stream(cookies)
-//                .filter(cookie -> cookie.getName().equals(jwtConfig.getAuthorizationHeader()))
-//                .findAny().orElseGet(null).getValue();
 
         final Cookie token = WebUtils.getCookie(request, jwtConfig.getAuthorizationHeader());
-//        Optional.ofNullable(WebUtils.getCookie(request, jwtConfig.getAuthorizationHeader()))
-//                .ifPresentOrElse(cookie -> {
-//                   token.set(cookie.getValue());
-//                }, () -> token.set(null));
 
 
 
@@ -124,6 +114,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return  orRequestMatcher.matches(request);
     }
+
+
 
 
 
