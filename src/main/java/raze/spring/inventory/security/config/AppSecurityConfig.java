@@ -49,6 +49,8 @@ public class AppSecurityConfig  {
        private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
 
+
+
        @Override
        protected void configure(HttpSecurity http) throws Exception {
            http.exceptionHandling()
@@ -81,7 +83,6 @@ public class AppSecurityConfig  {
                    .anyRequest()
                    .authenticated()
                    .and()
-
 
                    .logout()
 //            .addLogoutHandler(new SecurityContextLogoutHandler()).clearAuthentication(false)

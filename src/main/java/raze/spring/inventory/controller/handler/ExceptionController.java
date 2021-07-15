@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.FieldError;
@@ -39,19 +40,27 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
                 request
         );
     }
-//
-//    @ExceptionHandler(value = {UnauthorizedException.class})
-//    protected ResponseEntity<Object> handleUnauthorizedException (Exception e, WebRequest request) {
-//        return  handleExceptionInternal(
-//                e,
-//                e.getMessage(),
-//                new HttpHeaders(),
-//                HttpStatus.UNAUTHORIZED,
-//                request
-//        );
-//    }
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    protected ResponseEntity<Object> handleUnauthorizedException (Exception e, WebRequest request) {
+        return  handleExceptionInternal(
+                e,
+                e.getMessage(),
+                new HttpHeaders(),
+                HttpStatus.UNAUTHORIZED,
+                request
+        );
+    }
 
-
+    @ExceptionHandler(value = {AuthenticationCredentialsNotFoundException.class})
+    protected ResponseEntity<Object> handleAuthenticationCredentialsNotFoundException (AuthenticationCredentialsNotFoundException e, WebRequest request) {
+        return  handleExceptionInternal(
+                e,
+                e.getMessage(),
+                new HttpHeaders(),
+                HttpStatus.UNAUTHORIZED,
+                request
+        );
+    }
 
     @ExceptionHandler(value = {EmailNotFoundException.class})
     protected ResponseEntity<Object> handleEmailNotFound (Exception e, WebRequest request) {

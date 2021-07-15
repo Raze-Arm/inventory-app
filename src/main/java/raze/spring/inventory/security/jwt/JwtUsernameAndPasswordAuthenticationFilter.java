@@ -4,12 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import raze.spring.inventory.controller.handler.ErrorDetails;
 import raze.spring.inventory.security.model.AppSession;
 import raze.spring.inventory.security.model.UserSession;
 import raze.spring.inventory.security.service.UserSessionService;
@@ -22,6 +27,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
@@ -37,6 +43,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
     public JwtUsernameAndPasswordAuthenticationFilter(UserSessionService userSessionService, AuthenticationManager authenticationManager, JwtConfig jwtConfig, SecretKey secretKey) {
         setFilterProcessesUrl("/v1/login");
+        setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
         this.userSessionService = userSessionService;
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
@@ -62,8 +69,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
         } catch (IOException | AuthenticationException e) {
             if(e instanceof AuthenticationException) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ((AuthenticationException) e).getMessage());
-                return null;
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ((AuthenticationException) e).getMessage());
+//                return null;
+                throw new AuthenticationCredentialsNotFoundException(((AuthenticationException) e).getMessage());
             } else throw new RuntimeException(e);
         }
 
@@ -111,6 +119,29 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     }
 
 
-
-
 }
+
+
+class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+
+        ErrorDetails error = new ErrorDetails(HttpStatus.UNAUTHORIZED, e.getMessage(), "Invalid Credentials");
+
+        try {
+            String json = objectMapper.writeValueAsString(error);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+            response.getWriter().write(json);
+
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+
+    }
+}
+
+
